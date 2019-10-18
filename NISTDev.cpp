@@ -2,6 +2,7 @@
 
 using namespace Alignment;
 using namespace NIST;
+using namespace std;
 
 // https://stackoverflow.com/questions/2654480/writing-bmp-image-in-pure-c-c-without-other-libraries
 
@@ -82,17 +83,45 @@ void generateBitmapImage(const unsigned char *image, int height, int width, cons
     fclose(imageFile);
 }
 
-void NIST::bmwrite(std::string imageFileName, const Bitmap& bm)
+void NIST::bmwrite(string imageFileName, const Bitmap& bm)
 {
     try
     {
 	generateBitmapImage(bm.image.data(), bm.height, bm.width, imageFileName.data());
     }
-    catch (const std::exception& e)
+    catch (const exception& e)
     {
-	std::cout << "bmwrite : " << e.what() << std::endl;
+	cout << "bmwrite : " << e.what() << endl;
 	return;
     }
+}
+
+Bitmap NIST::hrbm(int b, int c, int d, const HistoryRepa& hr)
+{
+    Bitmap bm(b*c, b*c);
+    auto n = b*b;
+    if (n != hr.dimension)
+    {
+	cout << "hrbm : inconsistent dimension" << endl;
+	return bm;
+    }
+    auto z = hr.size;
+    auto rr = hr.arr;
+    vector<size_t> av(n);
+    for (std::size_t j = 0; j < z; j++)
+	for (std::size_t i = 0; i < n; i++)
+	    av[i] += rr[j*n + i];
+    for (std::size_t i = 0; i < n; i++)
+	av[i] = av[i] * 255 / (d-1) / z;
+    for (int i = 0; i <bm.height; i++) {
+	for (int j = 0; j< bm.width; j++) {
+	    unsigned char x = (unsigned char)av[(b-(i/c))*b + (j/c)];
+	    int k = i*bm.width*3 + j*3;
+	    for (int l = 0; l<3; l++)
+		bm.image[k+l] = x;
+	}
+    }
+    return bm;
 }
 
 
@@ -104,7 +133,7 @@ SystemHistoryRepaTuple NIST::trainBucketedIO(int d)
 
     if (d>128)
     {
-	std::cout << "valency " << d << " is too large" << std::endl;
+	cout << "valency " << d << " is too large" << endl;
 	return SystemHistoryRepaTuple();
     }
     const int a = 28;
@@ -113,11 +142,11 @@ SystemHistoryRepaTuple NIST::trainBucketedIO(int d)
     unsigned char* labels = new unsigned char[z];
     try
     {
-	std::ifstream fimages("train-images.idx3-ubyte", std::ios::binary);
-	std::ifstream flabels("train-labels.idx1-ubyte", std::ios::binary);
+	ifstream fimages("train-images.idx3-ubyte", ios::binary);
+	ifstream flabels("train-labels.idx1-ubyte", ios::binary);
 	if (!fimages.is_open() || !flabels.is_open())
 	{
-	    std::cout << "trainBucketedIO : cannot open files" << std::endl;
+	    cout << "trainBucketedIO : cannot open files" << endl;
 	    delete[] images;
 	    delete[] labels;
 	    return SystemHistoryRepaTuple();
@@ -129,9 +158,9 @@ SystemHistoryRepaTuple NIST::trainBucketedIO(int d)
 	flabels.read((char*)labels, z);
 	flabels.close();
     }
-    catch (const std::exception& e)
+    catch (const exception& e)
     {
-	std::cout << "trainBucketedIO : " << e.what() << std::endl;
+	cout << "trainBucketedIO : " << e.what() << endl;
 	delete[] images;
 	delete[] labels;
 	return SystemHistoryRepaTuple();
@@ -142,34 +171,34 @@ SystemHistoryRepaTuple NIST::trainBucketedIO(int d)
     ValSet buckets;
     for (int i = 0; i < d; i++)
 	buckets.insert(Value(i));
-    std::vector<VarValSetPair> ll;
+    vector<VarValSetPair> ll;
     ll.push_back(VarValSetPair(Variable("digit"), digits));
     for (int i = 0; i < a; i++)
 	for (int j = 0; j < a; j++)
 	    ll.push_back(VarValSetPair(Variable(Variable(i+1), Variable(j+1)), buckets));
     auto uu = lluu(ll);
     auto ur = uuur(*uu);
-    auto hr = std::make_unique<HistoryRepa>();
+    auto hr = make_unique<HistoryRepa>();
     hr->dimension = a*a+1;
     auto n = hr->dimension;
-    hr->vectorVar = new std::size_t[n];
+    hr->vectorVar = new size_t[n];
     auto vv = hr->vectorVar;
     hr->shape = new unsigned char[n];
     auto sh = hr->shape;
     hr->size = z;
     hr->arr = new unsigned char[z*n];
     auto rr = hr->arr;
-    for (std::size_t i = 0; i < n; i++)
+    for (size_t i = 0; i < n; i++)
 	vv[i] = i;
     sh[0] = 10;
-    for (std::size_t i = 1; i < n; i++)
+    for (size_t i = 1; i < n; i++)
 	sh[i] = d;
-    std::size_t k = 0;
-    for (std::size_t j = 0; j < z; j++)
+    size_t k = 0;
+    for (size_t j = 0; j < z; j++)
     {
-	std::size_t jn = j*n;
+	size_t jn = j*n;
 	rr[jn] = labels[j];
-	for (std::size_t i = 1; i < n; i++)
+	for (size_t i = 1; i < n; i++)
 	{
 	    rr[jn + i] = images[k] * d / 256;
 	    k++;
@@ -177,7 +206,7 @@ SystemHistoryRepaTuple NIST::trainBucketedIO(int d)
     }
     delete[] images;
     delete[] labels;
-    return SystemHistoryRepaTuple(std::move(uu), std::move(ur), std::move(hr));
+    return SystemHistoryRepaTuple(move(uu), move(ur), move(hr));
 }
 
 

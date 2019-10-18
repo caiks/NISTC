@@ -86,7 +86,7 @@ int main(int argc, char **argv)
 	    << *hrsel(*hr, SizeList{ 0 }) << endl << endl;
     }
 
-    if (true)
+    if (false)
     {
 	Bitmap bm(341,753);
 	for (int i = 0; i <bm.height; i++) {
@@ -99,7 +99,7 @@ int main(int argc, char **argv)
 	bmwrite("NIST.bmp", bm);
     }
 
-    if (false)
+    if (true)
     {
 	auto uvars = systemsSetVar;
 	auto vol = systemsSetVarsVolume_u;
@@ -110,14 +110,25 @@ int main(int argc, char **argv)
 	{
 	    return eventsHistoryRepasHistoryRepaSelection_u(ll.size(), (std::size_t*)ll.data(), hr);
 	};
-	auto hrred = [](const HistoryRepa& hr, const SystemRepa& ur, const VarList& kk)
+	auto hrred = [](const HistoryRepa& hr, const SystemRepa& ur, const VarUSet& kk)
 	{
 	    auto& vvi = ur.mapVarSize();
 	    std::size_t m = kk.size();
+	    auto kk0 = sorted(kk);
 	    SizeList kk1;
-	    for (std::size_t i = 0; i < m; i++)
-		kk1.push_back(vvi[kk[i]]);
+	    for (auto& v : kk0)
+		kk1.push_back(vvi[v]);
 	    return setVarsHistoryRepasReduce_u(1.0, m, kk1.data(), hr);
+	};
+	auto hrhrred = [](const HistoryRepa& hr, const SystemRepa& ur, const VarUSet& kk)
+	{
+	    auto& vvi = ur.mapVarSize();
+	    std::size_t m = kk.size();
+	    auto kk0 = sorted(kk);
+	    SizeList kk1;
+	    for (auto& v : kk0)
+		kk1.push_back(vvi[v]);
+	    return setVarsHistoryRepasHistoryRepaReduced_u(m, kk1.data(), hr);
 	};
 
 	auto xx = trainBucketedIO(2);
@@ -144,17 +155,20 @@ int main(int argc, char **argv)
 	cout << "hr->size" << endl
 	    << hr->size << endl << endl;
 
-	set<size_t> valencies;
+	set<size_t> ww;
 	for (auto& w : vvk)
-	    valencies.insert(vol(*uu, VarUSet{ w }));
-	cout << "valencies" << endl
-	    << valencies << endl << endl;
+	    ww.insert(vol(*uu, VarUSet{ w }));
+	cout << "ww" << endl
+	    << ww << endl << endl;
 
 	cout << "vol(uu,vvl)" << endl
 	    << vol(*uu, vvl) << endl << endl;
 
-	cout << "rpln(aall(araa(uu,hrred(hr,VarList(vvl)))))" << endl;
-	rpln(cout, sorted(*aall(*araa(*uu, *ur, *hrred(*hr, *ur, VarList(vvl.begin(),vvl.end())))))); cout << endl;
+	cout << "rpln(aall(araa(uu,hrred(hr,vvl))))" << endl;
+	rpln(cout, sorted(*aall(*araa(*uu, *ur, *hrred(*hr, *ur, vvl))))); cout << endl;
+
+	auto hr1 = hrhrred(*hr, *ur, vvk);
+	bmwrite("NIST.bmp", hrbm(28, 1, 2, *hrsel(*hr1,SizeList{0})));
     }
 
     return 0;
