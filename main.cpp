@@ -67,17 +67,17 @@ int main(int argc, char **argv)
 	    << *ur << endl << endl;
     }
 
-    if (true)
+    if (false)
     {
 	auto hrsel = [](const HistoryRepa& hr, const SizeList& ll)
 	{
 	    return eventsHistoryRepasHistoryRepaSelection_u(ll.size(), (std::size_t*)ll.data(), hr);
 	};
 
-	auto tt = trainBucketedIO(2);
-	auto uu = std::move(std::get<0>(tt));
-	auto ur = std::move(std::get<1>(tt));
-	auto hr = std::move(std::get<2>(tt));
+	auto xx = trainBucketedIO(2);
+	auto uu = std::move(std::get<0>(xx));
+	auto ur = std::move(std::get<1>(xx));
+	auto hr = std::move(std::get<2>(xx));
 	cout << "uu" << endl
 	    << *uu << endl << endl;
 	cout << "ur" << endl
@@ -86,6 +86,48 @@ int main(int argc, char **argv)
 	    << *hrsel(*hr, SizeList{ 0 }) << endl << endl;
     }
 
+    if (true)
+    {
+	auto uvars = systemsSetVar;
+	auto vol = systemsSetVarsVolume_u;
+	auto hrsel = [](const HistoryRepa& hr, const SizeList& ll)
+	{
+	    return eventsHistoryRepasHistoryRepaSelection_u(ll.size(), (std::size_t*)ll.data(), hr);
+	};
+
+	auto xx = trainBucketedIO(2);
+	auto uu = std::move(std::get<0>(xx));
+	auto ur = std::move(std::get<1>(xx));
+	auto hrtr = std::move(std::get<2>(xx));
+
+	Variable digit("digit");
+	auto vv = *uvars(*uu);
+	auto vvl = VarUSet();
+	vvl.insert(digit);
+	auto vvk = VarUSet(vv);
+	vvk.erase(digit);
+
+	cout << "hrtr->dimension" << endl
+	    << hrtr->dimension << endl << endl;
+	cout << "hrtr->size" << endl
+	    << hrtr->size << endl << endl;
+
+	SizeList ll;
+	for (size_t i = 0; i < hrtr->size; i += 8)
+	    ll.push_back(i);
+	auto hr = hrsel(*hrtr, ll);
+	cout << "hr->size" << endl
+	    << hr->size << endl << endl;
+
+	set<size_t> valencies;
+	for (auto& w : vvk)
+	    valencies.insert(vol(*uu, VarUSet{ w }));
+	cout << "valencies" << endl
+	    << valencies << endl << endl;
+
+	cout << "vol(uu,vvl)" << endl
+	    << vol(*uu, vvl) << endl << endl;
+    }
 
     return 0;
 }

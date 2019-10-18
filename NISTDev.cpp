@@ -5,7 +5,7 @@ using namespace NIST;
 
 
 // trainBucketedIO :: Int -> IO (System, HistoryRepa)
-SystemHistoryRepaTuple NIST::trainBucketedIO(int d)
+SystemHistoryRepaTuple NIST::trainBucketedIO(unsigned char d)
 {
     auto lluu = listsSystem_u;
     auto uuur = systemsSystemRepa;
@@ -74,7 +74,10 @@ SystemHistoryRepaTuple NIST::trainBucketedIO(int d)
 	rr[jn] = labels[j];
 	for (std::size_t i = 1; i < n; i++)
 	{
-	    rr[jn + i] = images[k] * d / 256;
+	    if (d > 128)
+		rr[jn + i] = images[k];
+	    else
+		rr[jn + i] = images[k] * (int)d / 256;
 	    k++;
 	}
     }
