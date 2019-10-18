@@ -5,11 +5,16 @@ using namespace NIST;
 
 
 // trainBucketedIO :: Int -> IO (System, HistoryRepa)
-SystemHistoryRepaTuple NIST::trainBucketedIO(unsigned char d)
+SystemHistoryRepaTuple NIST::trainBucketedIO(int d)
 {
     auto lluu = listsSystem_u;
     auto uuur = systemsSystemRepa;
 
+    if (d>128)
+    {
+	std::cout << "valency " << d << " is too large" << std::endl;
+	return SystemHistoryRepaTuple();
+    }
     const int a = 28;
     const int z = 60000;
     unsigned char* images = new unsigned char[z*a*a];
@@ -74,10 +79,7 @@ SystemHistoryRepaTuple NIST::trainBucketedIO(unsigned char d)
 	rr[jn] = labels[j];
 	for (std::size_t i = 1; i < n; i++)
 	{
-	    if (d > 128)
-		rr[jn + i] = images[k];
-	    else
-		rr[jn + i] = images[k] * (int)d / 256;
+	    rr[jn + i] = images[k] * d / 256;
 	    k++;
 	}
     }

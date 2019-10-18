@@ -27,10 +27,10 @@ namespace NIST
     typedef std::tuple<std::unique_ptr<Alignment::System>, std::unique_ptr<Alignment::SystemRepa>, std::unique_ptr<Alignment::HistoryRepa>> SystemHistoryRepaTuple;
 
     // trainBucketedIO :: Int -> IO (System, HistoryRepa)
-    SystemHistoryRepaTuple trainBucketedIO(unsigned char);
+    SystemHistoryRepaTuple trainBucketedIO(int);
 
     // testBucketedIO :: Int -> IO (System, HistoryRepa)
-    SystemHistoryRepaTuple testBucketedIO(unsigned char);
+    SystemHistoryRepaTuple testBucketedIO(int);
 
 }
 
