@@ -169,6 +169,10 @@ int main(int argc, char **argv)
 
 	auto hr1 = hrhrred(*hr, *ur, vvk);
 	bmwrite("NIST.bmp", hrbm(28, 1, 2, *hrsel(*hr1,SizeList{0})));
+
+	auto hrbmav = hrbm(28, 3, 2, *hr1);
+	bmwrite("NIST.bmp", hrbmav);
+
     }
 
     return 0;
