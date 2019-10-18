@@ -88,11 +88,36 @@ int main(int argc, char **argv)
 
     if (true)
     {
+	Bitmap bm(341,753);
+	for (int i = 0; i <bm.height; i++) {
+	    for (int j = 0; j< bm.width; j++) {
+		bm.image[i*bm.width * 3 + j * 3 + 2] = (unsigned char)((double)i / bm.height * 255); ///red
+		bm.image[i*bm.width * 3 + j * 3 + 1] = (unsigned char)((double)j / bm.width * 255); ///green
+		bm.image[i*bm.width * 3 + j * 3 + 0] = (unsigned char)(((double)i + j) / (bm.height + bm.width) * 255); ///blue
+	    }
+	}
+	bmwrite("NIST.bmp", bm);
+    }
+
+    if (false)
+    {
 	auto uvars = systemsSetVar;
 	auto vol = systemsSetVarsVolume_u;
+	auto aall = histogramsList;
+	auto aaar = systemsHistogramsHistogramRepa_u;
+	auto araa = systemsHistogramRepasHistogram_u;
 	auto hrsel = [](const HistoryRepa& hr, const SizeList& ll)
 	{
 	    return eventsHistoryRepasHistoryRepaSelection_u(ll.size(), (std::size_t*)ll.data(), hr);
+	};
+	auto hrred = [](const HistoryRepa& hr, const SystemRepa& ur, const VarList& kk)
+	{
+	    auto& vvi = ur.mapVarSize();
+	    std::size_t m = kk.size();
+	    SizeList kk1;
+	    for (std::size_t i = 0; i < m; i++)
+		kk1.push_back(vvi[kk[i]]);
+	    return setVarsHistoryRepasReduce_u(1.0, m, kk1.data(), hr);
 	};
 
 	auto xx = trainBucketedIO(2);
@@ -127,6 +152,9 @@ int main(int argc, char **argv)
 
 	cout << "vol(uu,vvl)" << endl
 	    << vol(*uu, vvl) << endl << endl;
+
+	cout << "rpln(aall(araa(uu,hrred(hr,VarList(vvl)))))" << endl;
+	rpln(cout, sorted(*aall(*araa(*uu, *ur, *hrred(*hr, *ur, VarList(vvl.begin(),vvl.end())))))); cout << endl;
     }
 
     return 0;

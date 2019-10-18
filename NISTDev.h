@@ -24,6 +24,20 @@
 
 namespace NIST
 {
+    struct Bitmap
+    {
+	Bitmap(int h, int w) {
+	    height = h;
+	    width = w;
+	    image.resize(h*w*3);
+	}
+	int height;
+	int width;
+	std::vector<unsigned char> image;
+    };
+
+    void bmwrite(std::string, const Bitmap&);
+
     typedef std::tuple<std::unique_ptr<Alignment::System>, std::unique_ptr<Alignment::SystemRepa>, std::unique_ptr<Alignment::HistoryRepa>> SystemHistoryRepaTuple;
 
     // trainBucketedIO :: Int -> IO (System, HistoryRepa)
