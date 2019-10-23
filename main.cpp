@@ -228,6 +228,27 @@ int main(int argc, char **argv)
 		kk1.push_back(vvi[v]);
 	    return setVarsHistoryRepasHistoryRepaReduced_u(m, kk1.data(), hr);
 	};
+	auto hrcross = [](std::size_t xmax, std::size_t omax, const HistoryRepa& hr, const HistoryRepa& hrs, const SystemRepa& ur, const VarUSet& kk)
+	{
+	    auto& vvi = ur.mapVarSize();
+	    std::size_t m = kk.size();
+	    auto kk0 = sorted(kk);
+	    SizeList kk1;
+	    for (auto& v : kk0)
+		kk1.push_back(vvi[v]);
+	    auto pr = historyRepasRed(hr);
+	    auto prs = historyRepasRed(hrs);
+	    auto xx = parametersSetVarsHistoryRepasSetSetVarsAlignedTop_u(xmax, omax, m, kk1.data(), hr, *pr, hrs, *prs);
+	    std::vector<VarList> ll;
+	    for (auto& mm : *std::get<0>(xx))
+	    {
+		VarList ll1;
+		for (auto& i : mm)
+		    ll1.push_back((ur.listVarUCharPair[i]).first);
+		ll.push_back(ll1);
+	    }
+	    return ll;
+	};
 
 	auto xx = trainBucketedIO(2);
 	auto& uu = std::get<0>(xx);
@@ -294,6 +315,25 @@ int main(int argc, char **argv)
 	    for (size_t i = 0; i < 25; i++)
 		bms.push_back(bmborder(1, hrbm(28, 1, 2, *hrsel(*hrr1, SizeList{ i }))));
 	    bmwrite("NIST05.bmp", bmhstack(bms));
+	}
+
+	{
+	    auto ll = hrcross(100, 10, *hr, *hrr, *ur, vvk);
+	    cout << "ll" << endl;
+	    for (auto& mm : ll)
+		cout << mm << endl;
+	    /*
+	    [<23,12>,<23,13>]
+	    [<14,9>,<15,9>]
+	    [<15,9>,<16,9>]
+	    [<13,9>,<14,9>]
+	    [<17,20>,<18,20>]
+	    [<14,8>,<15,8>]
+	    [<24,12>,<24,13>]
+	    [<23,11>,<23,12>]
+	    [<12,10>,<13,10>]
+	    [<12,9>,<13,9>]
+	    */
 	}
     }
 
