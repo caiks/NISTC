@@ -192,11 +192,21 @@ int main(int argc, char **argv)
 	auto uvars = systemsSetVar;
 	auto vol = systemsSetVarsVolume_u;
 	auto aall = histogramsList;
+	auto cart = systemsSetVarsSetStateCartesian_u;
+	auto single = histogramSingleton_u;
 	auto aaar = systemsHistogramsHistogramRepa_u;
 	auto araa = systemsHistogramRepasHistogram_u;
+	auto aahr = [](const System& uu, const SystemRepa& ur, const Histogram& aa)
+	{
+	    return systemsHistoriesHistoryRepa_u(uu, ur, *histogramsHistory_u(aa));
+	};
 	auto hrsel = [](const HistoryRepa& hr, const SizeList& ll)
 	{
 	    return eventsHistoryRepasHistoryRepaSelection_u(ll.size(), (std::size_t*)ll.data(), hr);
+	};
+	auto hrhrsel = [](const HistoryRepa& hr, const HistoryRepa& ss)
+	{
+	    return historyRepasHistoryRepasHistoryRepaSelection_u(ss, hr);
 	};
 	auto hrred = [](const HistoryRepa& hr, const SystemRepa& ur, const VarUSet& kk)
 	{
@@ -257,13 +267,22 @@ int main(int argc, char **argv)
 
 	auto hr1 = hrhrred(*hr, *ur, vvk);
 
-	std::vector<Bitmap> bms;
-	for (size_t i = 0; i < 25; i++)
-	    bms.push_back(bmborder(1,hrbm(28, 1, 2, *hrsel(*hr1, SizeList{i}))));
-	bmwrite("NIST01.bmp", bmhstack(bms));
+	{
+	    std::vector<Bitmap> bms;
+	    for (size_t i = 0; i < 25; i++)
+		bms.push_back(bmborder(1,hrbm(28, 1, 2, *hrsel(*hr1, SizeList{i}))));
+	    bmwrite("NIST01.bmp", bmhstack(bms));
+	}
 
 	auto hrbmav = hrbm(28, 3, 2, *hr1);
 	bmwrite("NIST02.bmp", hrbmav);
+
+	{
+	    std::vector<Bitmap> bms;
+	    for (auto ss : sorted(*cart(*uu, vvl)))
+		bms.push_back(bmborder(1, hrbm(28, 2, 2, *hrhrred(*hrhrsel(*hr, *aahr(*uu, *ur, *single(ss, 1))), *ur, vvk))));
+	    bmwrite("NIST03.bmp", bmhstack(bms));
+	}
     }
 
     return 0;
