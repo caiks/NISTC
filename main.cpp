@@ -283,6 +283,18 @@ int main(int argc, char **argv)
 		bms.push_back(bmborder(1, hrbm(28, 2, 2, *hrhrred(*hrhrsel(*hr, *aahr(*uu, *ur, *single(ss, 1))), *ur, vvk))));
 	    bmwrite("NIST03.bmp", bmhstack(bms));
 	}
+
+	auto hrr = historyRepasShuffle_u(*hr, 1);
+
+	bmwrite("NIST04.bmp", hrbm(28, 3, 2, *hrhrred(*hrr, *ur, vvk)));
+
+	{
+	    auto hrr1 = hrhrred(*hrr, *ur, vvk);
+	    std::vector<Bitmap> bms;
+	    for (size_t i = 0; i < 25; i++)
+		bms.push_back(bmborder(1, hrbm(28, 1, 2, *hrsel(*hrr1, SizeList{ i }))));
+	    bmwrite("NIST05.bmp", bmhstack(bms));
+	}
     }
 
     return 0;

@@ -7,6 +7,7 @@
 #include "AlignmentAeson.h"
 #include "AlignmentRepa.h"
 #include "AlignmentAesonRepa.h"
+#include "AlignmentRandomRepa.h"
 
 #include <iomanip>
 #include <set>
