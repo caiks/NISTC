@@ -113,9 +113,9 @@ Bitmap NIST::hrbm(int b, int c, int d, const HistoryRepa& hr)
 	    av[i] += rr[j*n + i];
     for (std::size_t i = 0; i < n; i++)
 	av[i] = av[i] * 255 / (d-1) / z;
-    for (int i = 0; i <bm.height; i++) {
+    for (int i = 0; i < bm.height; i++) {
 	for (int j = 0; j< bm.width; j++) {
-	    unsigned char x = (unsigned char)av[(b-(i/c))*b + (j/c)];
+	    unsigned char x = (unsigned char)av[(b-1-(i/c))*b + (j/c)];
 	    int k = i*bm.width*3 + j*3;
 	    for (int l = 0; l<3; l++)
 		bm.image[k+l] = x;

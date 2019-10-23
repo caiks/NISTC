@@ -132,9 +132,97 @@ int main(int argc, char **argv)
 	};
 
 	auto xx = trainBucketedIO(2);
-	auto uu = std::move(std::get<0>(xx));
-	auto ur = std::move(std::get<1>(xx));
-	auto hrtr = std::move(std::get<2>(xx));
+	auto& uu = std::get<0>(xx);
+	auto& ur = std::get<1>(xx);
+	auto& hrtr = std::get<2>(xx);
+
+	Variable digit("digit");
+	auto vv = *uvars(*uu);
+	auto vvl = VarUSet();
+	vvl.insert(digit);
+	auto vvk = VarUSet(vv);
+	vvk.erase(digit);
+
+	cout << "hrtr->dimension" << endl
+	    << hrtr->dimension << endl << endl;
+	cout << "hrtr->size" << endl
+	    << hrtr->size << endl << endl;
+
+	SizeList ll;
+	for (size_t i = 0; i < hrtr->size; i += 8)
+	    ll.push_back(i);
+	auto hr = hrsel(*hrtr, ll);
+	cout << "hr->size" << endl
+	    << hr->size << endl << endl;
+
+	set<size_t> ww;
+	for (auto& w : vvk)
+	    ww.insert(vol(*uu, VarUSet{ w }));
+	cout << "ww" << endl
+	    << ww << endl << endl;
+
+	cout << "vol(uu,vvl)" << endl
+	    << vol(*uu, vvl) << endl << endl;
+
+	cout << "rpln(aall(araa(uu,hrred(hr,vvl))))" << endl;
+	rpln(cout, sorted(*aall(*araa(*uu, *ur, *hrred(*hr, *ur, vvl))))); cout << endl;
+
+	cout << "hrsel(hr,SizeList{0})" << endl
+	    << *hrsel(*hr, SizeList{ 0 }) << endl << endl;
+
+	auto hr1 = hrhrred(*hr, *ur, vvk);
+	auto bm = hrbm(28, 1, 2, *hrsel(*hr1, SizeList{ 0 }));
+	cout << "bm.height" << endl
+	    << bm.height << endl << endl;
+	cout << "bm.width" << endl
+	    << bm.width << endl << endl;
+	cout << "bm.image.size()" << endl
+	    << bm.image.size() << endl << endl;
+	cout << "bm.image" << endl;
+	for (std::size_t i = 0; i < bm.image.size(); i += 3)
+	{
+	    if (i) cout << ",";
+	    cout << "[" << (int)bm.image[i] << "," << (int)bm.image[i+1] << "," << (int)bm.image[i+2] << "]";
+	}
+	bmwrite("NIST.bmp", bm);
+    }
+
+    if (false)
+    {
+	auto uvars = systemsSetVar;
+	auto vol = systemsSetVarsVolume_u;
+	auto aall = histogramsList;
+	auto aaar = systemsHistogramsHistogramRepa_u;
+	auto araa = systemsHistogramRepasHistogram_u;
+	auto hrsel = [](const HistoryRepa& hr, const SizeList& ll)
+	{
+	    return eventsHistoryRepasHistoryRepaSelection_u(ll.size(), (std::size_t*)ll.data(), hr);
+	};
+	auto hrred = [](const HistoryRepa& hr, const SystemRepa& ur, const VarUSet& kk)
+	{
+	    auto& vvi = ur.mapVarSize();
+	    std::size_t m = kk.size();
+	    auto kk0 = sorted(kk);
+	    SizeList kk1;
+	    for (auto& v : kk0)
+		kk1.push_back(vvi[v]);
+	    return setVarsHistoryRepasReduce_u(1.0, m, kk1.data(), hr);
+	};
+	auto hrhrred = [](const HistoryRepa& hr, const SystemRepa& ur, const VarUSet& kk)
+	{
+	    auto& vvi = ur.mapVarSize();
+	    std::size_t m = kk.size();
+	    auto kk0 = sorted(kk);
+	    SizeList kk1;
+	    for (auto& v : kk0)
+		kk1.push_back(vvi[v]);
+	    return setVarsHistoryRepasHistoryRepaReduced_u(m, kk1.data(), hr);
+	};
+
+	auto xx = trainBucketedIO(2);
+	auto& uu = std::get<0>(xx);
+	auto& ur = std::get<1>(xx);
+	auto& hrtr = std::get<2>(xx);
 
 	Variable digit("digit");
 	auto vv = *uvars(*uu);
@@ -168,11 +256,10 @@ int main(int argc, char **argv)
 	rpln(cout, sorted(*aall(*araa(*uu, *ur, *hrred(*hr, *ur, vvl))))); cout << endl;
 
 	auto hr1 = hrhrred(*hr, *ur, vvk);
-	bmwrite("NIST.bmp", hrbm(28, 1, 2, *hrsel(*hr1,SizeList{0})));
+	bmwrite("NIST01.bmp", hrbm(28, 1, 2, *hrsel(*hr1, SizeList{ 0 })));
 
 	auto hrbmav = hrbm(28, 3, 2, *hr1);
-	bmwrite("NIST.bmp", hrbmav);
-
+	bmwrite("NIST02.bmp", hrbmav);
     }
 
     return 0;
