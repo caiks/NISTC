@@ -4,6 +4,47 @@ using namespace Alignment;
 using namespace NIST;
 using namespace std;
 
+
+Bitmap NIST::bminsert(const Bitmap& bm2, int ox, int oy, const Bitmap& bm1)
+{
+    Bitmap bm3(bm2);
+    for (int i = 0; i<bm1.height; i++)
+	for (int j = 0; j<bm1.width; j++)
+	    for (int l = 0; l<3; l++)
+		bm3.image[(i+ox)*bm3.width*3 + (j+oy)*3 + l] = bm1.image[i*bm1.width*3 + j*3 + l];
+    return bm3;
+}
+
+Bitmap NIST::bmborder(int b, const Bitmap& bm)
+{
+    return bminsert(Bitmap(b*2+bm.height, b*2+bm.width, 255),b,b,bm);
+}
+
+Bitmap NIST::bmhstack(const std::vector<Bitmap>& ll)
+{
+    if (!ll.size())
+    {
+	cout << "bmhstack : empty list" << endl;
+	return Bitmap();
+    }
+    int h = ll[0].height;
+    int w = 0;
+    for (int k = 0; k<ll.size(); k++)
+	w += ll[k].width;
+    Bitmap bm1(h,w);
+    int q = 0;
+    for (int k = 0; k < ll.size(); k++)
+    {
+	auto& bm = ll[k];
+	for (int i = 0; i<bm.height; i++)
+	    for (int j = 0; j<bm.width; j++)
+		for (int l = 0; l<3; l++)
+		    bm1.image[(i)*bm1.width*3 + (j + q) * 3 + l] = bm.image[i*bm.width*3 + j*3 + l];
+	q += ll[k].width;
+    }
+    return bm1;
+}
+
 // https://stackoverflow.com/questions/2654480/writing-bmp-image-in-pure-c-c-without-other-libraries
 
 const int bytesPerPixel = 3; /// red, green, blue

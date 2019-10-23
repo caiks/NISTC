@@ -26,15 +26,20 @@ namespace NIST
 {
     struct Bitmap
     {
-	Bitmap(int h, int w) {
+	Bitmap(int h = 1, int w = 1, unsigned char x = 0) {
 	    height = h;
 	    width = w;
-	    image.resize(h*w*3);
+	    image.resize(h*w*3,x);
 	}
 	int height;
 	int width;
 	std::vector<unsigned char> image;
     };
+
+    Bitmap bminsert(const Bitmap&, int, int, const Bitmap&);
+    Bitmap bmborder(int, const Bitmap&);
+    Bitmap bmhstack(const std::vector<Bitmap>&);
+    Bitmap bmvstack(const std::vector<Bitmap>&);
 
     void bmwrite(std::string, const Bitmap&);
 

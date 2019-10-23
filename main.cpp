@@ -99,7 +99,7 @@ int main(int argc, char **argv)
 	bmwrite("NIST.bmp", bm);
     }
 
-    if (true)
+    if (false)
     {
 	auto uvars = systemsSetVar;
 	auto vol = systemsSetVarsVolume_u;
@@ -187,7 +187,7 @@ int main(int argc, char **argv)
 	bmwrite("NIST.bmp", bm);
     }
 
-    if (false)
+    if (true)
     {
 	auto uvars = systemsSetVar;
 	auto vol = systemsSetVarsVolume_u;
@@ -256,7 +256,11 @@ int main(int argc, char **argv)
 	rpln(cout, sorted(*aall(*araa(*uu, *ur, *hrred(*hr, *ur, vvl))))); cout << endl;
 
 	auto hr1 = hrhrred(*hr, *ur, vvk);
-	bmwrite("NIST01.bmp", hrbm(28, 1, 2, *hrsel(*hr1, SizeList{ 0 })));
+
+	std::vector<Bitmap> bms;
+	for (size_t i = 0; i < 25; i++)
+	    bms.push_back(bmborder(1,hrbm(28, 1, 2, *hrsel(*hr1, SizeList{i}))));
+	bmwrite("NIST01.bmp", bmhstack(bms));
 
 	auto hrbmav = hrbm(28, 3, 2, *hr1);
 	bmwrite("NIST02.bmp", hrbmav);
