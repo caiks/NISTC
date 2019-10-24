@@ -187,7 +187,7 @@ int main(int argc, char **argv)
 	bmwrite("NIST.bmp", bm);
     }
 
-    if (true)
+    if (false)
     {
 	auto uvars = systemsSetVar;
 	auto vol = systemsSetVarsVolume_u;
@@ -298,7 +298,7 @@ int main(int argc, char **argv)
 
     }
 
-    if (false)
+    if (true)
     {
 	auto uvars = systemsSetVar;
 	auto vol = systemsSetVarsVolume_u;
@@ -350,13 +350,14 @@ int main(int argc, char **argv)
 	    auto pr = historyRepasRed(hr);
 	    auto prs = historyRepasRed(hrs);
 	    auto xx = parametersSetVarsHistoryRepasSetSetVarsAlignedTop_u(xmax, omax, m, kk1.data(), hr, *pr, hrs, *prs);
-	    std::vector<VarList> ll;
-	    for (auto& mm : *std::get<0>(xx))
+	    std::vector<std::pair<double, VarList>> ll;
+	    auto tt = sorted(*std::get<0>(xx));
+	    for (auto& mm : tt)
 	    {
 		VarList ll1;
-		for (auto& i : mm)
+		for (auto& i : mm.second)
 		    ll1.push_back((ur.listVarUCharPair[i]).first);
-		ll.push_back(ll1);
+		ll.push_back(std::pair<double, VarList>(mm.first,ll1));
 	    }
 	    return ll;
 	};
@@ -399,21 +400,21 @@ int main(int argc, char **argv)
 	    cout << "hrcross " << ((chrono::duration<double>)(end - start)).count() << "s" << endl;
 	    cout << "ll" << endl;
 	    for (auto& mm : ll)
-		cout << mm << endl;
+		cout << mm.first << "," << mm.second << endl;
 	    /*
-	    historyRepasShuffle_u 0.234006s
-	    hrcross 14.0092s
+	    historyRepasShuffle_u 0.218406s
+	    hrcross 13.8532s
 	    ll
-	    [<23,12>,<23,13>]
-	    [<14,9>,<15,9>]
-	    [<15,9>,<16,9>]
-	    [<13,9>,<14,9>]
-	    [<17,20>,<18,20>]
-	    [<14,8>,<15,8>]
-	    [<24,12>,<24,13>]
-	    [<23,11>,<23,12>]
-	    [<12,10>,<13,10>]
-	    [<12,9>,<13,9>]
+	    2123.91,[<24,12>,<24,13>]
+	    2123.98,[<17,20>,<18,20>]
+	    2130.76,[<15,9>,<16,9>]
+	    2132.73,[<12,10>,<13,10>]
+	    2134.58,[<23,12>,<23,13>]
+	    2136.53,[<23,11>,<23,12>]
+	    2172.46,[<12,9>,<13,9>]
+	    2187.93,[<14,8>,<15,8>]
+	    2234.01,[<14,9>,<15,9>]
+	    2292.43,[<13,9>,<14,9>]
 	    */
 	}
 
@@ -434,23 +435,22 @@ int main(int argc, char **argv)
 	    cout << "hrcross " << ((chrono::duration<double>)(end - start)).count() << "s" << endl;
 	    cout << "ll" << endl;
 	    for (auto& mm : ll)
-		cout << mm << endl;
+		cout << mm.first << "," << mm.second << endl;
 	    /*
 	    transpose 0.0312008s
 	    historyRepasShuffle_u 0.37441s
-	    hrcross 99.3121s
+	    hrcross 98.8129s
 	    ll
-	    [<13,9>,<14,9>]
-	    [<12,10>,<13,10>]
-	    [<23,12>,<23,13>]
-	    [<14,8>,<15,8>]
-	    [<14,9>,<15,9>]
-	    [<17,20>,<18,20>]
-	    [<15,9>,<16,9>]
-	    [<24,12>,<24,13>]
-	    [<23,11>,<23,12>]
-	    [<12,9>,<13,9>]
-
+	    2123.2,[<24,12>,<24,13>]
+	    2123.24,[<17,20>,<18,20>]
+	    2130.83,[<15,9>,<16,9>]
+	    2132.78,[<12,10>,<13,10>]
+	    2134.47,[<23,12>,<23,13>]
+	    2138.44,[<23,11>,<23,12>]
+	    2172.53,[<12,9>,<13,9>]
+	    2187.68,[<14,8>,<15,8>]
+	    2234.05,[<14,9>,<15,9>]
+	    2291.64,[<13,9>,<14,9>]
 	    */
 	}
     }
