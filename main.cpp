@@ -187,6 +187,117 @@ int main(int argc, char **argv)
 	bmwrite("NIST.bmp", bm);
     }
 
+    if (false)
+    {
+	auto uvars = systemsSetVar;
+	auto vol = systemsSetVarsVolume_u;
+	auto aall = histogramsList;
+	auto cart = systemsSetVarsSetStateCartesian_u;
+	auto single = histogramSingleton_u;
+	auto aaar = systemsHistogramsHistogramRepa_u;
+	auto araa = systemsHistogramRepasHistogram_u;
+	auto aahr = [](const System& uu, const SystemRepa& ur, const Histogram& aa)
+	{
+	    return systemsHistoriesHistoryRepa_u(uu, ur, *histogramsHistory_u(aa));
+	};
+	auto hrsel = [](const HistoryRepa& hr, const SizeList& ll)
+	{
+	    return eventsHistoryRepasHistoryRepaSelection_u(ll.size(), (std::size_t*)ll.data(), hr);
+	};
+	auto hrhrsel = [](const HistoryRepa& hr, const HistoryRepa& ss)
+	{
+	    return historyRepasHistoryRepasHistoryRepaSelection_u(ss, hr);
+	};
+	auto hrred = [](const HistoryRepa& hr, const SystemRepa& ur, const VarUSet& kk)
+	{
+	    auto& vvi = ur.mapVarSize();
+	    std::size_t m = kk.size();
+	    auto kk0 = sorted(kk);
+	    SizeList kk1;
+	    for (auto& v : kk0)
+		kk1.push_back(vvi[v]);
+	    return setVarsHistoryRepasReduce_u(1.0, m, kk1.data(), hr);
+	};
+	auto hrhrred = [](const HistoryRepa& hr, const SystemRepa& ur, const VarUSet& kk)
+	{
+	    auto& vvi = ur.mapVarSize();
+	    std::size_t m = kk.size();
+	    auto kk0 = sorted(kk);
+	    SizeList kk1;
+	    for (auto& v : kk0)
+		kk1.push_back(vvi[v]);
+	    return setVarsHistoryRepasHistoryRepaReduced_u(m, kk1.data(), hr);
+	};
+
+	auto xx = trainBucketedIO(2);
+	auto& uu = std::get<0>(xx);
+	auto& ur = std::get<1>(xx);
+	auto& hrtr = std::get<2>(xx);
+
+	Variable digit("digit");
+	auto vv = *uvars(*uu);
+	auto vvl = VarUSet();
+	vvl.insert(digit);
+	auto vvk = VarUSet(vv);
+	vvk.erase(digit);
+
+	cout << "hrtr->dimension" << endl
+	    << hrtr->dimension << endl << endl;
+	cout << "hrtr->size" << endl
+	    << hrtr->size << endl << endl;
+
+	SizeList ll;
+	for (size_t i = 0; i < hrtr->size; i += 8)
+	    ll.push_back(i);
+	auto hr = hrsel(*hrtr, ll);
+	cout << "hr->size" << endl
+	    << hr->size << endl << endl;
+
+	set<size_t> ww;
+	for (auto& w : vvk)
+	    ww.insert(vol(*uu, VarUSet{ w }));
+	cout << "ww" << endl
+	    << ww << endl << endl;
+
+	cout << "vol(uu,vvl)" << endl
+	    << vol(*uu, vvl) << endl << endl;
+
+	cout << "rpln(aall(araa(uu,hrred(hr,vvl))))" << endl;
+	rpln(cout, sorted(*aall(*araa(*uu, *ur, *hrred(*hr, *ur, vvl))))); cout << endl;
+
+	auto hr1 = hrhrred(*hr, *ur, vvk);
+
+	{
+	    std::vector<Bitmap> bms;
+	    for (size_t i = 0; i < 25; i++)
+		bms.push_back(bmborder(1,hrbm(28, 1, 2, *hrsel(*hr1, SizeList{i}))));
+	    bmwrite("NIST01.bmp", bmhstack(bms));
+	}
+
+	auto hrbmav = hrbm(28, 3, 2, *hr1);
+	bmwrite("NIST02.bmp", hrbmav);
+
+	{
+	    std::vector<Bitmap> bms;
+	    for (auto ss : sorted(*cart(*uu, vvl)))
+		bms.push_back(bmborder(1, hrbm(28, 2, 2, *hrhrred(*hrhrsel(*hr, *aahr(*uu, *ur, *single(ss, 1))), *ur, vvk))));
+	    bmwrite("NIST03.bmp", bmhstack(bms));
+	}
+
+	auto hrr = historyRepasShuffle_u(*hr, 1);
+
+	bmwrite("NIST04.bmp", hrbm(28, 3, 2, *hrhrred(*hrr, *ur, vvk)));
+
+	{
+	    auto hrr1 = hrhrred(*hrr, *ur, vvk);
+	    std::vector<Bitmap> bms;
+	    for (size_t i = 0; i < 25; i++)
+		bms.push_back(bmborder(1, hrbm(28, 1, 2, *hrsel(*hrr1, SizeList{ i }))));
+	    bmwrite("NIST05.bmp", bmhstack(bms));
+	}
+
+    }
+
     if (true)
     {
 	auto uvars = systemsSetVar;
@@ -271,58 +382,64 @@ int main(int argc, char **argv)
 	for (size_t i = 0; i < hrtr->size; i += 8)
 	    ll.push_back(i);
 	auto hr = hrsel(*hrtr, ll);
+	cout << "hr->dimension" << endl
+	    << hr->dimension << endl << endl;
 	cout << "hr->size" << endl
 	    << hr->size << endl << endl;
 
-	set<size_t> ww;
-	for (auto& w : vvk)
-	    ww.insert(vol(*uu, VarUSet{ w }));
-	cout << "ww" << endl
-	    << ww << endl << endl;
-
-	cout << "vol(uu,vvl)" << endl
-	    << vol(*uu, vvl) << endl << endl;
-
-	cout << "rpln(aall(araa(uu,hrred(hr,vvl))))" << endl;
-	rpln(cout, sorted(*aall(*araa(*uu, *ur, *hrred(*hr, *ur, vvl))))); cout << endl;
-
-	auto hr1 = hrhrred(*hr, *ur, vvk);
-
 	{
-	    std::vector<Bitmap> bms;
-	    for (size_t i = 0; i < 25; i++)
-		bms.push_back(bmborder(1,hrbm(28, 1, 2, *hrsel(*hr1, SizeList{i}))));
-	    bmwrite("NIST01.bmp", bmhstack(bms));
-	}
+	    auto start = chrono::system_clock::now();
+	    auto hrr = historyRepasShuffle_u(*hr, 1);
+	    auto end = chrono::system_clock::now();
+	    cout << "historyRepasShuffle_u " << ((chrono::duration<double>)(end - start)).count() << "s" << endl;
 
-	auto hrbmav = hrbm(28, 3, 2, *hr1);
-	bmwrite("NIST02.bmp", hrbmav);
-
-	{
-	    std::vector<Bitmap> bms;
-	    for (auto ss : sorted(*cart(*uu, vvl)))
-		bms.push_back(bmborder(1, hrbm(28, 2, 2, *hrhrred(*hrhrsel(*hr, *aahr(*uu, *ur, *single(ss, 1))), *ur, vvk))));
-	    bmwrite("NIST03.bmp", bmhstack(bms));
-	}
-
-	auto hrr = historyRepasShuffle_u(*hr, 1);
-
-	bmwrite("NIST04.bmp", hrbm(28, 3, 2, *hrhrred(*hrr, *ur, vvk)));
-
-	{
-	    auto hrr1 = hrhrred(*hrr, *ur, vvk);
-	    std::vector<Bitmap> bms;
-	    for (size_t i = 0; i < 25; i++)
-		bms.push_back(bmborder(1, hrbm(28, 1, 2, *hrsel(*hrr1, SizeList{ i }))));
-	    bmwrite("NIST05.bmp", bmhstack(bms));
-	}
-
-	{
+	    start = chrono::system_clock::now();
 	    auto ll = hrcross(100, 10, *hr, *hrr, *ur, vvk);
+	    end = chrono::system_clock::now();
+	    cout << "hrcross " << ((chrono::duration<double>)(end - start)).count() << "s" << endl;
 	    cout << "ll" << endl;
 	    for (auto& mm : ll)
 		cout << mm << endl;
 	    /*
+	    historyRepasShuffle_u 0.358809s
+	    hrcross 100.624s
+	    ll
+	    [<13,9>,<14,9>]
+	    [<12,10>,<13,10>]
+	    [<23,12>,<23,13>]
+	    [<14,8>,<15,8>]
+	    [<14,9>,<15,9>]
+	    [<17,20>,<18,20>]
+	    [<15,9>,<16,9>]
+	    [<24,12>,<24,13>]
+	    [<23,11>,<23,12>]
+	    [<12,9>,<13,9>]
+	    */
+	}
+
+	{
+	    auto start = chrono::system_clock::now();
+	    hr->transpose();
+	    auto end = chrono::system_clock::now();
+	    cout << "transpose " << ((chrono::duration<double>)(end - start)).count() << "s" << endl;
+
+	    start = chrono::system_clock::now();
+	    auto hrr = historyRepasShuffle_u(*hr, 1);
+	    end = chrono::system_clock::now();
+	    cout << "historyRepasShuffle_u " << ((chrono::duration<double>)(end - start)).count() << "s" << endl;
+
+	    start = chrono::system_clock::now();
+	    auto ll = hrcross(100, 10, *hr, *hrr, *ur, vvk);
+	    end = chrono::system_clock::now();
+	    cout << "hrcross " << ((chrono::duration<double>)(end - start)).count() << "s" << endl;
+	    cout << "ll" << endl;
+	    for (auto& mm : ll)
+		cout << mm << endl;
+	    /*
+	    transpose 0.078002s
+	    historyRepasShuffle_u 0.249606s
+	    hrcross 49.8081s
+	    ll
 	    [<23,12>,<23,13>]
 	    [<14,9>,<15,9>]
 	    [<15,9>,<16,9>]

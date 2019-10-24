@@ -227,6 +227,7 @@ SystemHistoryRepaTuple NIST::trainBucketedIO(int d)
     hr->shape = new unsigned char[n];
     auto sh = hr->shape;
     hr->size = z;
+    hr->evient = true;
     hr->arr = new unsigned char[z*n];
     auto rr = hr->arr;
     for (size_t i = 0; i < n; i++)
