@@ -349,7 +349,7 @@ int main(int argc, char **argv)
 		kk1.push_back(vvi[v]);
 	    auto pr = historyRepasRed(hr);
 	    auto prs = historyRepasRed(hrs);
-	    auto xx = parametersSetVarsHistoryRepasSetSetVarsAlignedTop_u(xmax, omax, m, kk1.data(), hr, *pr, hrs, *prs);
+	    auto xx = parametersSetVarsHistoryRepasSetSetVarsAlignedTop_u(xmax, omax, kk1, hr, *pr, hrs, *prs);
 	    std::vector<std::pair<double, VarList>> ll;
 	    auto tt = sorted(*std::get<0>(xx));
 	    for (auto& mm : tt)
