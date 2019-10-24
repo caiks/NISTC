@@ -187,7 +187,7 @@ int main(int argc, char **argv)
 	bmwrite("NIST.bmp", bm);
     }
 
-    if (false)
+    if (true)
     {
 	auto uvars = systemsSetVar;
 	auto vol = systemsSetVarsVolume_u;
@@ -298,7 +298,7 @@ int main(int argc, char **argv)
 
     }
 
-    if (true)
+    if (false)
     {
 	auto uvars = systemsSetVar;
 	auto vol = systemsSetVarsVolume_u;
@@ -401,18 +401,18 @@ int main(int argc, char **argv)
 	    for (auto& mm : ll)
 		cout << mm << endl;
 	    /*
-	    historyRepasShuffle_u 0.358809s
-	    hrcross 100.624s
+	    historyRepasShuffle_u 0.234006s
+	    hrcross 14.0092s
 	    ll
-	    [<13,9>,<14,9>]
-	    [<12,10>,<13,10>]
 	    [<23,12>,<23,13>]
-	    [<14,8>,<15,8>]
 	    [<14,9>,<15,9>]
-	    [<17,20>,<18,20>]
 	    [<15,9>,<16,9>]
+	    [<13,9>,<14,9>]
+	    [<17,20>,<18,20>]
+	    [<14,8>,<15,8>]
 	    [<24,12>,<24,13>]
 	    [<23,11>,<23,12>]
+	    [<12,10>,<13,10>]
 	    [<12,9>,<13,9>]
 	    */
 	}
@@ -436,20 +436,21 @@ int main(int argc, char **argv)
 	    for (auto& mm : ll)
 		cout << mm << endl;
 	    /*
-	    transpose 0.078002s
-	    historyRepasShuffle_u 0.249606s
-	    hrcross 49.8081s
+	    transpose 0.0312008s
+	    historyRepasShuffle_u 0.37441s
+	    hrcross 99.3121s
 	    ll
-	    [<23,12>,<23,13>]
-	    [<14,9>,<15,9>]
-	    [<15,9>,<16,9>]
 	    [<13,9>,<14,9>]
-	    [<17,20>,<18,20>]
+	    [<12,10>,<13,10>]
+	    [<23,12>,<23,13>]
 	    [<14,8>,<15,8>]
+	    [<14,9>,<15,9>]
+	    [<17,20>,<18,20>]
+	    [<15,9>,<16,9>]
 	    [<24,12>,<24,13>]
 	    [<23,11>,<23,12>]
-	    [<12,10>,<13,10>]
 	    [<12,9>,<13,9>]
+
 	    */
 	}
     }

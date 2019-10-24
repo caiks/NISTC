@@ -151,7 +151,7 @@ Bitmap NIST::hrbm(int b, int c, int d, const HistoryRepa& hr)
     vector<size_t> av(n);
     for (std::size_t j = 0; j < z; j++)
 	for (std::size_t i = 0; i < n; i++)
-	    av[i] += rr[j*n + i];
+	    av[i] += rr[hr.evient ? j*n + i : i*z + j];
     for (std::size_t i = 0; i < n; i++)
 	av[i] = av[i] * 255 / (d-1) / z;
     for (int i = 0; i < bm.height; i++) {
@@ -246,6 +246,7 @@ SystemHistoryRepaTuple NIST::trainBucketedIO(int d)
 	    k++;
 	}
     }
+    hr->transpose();
     delete[] images;
     delete[] labels;
     return SystemHistoryRepaTuple(move(uu), move(ur), move(hr));
