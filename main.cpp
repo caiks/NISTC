@@ -455,7 +455,7 @@ int main(int argc, char **argv)
 	}
     }
 
-    if (true)
+    if (false)
     {
 	auto uvars = systemsSetVar;
 	auto vol = systemsSetVarsVolume_u;
@@ -705,6 +705,153 @@ int main(int argc, char **argv)
 	    4475.37, [<12,8>,<13,9>,<14,9>]
 	    4543.04, [<13,8>,<14,9>,<15,9>]
 	    */
+	}
+    }
+
+    if (true)
+    {
+	auto uvars = systemsSetVar;
+	auto vol = systemsSetVarsVolume_u;
+	auto aall = histogramsList;
+	auto cart = systemsSetVarsSetStateCartesian_u;
+	auto single = histogramSingleton_u;
+	auto algn = histogramsAlignment;
+	auto aaar = systemsHistogramsHistogramRepa_u;
+	auto araa = systemsHistogramRepasHistogram_u;
+	auto aahr = [](const System& uu, const SystemRepa& ur, const Histogram& aa)
+	{
+	    return systemsHistoriesHistoryRepa_u(uu, ur, *histogramsHistory_u(aa));
+	};
+	auto hrsel = [](const HistoryRepa& hr, const SizeList& ll)
+	{
+	    return eventsHistoryRepasHistoryRepaSelection_u(ll.size(), (std::size_t*)ll.data(), hr);
+	};
+	auto hrhrsel = [](const HistoryRepa& hr, const HistoryRepa& ss)
+	{
+	    return historyRepasHistoryRepasHistoryRepaSelection_u(ss, hr);
+	};
+	auto hrred = [](const HistoryRepa& hr, const SizeList& kk)
+	{
+	    return setVarsHistoryRepasReduce_u(1.0, kk.size(), kk.data(), hr);
+	};
+	auto hrhrred = [](const HistoryRepa& hr, const SystemRepa& ur, const VarUSet& kk)
+	{
+	    auto& vvi = ur.mapVarSize();
+	    std::size_t m = kk.size();
+	    auto kk0 = sorted(kk);
+	    SizeList kk1;
+	    for (auto& v : kk0)
+		kk1.push_back(vvi[v]);
+	    return setVarsHistoryRepasHistoryRepaReduced_u(m, kk1.data(), hr);
+	};
+
+	auto xx = trainBucketedIO(2);
+	auto& uu = std::get<0>(xx);
+	auto& ur = std::get<1>(xx);
+	auto& hrtr = std::get<2>(xx);
+
+	Variable digit("digit");
+	auto vv = *uvars(*uu);
+	auto vvl = VarUSet();
+	vvl.insert(digit);
+	auto vvk = VarUSet(vv);
+	vvk.erase(digit);
+
+	cout << "hrtr->dimension" << endl
+	    << hrtr->dimension << endl << endl;
+	cout << "hrtr->size" << endl
+	    << hrtr->size << endl << endl;
+
+	SizeList ll;
+	for (size_t i = 0; i < hrtr->size; i += 8)
+	    ll.push_back(i);
+	auto hr = hrsel(*hrtr, ll);
+	cout << "hr->dimension" << endl
+	    << hr->dimension << endl << endl;
+	cout << "hr->size" << endl
+	    << hr->size << endl << endl;
+
+	auto& vvi = ur->mapVarSize();
+	auto vvk0 = sorted(vvk);
+	SizeList vvk1;
+	for (auto& v : vvk0)
+	    vvk1.push_back(vvi[v]);
+
+	size_t xmax = 4096;
+	size_t omax = 10;
+	size_t bmax = 10;
+	size_t mmax = 1;
+	{
+	    auto start = chrono::system_clock::now();
+	    auto hrs = historyRepasShuffle_u(*hr, 1);
+	    auto end = chrono::system_clock::now();
+	    cout << "historyRepasShuffle_u " << ((chrono::duration<double>)(end - start)).count() << "s" << endl;
+
+	    start = chrono::system_clock::now();
+	    auto pr = historyRepasRed(*hr);
+	    end = chrono::system_clock::now();
+	    cout << "historyRepasRed(hr) " << ((chrono::duration<double>)(end - start)).count() << "s" << endl;
+
+	    start = chrono::system_clock::now();
+	    auto prs = historyRepasRed(*hrs);
+	    end = chrono::system_clock::now();
+	    cout << "historyRepasRed(hrs) " << ((chrono::duration<double>)(end - start)).count() << "s" << endl;
+
+	    start = chrono::system_clock::now();
+	    auto t = parametersSystemsBuilderTupleNoSumlayerMultiEffectiveRepa_ui(xmax, omax, bmax, mmax, vvk1, FudRepa(), *hr, *pr, *hrs, *prs);
+	    end = chrono::system_clock::now();
+	    cout << "buildtup " << ((chrono::duration<double>)(end - start)).count() << "s" << endl;
+	    auto xx = std::move(std::get<0>(t));
+	    auto s = std::get<1>(t);
+	    cout << "steps: " << s << endl;
+	    for (auto& kk : *xx)
+	    {
+		auto aa = araa(*uu, *ur, *hrred(*hr, kk));
+		auto bb = araa(*uu, *ur, *hrred(*hrs, kk));
+		cout << algn(*aa) - algn(*bb) << ",[";
+		for (std::size_t i = 0; i < kk.size(); i++)
+		    cout << (i ? "," : "") << (ur->listVarUCharPair[kk[i]]).first;
+		cout << "]" << endl;
+	    }
+	}
+
+	{
+	    auto start = chrono::system_clock::now();
+	    hr->transpose();
+	    auto end = chrono::system_clock::now();
+	    cout << "transpose " << ((chrono::duration<double>)(end - start)).count() << "s" << endl;
+
+	    start = chrono::system_clock::now();
+	    auto hrs = historyRepasShuffle_u(*hr, 1);
+	    end = chrono::system_clock::now();
+	    cout << "historyRepasShuffle_u " << ((chrono::duration<double>)(end - start)).count() << "s" << endl;
+
+	    start = chrono::system_clock::now();
+	    auto pr = historyRepasRed(*hr);
+	    end = chrono::system_clock::now();
+	    cout << "historyRepasRed(hr) " << ((chrono::duration<double>)(end - start)).count() << "s" << endl;
+
+	    start = chrono::system_clock::now();
+	    auto prs = historyRepasRed(*hrs);
+	    end = chrono::system_clock::now();
+	    cout << "historyRepasRed(hrs) " << ((chrono::duration<double>)(end - start)).count() << "s" << endl;
+
+	    start = chrono::system_clock::now();
+	    auto t = parametersSystemsBuilderTupleNoSumlayerMultiEffectiveRepa_ui(xmax, omax, bmax, mmax, vvk1, FudRepa(), *hr, *pr, *hrs, *prs);
+	    end = chrono::system_clock::now();
+	    cout << "buildtup " << ((chrono::duration<double>)(end - start)).count() << "s" << endl;
+	    auto xx = std::move(std::get<0>(t));
+	    auto s = std::get<1>(t);
+	    cout << "steps: " << s << endl;
+	    for (auto& kk : *xx)
+	    {
+		auto aa = araa(*uu, *ur, *hrred(*hr, kk));
+		auto bb = araa(*uu, *ur, *hrred(*hrs, kk));
+		cout << algn(*aa) - algn(*bb) << ",[";
+		for (std::size_t i = 0; i < kk.size(); i++)
+		    cout << (i ? "," : "") << (ur->listVarUCharPair[kk[i]]).first;
+		cout << "]" << endl;
+	    }
 	}
     }
 

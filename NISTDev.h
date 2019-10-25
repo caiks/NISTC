@@ -8,6 +8,7 @@
 #include "AlignmentRepa.h"
 #include "AlignmentAesonRepa.h"
 #include "AlignmentRandomRepa.h"
+#include "AlignmentPracticableRepa.h"
 
 #include <iomanip>
 #include <set>
