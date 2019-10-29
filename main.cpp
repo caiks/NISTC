@@ -14,11 +14,11 @@ int main(int argc, char **argv)
 	unsigned char* labels = new unsigned char[z];
 	try
 	{
-	    ifstream fimages("train-images.idx3-ubyte", ios::binary);
+	    ifstream fimages("train-images-idx3-ubyte", ios::binary);
 	    fimages.read((char*)images, 16);
 	    fimages.read((char*)images, z*a*a);
 	    fimages.close();
-	    ifstream flabels("train-labels.idx1-ubyte", ios::binary);
+	    ifstream flabels("train-labels-idx1-ubyte", ios::binary);
 	    flabels.read((char*)labels, 8);
 	    flabels.read((char*)labels, z);
 	    flabels.close();
@@ -777,9 +777,12 @@ int main(int argc, char **argv)
 	for (auto& v : vvk0)
 	    vvk1.push_back(vvi[v]);
 
-	size_t xmax = 4096;
-	size_t omax = 10;
-	size_t bmax = 10;
+//	size_t xmax = 4096;
+//	size_t omax = 10;
+	size_t xmax = 8;
+	size_t omax = 100;
+//	size_t bmax = 10;
+	size_t bmax = 100;
 	size_t mmax = 1;
 	{
 	    auto start = chrono::system_clock::now();

@@ -183,8 +183,8 @@ SystemHistoryRepaTuple NIST::trainBucketedIO(int d)
     unsigned char* labels = new unsigned char[z];
     try
     {
-	ifstream fimages("train-images.idx3-ubyte", ios::binary);
-	ifstream flabels("train-labels.idx1-ubyte", ios::binary);
+	ifstream fimages("train-images-idx3-ubyte", ios::binary);
+	ifstream flabels("train-labels-idx1-ubyte", ios::binary);
 	if (!fimages.is_open() || !flabels.is_open())
 	{
 	    cout << "trainBucketedIO : cannot open files" << endl;
