@@ -356,7 +356,7 @@ int main(int argc, char **argv)
 	    {
 		VarList ll1;
 		for (auto& i : mm.second)
-		    ll1.push_back((ur.listVarUCharPair[i]).first);
+		    ll1.push_back((ur.listVarSizePair[i]).first);
 		ll.push_back(std::pair<double, VarList>(mm.first,ll1));
 	    }
 	    return ll;
@@ -560,7 +560,7 @@ int main(int argc, char **argv)
 		cout << mm.first << ", ";
 		VarList ll1;
 		for (auto& i : mm.second)
-		    ll1.push_back((ur->listVarUCharPair[i]).first);
+		    ll1.push_back((ur->listVarSizePair[i]).first);
 		cout << ll1 << endl;
 	    }
 
@@ -582,7 +582,7 @@ int main(int argc, char **argv)
 		cout << mm.first << ", ";
 		VarList ll1;
 		for (auto& i : mm.second)
-		    ll1.push_back((ur->listVarUCharPair[i]).first);
+		    ll1.push_back((ur->listVarSizePair[i]).first);
 		cout << ll1 << endl;
 	    }
 	    /*
@@ -650,7 +650,7 @@ int main(int argc, char **argv)
 		cout << mm.first << ", ";
 		VarList ll1;
 		for (auto& i : mm.second)
-		    ll1.push_back((ur->listVarUCharPair[i]).first);
+		    ll1.push_back((ur->listVarSizePair[i]).first);
 		cout << ll1 << endl;
 	    }
 
@@ -672,7 +672,7 @@ int main(int argc, char **argv)
 		cout << mm.first << ", ";
 		VarList ll1;
 		for (auto& i : mm.second)
-		    ll1.push_back((ur->listVarUCharPair[i]).first);
+		    ll1.push_back((ur->listVarSizePair[i]).first);
 		cout << ll1 << endl;
 	    }
 	    /*
@@ -812,7 +812,7 @@ int main(int argc, char **argv)
 		cout << aralgn(*hrred(*hr, kk)) - aralgn(*hrred(*hrs, kk)) << ",";
 		VarSet qq;
 		for (std::size_t i = 0; i < kk.size(); i++)
-		    qq.insert((ur->listVarUCharPair[kk[i]]).first);
+		    qq.insert((ur->listVarSizePair[kk[i]]).first);
 		cout << qq << endl;
 	    }
 	}
@@ -850,7 +850,7 @@ int main(int argc, char **argv)
 		cout << aralgn(*hrred(*hr, kk)) - aralgn(*hrred(*hrs, kk)) << ",";
                 VarSet qq;
 		for (std::size_t i = 0; i < kk.size(); i++)
-		    qq.insert((ur->listVarUCharPair[kk[i]]).first);
+		    qq.insert((ur->listVarSizePair[kk[i]]).first);
 		cout << qq << endl;
 	    }
 	}

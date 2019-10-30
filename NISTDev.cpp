@@ -172,11 +172,6 @@ SystemHistoryRepaTuple NIST::trainBucketedIO(int d)
     auto lluu = listsSystem_u;
     auto uuur = systemsSystemRepa;
 
-    if (d>128)
-    {
-	cout << "valency " << d << " is too large" << endl;
-	return SystemHistoryRepaTuple();
-    }
     const int a = 28;
     const int z = 60000;
     unsigned char* images = new unsigned char[z*a*a];
@@ -224,7 +219,7 @@ SystemHistoryRepaTuple NIST::trainBucketedIO(int d)
     auto n = hr->dimension;
     hr->vectorVar = new size_t[n];
     auto vv = hr->vectorVar;
-    hr->shape = new unsigned char[n];
+    hr->shape = new size_t[n];
     auto sh = hr->shape;
     hr->size = z;
     hr->evient = true;
