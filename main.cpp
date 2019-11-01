@@ -708,7 +708,7 @@ int main(int argc, char **argv)
 	}
     }
 
-    if (true)
+    if (false)
     {
 	auto uvars = systemsSetVar;
 	auto vol = systemsSetVarsVolume_u;
@@ -899,6 +899,125 @@ int main(int argc, char **argv)
 	23052.5,{<11,9>,<11,10>,<11,11>,<12,9>,<12,10>,<12,11>,<13,9>,<13,10>,<14,9>,<14,10>,<15,9>,<15,10>}
 	23050.2,{<10,9>,<10,10>,<10,11>,<11,9>,<11,10>,<11,11>,<12,9>,<12,10>,<13,9>,<13,10>,<14,9>,<14,10>}
 	*/
+    }
+
+    if (true)
+    {
+	auto uvars = systemsSetVar;
+	auto vol = systemsSetVarsVolume_u;
+	auto aall = histogramsList;
+	auto cart = systemsSetVarsSetStateCartesian_u;
+	auto single = histogramSingleton_u;
+	auto ind = histogramsIndependent;
+	auto algn = histogramsAlignment;
+	auto aaar = systemsHistogramsHistogramRepa_u;
+	auto araa = systemsHistogramRepasHistogram_u;
+	auto arpr = histogramRepasRed;
+	auto prar = histogramRepaRedsIndependent;
+	auto aahr = [](const System& uu, const SystemRepa& ur, const Histogram& aa)
+	{
+	    return systemsHistoriesHistoryRepa_u(uu, ur, *histogramsHistory_u(aa));
+	};
+	auto hrsel = [](const HistoryRepa& hr, const SizeList& ll)
+	{
+	    return eventsHistoryRepasHistoryRepaSelection_u(ll.size(), (std::size_t*)ll.data(), hr);
+	};
+	auto hrhrsel = [](const HistoryRepa& hr, const HistoryRepa& ss)
+	{
+	    return historyRepasHistoryRepasHistoryRepaSelection_u(ss, hr);
+	};
+	auto hrred = [](const HistoryRepa& hr, const SizeList& kk)
+	{
+	    return setVarsHistoryRepasReduce_u(1.0, kk.size(), kk.data(), hr);
+	};
+	auto hrhrred = [](const HistoryRepa& hr, const SystemRepa& ur, const SizeList& kk)
+	{
+	    return setVarsHistoryRepasHistoryRepaReduced_u(kk.size(), kk.data(), hr);
+	};
+	auto hrpr = historyRepasRed;
+	auto aralgn = [](const HistogramRepa& ar)
+	{
+	    auto ax = histogramRepaRedsIndependent(ar.size(), *histogramRepasRed(ar.size(), ar));
+	    return ar.facLn() - ax->facLn();
+	};
+
+	auto xx = trainBucketedIO(2);
+	auto& uu = std::get<0>(xx);
+	auto& ur = std::get<1>(xx);
+	auto& hr = std::get<2>(xx);
+
+	Variable digit("digit");
+	auto vv = *uvars(*uu);
+	auto vvl = VarUSet();
+	vvl.insert(digit);
+	auto vvk = VarUSet(vv);
+	vvk.erase(digit);
+
+	cout << "hr->dimension" << endl
+	    << hr->dimension << endl << endl;
+	cout << "hr->size" << endl
+	    << hr->size << endl << endl;
+
+	auto& vvi = ur->mapVarSize();
+	auto vvk0 = sorted(vvk);
+	SizeList vvk1;
+	for (auto& v : vvk0)
+	    vvk1.push_back(vvi[v]);
+
+	// model 3
+	size_t xmax = 512;
+	size_t omax = 40;
+	size_t bmax = 10;
+	size_t mmax = 1;
+	{
+	    auto start = chrono::system_clock::now();
+	    auto hrs = historyRepasShuffle_u(*hr, 1);
+	    auto end = chrono::system_clock::now();
+	    cout << "historyRepasShuffle_u " << ((chrono::duration<double>)(end - start)).count() << "s" << endl;
+
+	    start = chrono::system_clock::now();
+	    auto pr = historyRepasRed(*hr);
+	    end = chrono::system_clock::now();
+	    cout << "historyRepasRed(hr) " << ((chrono::duration<double>)(end - start)).count() << "s" << endl;
+
+	    start = chrono::system_clock::now();
+	    auto prs = historyRepasRed(*hrs);
+	    end = chrono::system_clock::now();
+	    cout << "historyRepasRed(hrs) " << ((chrono::duration<double>)(end - start)).count() << "s" << endl;
+
+	    start = chrono::system_clock::now();
+	    auto t = parametersSystemsBuilderTupleNoSumlayerMultiEffectiveRepa_ui(xmax, omax, bmax, mmax, vvk1, FudRepa(), *hr, *pr, *hrs, *prs);
+	    end = chrono::system_clock::now();
+	    cout << "buildtup " << ((chrono::duration<double>)(end - start)).count() << "s" << endl;
+	    auto xx = std::move(std::get<0>(t));
+	    auto s = std::get<1>(t);
+	    cout << "steps: " << s << endl;
+	    for (auto& kk : *xx)
+	    {
+		cout << aralgn(*hrred(*hr, kk)) - aralgn(*hrred(*hrs, kk)) << ",";
+		VarSet qq;
+		for (std::size_t i = 0; i < kk.size(); i++)
+		    qq.insert((ur->listVarSizePair[kk[i]]).first);
+		cout << qq << endl;
+	    }
+	    /*
+	    historyRepasShuffle_u 1.77843s
+	    historyRepasRed(hr) 0.171603s
+	    historyRepasRed(hrs) 0.156003s
+	    buildtup 395.204s
+	    steps: 416030
+	    156208,{<10,11>,<10,12>,<11,10>,<11,11>,<11,12>,<12,10>,<12,11>,<13,10>,<13,11>}
+	    156025,{<10,10>,<10,11>,<10,12>,<11,10>,<11,11>,<11,12>,<12,10>,<12,11>,<13,10>}
+	    155549,{<11,10>,<11,11>,<12,9>,<12,10>,<12,11>,<13,9>,<13,10>,<14,9>,<14,10>}
+	    155456,{<11,10>,<11,11>,<12,10>,<12,11>,<13,9>,<13,10>,<13,11>,<14,9>,<14,10>}
+	    155276,{<11,10>,<11,11>,<11,12>,<12,10>,<12,11>,<12,12>,<13,10>,<13,11>,<14,10>}
+	    155192,{<10,11>,<10,12>,<10,13>,<11,10>,<11,11>,<11,12>,<12,10>,<12,11>,<13,10>}
+	    155137,{<10,11>,<10,12>,<11,10>,<11,11>,<11,12>,<12,10>,<12,11>,<12,12>,<13,10>}
+	    155040,{<11,10>,<11,11>,<12,9>,<12,10>,<12,11>,<13,9>,<13,10>,<13,11>,<14,10>}
+	    155008,{<21,9>,<21,10>,<21,11>,<22,9>,<22,10>,<22,11>,<23,9>,<23,10>,<23,11>}
+	    154913,{<12,10>,<12,11>,<13,9>,<13,10>,<13,11>,<14,9>,<14,10>,<15,9>,<15,10>}
+	    */
+	}
     }
 
     return 0;
