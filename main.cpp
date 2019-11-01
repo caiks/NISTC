@@ -967,8 +967,10 @@ int main(int argc, char **argv)
 	// model 3
 	size_t xmax = 512;
 	size_t omax = 40;
-	size_t bmax = 10;
-	size_t mmax = 1;
+	size_t bmax = 40*4;
+	size_t mmax = 4;
+	size_t umax = 256;
+	size_t pmax = 1;
 	{
 	    auto start = chrono::system_clock::now();
 	    auto hrs = historyRepasShuffle_u(*hr, 1);
@@ -992,30 +994,32 @@ int main(int argc, char **argv)
 	    auto xx = std::move(std::get<0>(t));
 	    auto s = std::get<1>(t);
 	    cout << "steps: " << s << endl;
+	    cout << "tuples: " << xx->size() << endl;
+
+	    s = 0;
+	    std::size_t p = 0;
+	    start = chrono::system_clock::now();
 	    for (auto& kk : *xx)
 	    {
-		cout << aralgn(*hrred(*hr, kk)) - aralgn(*hrred(*hrs, kk)) << ",";
-		VarSet qq;
-		for (std::size_t i = 0; i < kk.size(); i++)
-		    qq.insert((ur->listVarSizePair[kk[i]]).first);
-		cout << qq << endl;
+		auto t2 = parametersSystemsPartitionerMaxRollByMRepa_ui(mmax, umax, pmax, kk, *hr, *hrs);
+		p += std::get<0>(t2)->size();
+		s += std::get<1>(t2);
 	    }
+	    end = chrono::system_clock::now();
+	    cout << "parter " << ((chrono::duration<double>)(end - start)).count() << "s" << endl;
+	    cout << "steps: " << s << endl;
+	    cout << "partitions: " << p << endl;
+
 	    /*
-	    historyRepasShuffle_u 1.77843s
-	    historyRepasRed(hr) 0.171603s
+	    historyRepasShuffle_u 1.74723s
+	    historyRepasRed(hr) 0.156003s
 	    historyRepasRed(hrs) 0.156003s
-	    buildtup 395.204s
+	    buildtup 392.581s
 	    steps: 416030
-	    156208,{<10,11>,<10,12>,<11,10>,<11,11>,<11,12>,<12,10>,<12,11>,<13,10>,<13,11>}
-	    156025,{<10,10>,<10,11>,<10,12>,<11,10>,<11,11>,<11,12>,<12,10>,<12,11>,<13,10>}
-	    155549,{<11,10>,<11,11>,<12,9>,<12,10>,<12,11>,<13,9>,<13,10>,<14,9>,<14,10>}
-	    155456,{<11,10>,<11,11>,<12,10>,<12,11>,<13,9>,<13,10>,<13,11>,<14,9>,<14,10>}
-	    155276,{<11,10>,<11,11>,<11,12>,<12,10>,<12,11>,<12,12>,<13,10>,<13,11>,<14,10>}
-	    155192,{<10,11>,<10,12>,<10,13>,<11,10>,<11,11>,<11,12>,<12,10>,<12,11>,<13,10>}
-	    155137,{<10,11>,<10,12>,<11,10>,<11,11>,<11,12>,<12,10>,<12,11>,<12,12>,<13,10>}
-	    155040,{<11,10>,<11,11>,<12,9>,<12,10>,<12,11>,<13,9>,<13,10>,<13,11>,<14,10>}
-	    155008,{<21,9>,<21,10>,<21,11>,<22,9>,<22,10>,<22,11>,<23,9>,<23,10>,<23,11>}
-	    154913,{<12,10>,<12,11>,<13,9>,<13,10>,<13,11>,<14,9>,<14,10>,<15,9>,<15,10>}
+	    tuples: 40
+	    parter 50.2028s
+	    steps: 442000
+	    partitions: 120
 	    */
 	}
     }
