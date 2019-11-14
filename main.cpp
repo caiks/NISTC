@@ -1024,7 +1024,7 @@ int main(int argc, char **argv)
 	}
     }
 
-    if (false)
+    if (true)
     {
 	auto uvars = systemsSetVar;
 	auto vol = systemsSetVarsVolume_u;
@@ -1330,6 +1330,314 @@ int main(int argc, char **argv)
 	    */
 	}
     }
+
+    if (true)
+    {
+	auto uvars = systemsSetVar;
+	auto vol = systemsSetVarsVolume_u;
+	auto aall = histogramsList;
+	auto cart = systemsSetVarsSetStateCartesian_u;
+	auto single = histogramSingleton_u;
+	auto ind = histogramsIndependent;
+	auto algn = histogramsAlignment;
+	auto aaar = systemsHistogramsHistogramRepa_u;
+	auto araa = systemsHistogramRepasHistogram_u;
+	auto arpr = histogramRepasRed;
+	auto prar = histogramRepaRedsIndependent;
+	auto aahr = [](const System& uu, const SystemRepa& ur, const Histogram& aa)
+	{
+	    return systemsHistoriesHistoryRepa_u(uu, ur, *histogramsHistory_u(aa));
+	};
+	auto hrsel = [](const HistoryRepa& hr, const SizeList& ll)
+	{
+	    return eventsHistoryRepasHistoryRepaSelection_u(ll.size(), (std::size_t*)ll.data(), hr);
+	};
+	auto hrhrsel = [](const HistoryRepa& hr, const HistoryRepa& ss)
+	{
+	    return historyRepasHistoryRepasHistoryRepaSelection_u(ss, hr);
+	};
+	auto hrred = [](const HistoryRepa& hr, const SizeList& kk)
+	{
+	    return setVarsHistoryRepasReduce_u(1.0, kk.size(), kk.data(), hr);
+	};
+	auto hrhrred = [](const HistoryRepa& hr, const SystemRepa& ur, const SizeList& kk)
+	{
+	    return setVarsHistoryRepasHistoryRepaReduced_u(kk.size(), kk.data(), hr);
+	};
+	auto hrpr = historyRepasRed;
+	auto aralgn = [](const HistogramRepa& ar)
+	{
+	    auto ax = histogramRepaRedsIndependent(ar.size(), *histogramRepasRed(ar.size(), ar));
+	    return ar.facLn() - ax->facLn();
+	};
+	auto uuur = systemsSystemRepa;
+	auto uruu = systemsRepasSystem;
+	auto fffr = systemsFudsFudRepa_u;
+	auto frff = systemsFudRepasFud_u;
+
+	auto layerer = parametersSystemsLayererMaxRollByMExcludedSelfHighestIORepa_u;
+
+	auto xx = trainBucketedIO(2);
+	auto& uu = std::get<0>(xx);
+	auto& ur = std::get<1>(xx);
+	auto& hr = std::get<2>(xx);
+
+	Variable digit("digit");
+	auto vv = *uvars(*uu);
+	auto vvl = VarUSet();
+	vvl.insert(digit);
+	auto vvk = VarUSet(vv);
+	vvk.erase(digit);
+
+	cout << "hr->dimension" << endl
+	    << hr->dimension << endl << endl;
+	cout << "hr->size" << endl
+	    << hr->size << endl << endl;
+
+	auto& vvi = ur->mapVarSize();
+	auto vvk0 = sorted(vvk);
+	SizeList vvk1;
+	for (auto& v : vvk0)
+	    vvk1.push_back(vvi[v]);
+
+	// model 3
+	size_t wmax = 2048;
+	size_t lmax = 8;
+	size_t xmax = 512;
+	size_t omax = 40;
+	size_t bmax = 40 * 4;
+	size_t mmax = 4;
+	size_t umax = 256;
+	size_t pmax = 1;
+	{
+	    map<string, double> perf;
+
+	    auto mark = chrono::system_clock::now();
+	    auto hrs = historyRepasShuffle_u(*hr, 1);
+	    perf["historyRepasShuffle_u"] += ((chrono::duration<double>)(chrono::system_clock::now() - mark)).count();
+
+	    mark = chrono::system_clock::now();
+	    auto t = layerer(wmax, lmax, xmax, omax, bmax, mmax, umax, pmax, vvk1, *hr, *hrs, 1, *ur);
+	    perf["layerer"] += ((chrono::duration<double>)(chrono::system_clock::now() - mark)).count();
+	    auto& fr = std::get<0>(t);
+	    auto& mm = std::get<1>(t);
+	    if (mm->size())
+	    {
+		auto& a = mm->back().first;
+		auto& kk = mm->back().second;
+		VarSet qq;
+		for (std::size_t i = 0; i < kk.size(); i++)
+		    qq.insert((ur->listVarSizePair[kk[i]]).first);
+		cout << "a = " << a << endl;
+		cout << "kk = " << qq << endl;
+	    }
+	    cout << "fudRepasSize(fr) = " << fudRepasSize(*fr) << endl;
+	}
+	/*
+	>>> layerer
+	>>> layer       fud: 1  layer: 1
+	substrate cardinality: 784
+	fud cardinality: 0
+	tupler  searched: 416030        rate: 1066.88
+	tupler 389.949s
+	tuple cardinality: 40
+	max tuple algn: 156208
+	layer cardinality: 196
+	parter  searched: 442000        rate: 8619.05
+	parter 51.2818s
+	roller  searched: 523178        rate: 251398
+	roller 2.08108s
+	der vars algn density: 141207
+	dervarser       searched: 105580        rate: 742.594
+	dervarser 142.177s
+	application 0.976372s
+	<<< layer 586.473s
+	>>> layer       fud: 1  layer: 2
+	substrate cardinality: 784
+	fud cardinality: 196
+	tupler  searched: 308712        rate: 1390.63
+	tupler 221.995s
+	tuple cardinality: 40
+	max tuple algn: 99539.3
+	layer cardinality: 100
+	parter  searched: 7440  rate: 12394.3
+	parter 0.600278s
+	roller  searched: 744226        rate: 437419
+	roller 1.7014s
+	der vars algn density: 161478
+	dervarser       searched: 180631        rate: 824.022
+	dervarser 219.206s
+	application 0.798009s
+	<<< layer 444.306s
+	>>> layer       fud: 1  layer: 3
+	substrate cardinality: 784
+	fud cardinality: 296
+	tupler  searched: 436989        rate: 1450.31
+	tupler 301.306s
+	tuple cardinality: 40
+	max tuple algn: 3244.27
+	layer cardinality: 76
+	parter  searched: 7440  rate: 14363.7
+	parter 0.517973s
+	roller  searched: 780016        rate: 561905
+	roller 1.38816s
+	der vars algn density: 107674
+	dervarser       searched: 184660        rate: 1395.98
+	dervarser 132.28s
+	application 0.862928s
+	<<< layer 436.361s
+	<<< layerer 1467.59s
+	a = 161478
+	kk = {<<1,2>,12>,<<1,2>,14>,<<1,2>,15>,<<1,2>,16>,<<1,2>,18>,<<1,2>,51>,<<1,2>,56>,<<1,2>,61>,<<1,2>,63>,<<1,2>,73>,<<1,2>,77>}
+	fudRepasSize(fr) = 296
+	*/
+    }
+
+    if (true)
+    {
+	auto uvars = systemsSetVar;
+	auto vol = systemsSetVarsVolume_u;
+	auto aall = histogramsList;
+	auto cart = systemsSetVarsSetStateCartesian_u;
+	auto single = histogramSingleton_u;
+	auto ind = histogramsIndependent;
+	auto algn = histogramsAlignment;
+	auto aaar = systemsHistogramsHistogramRepa_u;
+	auto araa = systemsHistogramRepasHistogram_u;
+	auto arpr = histogramRepasRed;
+	auto prar = histogramRepaRedsIndependent;
+	auto aahr = [](const System& uu, const SystemRepa& ur, const Histogram& aa)
+	{
+	    return systemsHistoriesHistoryRepa_u(uu, ur, *histogramsHistory_u(aa));
+	};
+	auto hrsel = [](const HistoryRepa& hr, const SizeList& ll)
+	{
+	    return eventsHistoryRepasHistoryRepaSelection_u(ll.size(), (std::size_t*)ll.data(), hr);
+	};
+	auto hrhrsel = [](const HistoryRepa& hr, const HistoryRepa& ss)
+	{
+	    return historyRepasHistoryRepasHistoryRepaSelection_u(ss, hr);
+	};
+	auto hrred = [](const HistoryRepa& hr, const SizeList& kk)
+	{
+	    return setVarsHistoryRepasReduce_u(1.0, kk.size(), kk.data(), hr);
+	};
+	auto hrhrred = [](const HistoryRepa& hr, const SystemRepa& ur, const SizeList& kk)
+	{
+	    return setVarsHistoryRepasHistoryRepaReduced_u(kk.size(), kk.data(), hr);
+	};
+	auto hrpr = historyRepasRed;
+	auto aralgn = [](const HistogramRepa& ar)
+	{
+	    auto ax = histogramRepaRedsIndependent(ar.size(), *histogramRepasRed(ar.size(), ar));
+	    return ar.facLn() - ax->facLn();
+	};
+	auto uuur = systemsSystemRepa;
+	auto uruu = systemsRepasSystem;
+	auto fffr = systemsFudsFudRepa_u;
+	auto frff = systemsFudRepasFud_u;
+
+	auto layerer = parametersSystemsLayererMaxRollByMExcludedSelfHighestIORepa_u;
+
+	auto xx = trainBucketedIO(2);
+	auto& uu = std::get<0>(xx);
+	auto& ur = std::get<1>(xx);
+	auto& hr = std::get<2>(xx);
+
+	Variable digit("digit");
+	auto vv = *uvars(*uu);
+	auto vvl = VarUSet();
+	vvl.insert(digit);
+	auto vvk = VarUSet(vv);
+	vvk.erase(digit);
+
+	cout << "hr->dimension" << endl
+	    << hr->dimension << endl << endl;
+	cout << "hr->size" << endl
+	    << hr->size << endl << endl;
+
+	auto& vvi = ur->mapVarSize();
+	auto vvk0 = sorted(vvk);
+	SizeList vvk1;
+	for (auto& v : vvk0)
+	    vvk1.push_back(vvi[v]);
+
+	// model 35
+	size_t wmax = 2048;
+	size_t lmax = 8;
+	size_t xmax = 1024;
+	size_t omax = 30;
+	size_t bmax = 30 * 3;
+	size_t mmax = 3;
+	size_t umax = 256;
+	size_t pmax = 1;
+	{
+	    map<string, double> perf;
+
+	    auto mark = chrono::system_clock::now();
+	    auto hrs = historyRepasShuffle_u(*hr, 1);
+	    perf["historyRepasShuffle_u"] += ((chrono::duration<double>)(chrono::system_clock::now() - mark)).count();
+
+	    mark = chrono::system_clock::now();
+	    auto t = layerer(wmax, lmax, xmax, omax, bmax, mmax, umax, pmax, vvk1, *hr, *hrs, 1, *ur);
+	    perf["layerer"] += ((chrono::duration<double>)(chrono::system_clock::now() - mark)).count();
+	    auto& fr = std::get<0>(t);
+	    auto& mm = std::get<1>(t);
+	    if (mm->size())
+	    {
+		auto& a = mm->back().first;
+		auto& kk = mm->back().second;
+		VarSet qq;
+		for (std::size_t i = 0; i < kk.size(); i++)
+		    qq.insert((ur->listVarSizePair[kk[i]]).first);
+		cout << "a = " << a << endl;
+		cout << "kk = " << qq << endl;
+	    }
+	    cout << "fudRepasSize(fr) = " << fudRepasSize(*fr) << endl;
+	}
+	/*
+	>>> layerer
+	>>> layer       fud: 1  layer: 1
+	substrate cardinality: 784
+	fud cardinality: 0
+	tupler  searched: 389070        rate: 1047.9
+	tupler 371.285s
+	tuple cardinality: 30
+	max tuple algn: 178925
+	layer cardinality: 101
+	parter  searched: 294930        rate: 4846.68
+	parter 60.852s
+	roller  searched: 802096        rate: 154438
+	roller 5.19363s
+	der vars algn density: 140988
+	dervarser       searched: 34820 rate: 689.954
+	dervarser 50.4671s
+	application 0.848342s
+	<<< layer 488.653s
+	>>> layer       fud: 1  layer: 2
+	substrate cardinality: 784
+	fud cardinality: 101
+	tupler  searched: 176058        rate: 1169.92
+	tupler 150.487s
+	tuple cardinality: 30
+	max tuple algn: 135438
+	layer cardinality: 77
+	parter  searched: 3630  rate: 8638.15
+	parter 0.420229s
+	roller  searched: 759555        rate: 309677
+	roller 2.45273s
+	der vars algn density: 120890
+	dervarser       searched: 56806 rate: 1064.27
+	dervarser 53.3757s
+	application 0.751577s
+	<<< layer 207.494s
+	<<< layerer 696.562s
+	a = 140988
+	kk = {<<1,1>,7>,<<1,1>,24>,<<1,1>,25>,<<1,1>,27>,<<1,1>,32>,<<1,1>,41>,<<1,1>,43>,<<1,1>,55>,<<1,1>,61>,<<1,1>,77>,<<1,1>,92>}
+	fudRepasSize(fr) = 101
+	*/
+    }
+
 
 
     return 0;
