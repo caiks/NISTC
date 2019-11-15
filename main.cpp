@@ -1024,7 +1024,7 @@ int main(int argc, char **argv)
 	}
     }
 
-    if (true)
+    if (false)
     {
 	auto uvars = systemsSetVar;
 	auto vol = systemsSetVarsVolume_u;
@@ -1171,7 +1171,7 @@ int main(int argc, char **argv)
 	}
     }
 
-    if (true)
+    if (false)
     {
 	auto uvars = systemsSetVar;
 	auto vol = systemsSetVarsVolume_u;
@@ -1331,7 +1331,7 @@ int main(int argc, char **argv)
 	}
     }
 
-    if (true)
+    if (false)
     {
 	auto uvars = systemsSetVar;
 	auto vol = systemsSetVarsVolume_u;
@@ -1493,7 +1493,7 @@ int main(int argc, char **argv)
 	*/
     }
 
-    if (true)
+    if (false)
     {
 	auto uvars = systemsSetVar;
 	auto vol = systemsSetVarsVolume_u;
@@ -1638,6 +1638,97 @@ int main(int argc, char **argv)
 	*/
     }
 
+    if (true)
+    {
+	auto uvars = systemsSetVar;
+	auto vol = systemsSetVarsVolume_u;
+	auto aall = histogramsList;
+	auto cart = systemsSetVarsSetStateCartesian_u;
+	auto single = histogramSingleton_u;
+	auto ind = histogramsIndependent;
+	auto algn = histogramsAlignment;
+	auto aaar = systemsHistogramsHistogramRepa_u;
+	auto araa = systemsHistogramRepasHistogram_u;
+	auto arpr = histogramRepasRed;
+	auto prar = histogramRepaRedsIndependent;
+	auto aahr = [](const System& uu, const SystemRepa& ur, const Histogram& aa)
+	{
+	    return systemsHistoriesHistoryRepa_u(uu, ur, *histogramsHistory_u(aa));
+	};
+	auto hrsel = [](const HistoryRepa& hr, const SizeList& ll)
+	{
+	    return eventsHistoryRepasHistoryRepaSelection_u(ll.size(), (std::size_t*)ll.data(), hr);
+	};
+	auto hrhrsel = [](const HistoryRepa& hr, const HistoryRepa& ss)
+	{
+	    return historyRepasHistoryRepasHistoryRepaSelection_u(ss, hr);
+	};
+	auto hrred = [](const HistoryRepa& hr, const SizeList& kk)
+	{
+	    return setVarsHistoryRepasReduce_u(1.0, kk.size(), kk.data(), hr);
+	};
+	auto hrhrred = [](const HistoryRepa& hr, const SystemRepa& ur, const SizeList& kk)
+	{
+	    return setVarsHistoryRepasHistoryRepaReduced_u(kk.size(), kk.data(), hr);
+	};
+	auto hrpr = historyRepasRed;
+	auto aralgn = [](const HistogramRepa& ar)
+	{
+	    auto ax = histogramRepaRedsIndependent(ar.size(), *histogramRepasRed(ar.size(), ar));
+	    return ar.facLn() - ax->facLn();
+	};
+	auto uuur = systemsSystemRepa;
+	auto uruu = systemsRepasSystem;
+	auto fffr = systemsFudsFudRepa_u;
+	auto frff = systemsFudRepasFud_u;
+
+	auto applicationer = parametersSystemsHistoryRepasApplicationerMaxRollByMExcludedSelfHighestFmaxIORepa;
+
+	auto xx = trainBucketedIO(2);
+	auto& uu = std::get<0>(xx);
+	auto& ur = std::get<1>(xx);
+	auto& hr = std::get<2>(xx);
+
+	Variable digit("digit");
+	auto vv = *uvars(*uu);
+	auto vvl = VarUSet();
+	vvl.insert(digit);
+	auto vvk = VarUSet(vv);
+	vvk.erase(digit);
+
+	cout << "hr->dimension" << endl
+	    << hr->dimension << endl << endl;
+	cout << "hr->size" << endl
+	    << hr->size << endl << endl;
+
+	auto& vvi = ur->mapVarSize();
+	auto vvk0 = sorted(vvk);
+	SizeList vvk1;
+	for (auto& v : vvk0)
+	    vvk1.push_back(vvi[v]);
+
+	// model 1
+//	size_t wmax = 1024;
+	size_t wmax = 32;
+	size_t lmax = 8;
+	size_t xmax = 256;
+	size_t omax = 10;
+	size_t bmax = 10 * 3;
+	size_t mmax = 3;
+	size_t umax = 256;
+	size_t pmax = 1;
+//	size_t fmax = 15;
+	size_t fmax = 2;
+	size_t mult = 1;
+	size_t seed = 5;
+	{
+	    auto dr = applicationer(wmax, lmax, xmax, omax, bmax, mmax, umax, pmax, fmax,  mult, seed, vvk1, *hr, *ur);
+	    cout << "dr = " << *dr << endl;
+	}
+	/*
+
+	*/
+    }
 
 
     return 0;
