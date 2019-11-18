@@ -1855,131 +1855,6 @@ int main(int argc, char **argv)
 	auto fffr = systemsFudsFudRepa_u;
 	auto frff = systemsFudRepasFud_u;
 
-	auto layerer = parametersSystemsLayererMaxRollByMExcludedSelfHighestIORepa_u;
-
-	auto xx = trainBucketedIO(2);
-	auto& uu = std::get<0>(xx);
-	auto& ur = std::get<1>(xx);
-	auto& hr = std::get<2>(xx);
-
-	Variable digit("digit");
-	auto vv = *uvars(*uu);
-	auto vvl = VarUSet();
-	vvl.insert(digit);
-	auto vvk = VarUSet(vv);
-	vvk.erase(digit);
-
-	cout << "hr->dimension" << endl
-	    << hr->dimension << endl << endl;
-	cout << "hr->size" << endl
-	    << hr->size << endl << endl;
-
-	auto& vvi = ur->mapVarSize();
-	auto vvk0 = sorted(vvk);
-	SizeList vvk1;
-	for (auto& v : vvk0)
-	    vvk1.push_back(vvi[v]);
-
-	// model 1
-//	size_t wmax = 1024;
-	size_t wmax = 32;
-	size_t lmax = 8;
-	size_t xmax = 256;
-	size_t omax = 10;
-	size_t bmax = 10 * 3;
-	size_t mmax = 3;
-	size_t umax = 256;
-	size_t pmax = 1;
-//	size_t fmax = 15;
-	size_t fmax = 2;
-	size_t mult = 1;
-	size_t seed = 5;
-	{
-	    map<string, double> perf;
-
-//	    cout << "hr = " << *hr << endl;
-//    	    hr->transpose();
-	    auto mark = chrono::system_clock::now();
-
-	    HistoryRepaPtrList qq;
-	    qq.reserve(mult);
-	    for (std::size_t i = 1; i <= mult; i++)
-	    {
-                HistoryRepaPtr hr1 = std::move(historyRepasShuffle_u(*hr, seed + i*hr->size));
-	        qq.push_back(hr1);
-            }
-	    auto hrs = vectorHistoryRepasConcat_u(qq);
-//	    cout << "hrs = " << *hrs << endl;
-
-//	    auto hrs = historyRepasShuffle_u(*hr, seed + hr->size);
-	    perf["historyRepasShuffle_u"] += ((chrono::duration<double>)(chrono::system_clock::now() - mark)).count();
-
-	    mark = chrono::system_clock::now();
-	    auto t = layerer(wmax, lmax, xmax, omax, bmax, mmax, umax, pmax, vvk1, *hr, *hrs, 1, *ur);
-	    perf["layerer"] += ((chrono::duration<double>)(chrono::system_clock::now() - mark)).count();
-	    auto& fr = std::get<0>(t);
-	    auto& mm = std::get<1>(t);
-	    if (mm->size())
-	    {
-		auto& a = mm->back().first;
-		auto& kk = mm->back().second;
-		VarSet qq;
-		for (std::size_t i = 0; i < kk.size(); i++)
-		    qq.insert((ur->listVarSizePair[kk[i]]).first);
-		cout << "a = " << a << endl;
-		cout << "kk = " << qq << endl;
-	    }
-	    cout << "fudRepasSize(fr) = " << fudRepasSize(*fr) << endl;
-	}
-	/*
-
-	*/
-    }
-
-    if (false)
-    {
-	auto uvars = systemsSetVar;
-	auto vol = systemsSetVarsVolume_u;
-	auto aall = histogramsList;
-	auto cart = systemsSetVarsSetStateCartesian_u;
-	auto single = histogramSingleton_u;
-	auto ind = histogramsIndependent;
-	auto algn = histogramsAlignment;
-	auto aaar = systemsHistogramsHistogramRepa_u;
-	auto araa = systemsHistogramRepasHistogram_u;
-	auto arpr = histogramRepasRed;
-	auto prar = histogramRepaRedsIndependent;
-	auto aahr = [](const System& uu, const SystemRepa& ur, const Histogram& aa)
-	{
-	    return systemsHistoriesHistoryRepa_u(uu, ur, *histogramsHistory_u(aa));
-	};
-	auto hrsel = [](const HistoryRepa& hr, const SizeList& ll)
-	{
-	    return eventsHistoryRepasHistoryRepaSelection_u(ll.size(), (std::size_t*)ll.data(), hr);
-	};
-	auto hrhrsel = [](const HistoryRepa& hr, const HistoryRepa& ss)
-	{
-	    return historyRepasHistoryRepasHistoryRepaSelection_u(ss, hr);
-	};
-	auto hrred = [](const HistoryRepa& hr, const SizeList& kk)
-	{
-	    return setVarsHistoryRepasReduce_u(1.0, kk.size(), kk.data(), hr);
-	};
-	auto hrhrred = [](const HistoryRepa& hr, const SystemRepa& ur, const SizeList& kk)
-	{
-	    return setVarsHistoryRepasHistoryRepaReduced_u(kk.size(), kk.data(), hr);
-	};
-	auto hrpr = historyRepasRed;
-	auto aralgn = [](const HistogramRepa& ar)
-	{
-	    auto ax = histogramRepaRedsIndependent(ar.size(), *histogramRepasRed(ar.size(), ar));
-	    return ar.facLn() - ax->facLn();
-	};
-	auto uuur = systemsSystemRepa;
-	auto uruu = systemsRepasSystem;
-	auto fffr = systemsFudsFudRepa_u;
-	auto frff = systemsFudRepasFud_u;
-
 	auto applicationer = parametersSystemsHistoryRepasApplicationerMaxRollByMExcludedSelfHighestFmaxIORepa;
 
 	auto xx = trainBucketedIO(2);
@@ -2024,6 +1899,110 @@ int main(int argc, char **argv)
 	    cout << "dr = " << *dr << endl;
 	}
 	/*
+	hr->dimension
+	785
+
+	hr->size
+	60000
+
+	>>> applicationer
+	shuffler 1.91767s
+	>>> layerer
+	>>> layer	fud: 1	layer: 1
+	substrate cardinality: 784
+	fud cardinality: 0
+	tupler	searched: 268440	rate: 3057.23
+	tupler 87.8049s
+	tuple cardinality: 10
+	max tuple algn: 133998
+	layer cardinality: 40
+	parter	searched: 10930	rate: 37760
+	parter 0.289459s
+	roller	searched: 31332	rate: 430264
+	roller 0.0728204s
+	der vars algn density: 57627.3
+	dervarser	searched: 2640	rate: 3443.1
+	dervarser 0.76675s
+	application 0.367698s
+	<<< layer 89.3017s
+	>>> layer	fud: 1	layer: 2
+	substrate cardinality: 784
+	fud cardinality: 40
+	tupler	searched: 58459	rate: 2885.55
+	tupler 20.2592s
+	tuple cardinality: 10
+	max tuple algn: 63727.2
+	layer cardinality: 26
+	parter	searched: 1210	rate: 75803.9
+	parter 0.0159622s
+	roller	searched: 18725	rate: 860094
+	roller 0.0217709s
+	der vars algn density: 64856.3
+	dervarser	searched: 5185	rate: 3504.52
+	dervarser 1.47952s
+	application 0.366175s
+	<<< layer 22.1426s
+	>>> layer	fud: 1	layer: 3
+	substrate cardinality: 784
+	fud cardinality: 66
+	tupler	searched: 86930	rate: 2370.03
+	tupler 36.6788s
+	tuple cardinality: 10
+	max tuple algn: 49402.4
+	layer cardinality: 15
+	parter	searched: 10930	rate: 59676.6
+	parter 0.183154s
+	roller	searched: 99960	rate: 2.27621e+06
+	roller 0.0439152s
+	der vars algn density: 68995.7
+	dervarser	searched: 6311	rate: 3540.92
+	dervarser 1.7823s
+	application 0.375311s
+	<<< layer 39.0635s
+	>>> layer	fud: 1	layer: 4
+	substrate cardinality: 784
+	fud cardinality: 81
+	tupler	searched: 91747	rate: 2414.87
+	tupler 37.9926s
+	tuple cardinality: 10
+	max tuple algn: 27420.5
+	layer cardinality: 13
+	parter	searched: 10930	rate: 65090.9
+	parter 0.167919s
+	roller	searched: 40600	rate: 1.29913e+06
+	roller 0.0312518s
+	der vars algn density: 70412.1
+	dervarser	searched: 7540	rate: 3496.4
+	dervarser 2.1565s
+	application 0.376727s
+	<<< layer 40.725s
+	>>> layer	fud: 1	layer: 5
+	substrate cardinality: 784
+	fud cardinality: 94
+	tupler	searched: 96438	rate: 2450.55
+	tupler 39.3537s
+	tuple cardinality: 10
+	max tuple algn: 9140.76
+	layer cardinality: 14
+	parter	searched: 10930	rate: 69052
+	parter 0.158287s
+	roller	searched: 3559590	rate: 9.80239e+06
+	roller 0.363135s
+	der vars algn density: 67248.7
+	dervarser	searched: 8814	rate: 3527.96
+	dervarser 2.49833s
+	application 0.382542s
+	<<< layer 42.756s
+	<<< layerer 234.315s
+	fud: 1
+	slize size: 60000
+	derived cardinality: 5
+	derived algn density: 70412.1
+	derived algn density per size: 1.17353
+	derived algn density per size per decr card: 0.293384
+	transer 7.9465e-05s
+	slize size: 0
+	<<< applicationer 236.307s
 
 	*/
     }
