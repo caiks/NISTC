@@ -10,11 +10,11 @@ cl -I../rapidjson-master/include /EHsc /DEBUG /Zi /c AlignmentUtil.cpp Alignment
 
 cd /d C:\zzz\caiks\AlignmentRepaC-master
 
-cl -IC:../rapidjson-master/include -I../AlignmentC-master /EHsc /DEBUG /Zi main.cpp AlignmentRepa.cpp AlignmentAesonRepa.cpp AlignmentRandomRepa.cpp AlignmentPracticableRepa.cpp ../AlignmentC-master/AlignmentUtil.obj ../AlignmentC-master/Alignment.obj ../AlignmentC-master/AlignmentApprox.obj ../AlignmentC-master/AlignmentAeson.obj 
+cl -IC:../rapidjson-master/include -I../AlignmentC-master /EHsc /DEBUG /Zi main.cpp AlignmentRepa.cpp AlignmentAesonRepa.cpp AlignmentRandomRepa.cpp AlignmentPracticableRepa.cpp AlignmentPracticableIORepa.cpp ../AlignmentC-master/AlignmentUtil.obj ../AlignmentC-master/Alignment.obj ../AlignmentC-master/AlignmentApprox.obj ../AlignmentC-master/AlignmentAeson.obj 
 
 cd /d C:\zzz\caiks\NISTC-master
 
-cl -IC:../rapidjson-master/include -I../AlignmentC-master -I../AlignmentRepaC-master /EHsc /DEBUG /Zi main.cpp NISTDev.cpp ../AlignmentRepaC-master/AlignmentRepa.obj ../AlignmentRepaC-master/AlignmentAesonRepa.obj ../AlignmentRepaC-master/AlignmentRandomRepa.obj ../AlignmentRepaC-master/AlignmentPracticableRepa.obj ../AlignmentC-master/AlignmentUtil.obj ../AlignmentC-master/Alignment.obj ../AlignmentC-master/AlignmentApprox.obj ../AlignmentC-master/AlignmentAeson.obj 
+cl -IC:../rapidjson-master/include -I../AlignmentC-master -I../AlignmentRepaC-master /EHsc /DEBUG /Zi main.cpp NISTDev.cpp ../AlignmentRepaC-master/AlignmentRepa.obj ../AlignmentRepaC-master/AlignmentAesonRepa.obj ../AlignmentRepaC-master/AlignmentRandomRepa.obj ../AlignmentRepaC-master/AlignmentPracticableRepa.obj ../AlignmentRepaC-master/AlignmentPracticableIORepa.obj ../AlignmentC-master/AlignmentUtil.obj ../AlignmentC-master/Alignment.obj ../AlignmentC-master/AlignmentApprox.obj ../AlignmentC-master/AlignmentAeson.obj 
 
 main
 ```
@@ -26,11 +26,11 @@ cl -I../rapidjson-master/include /EHsc /O2 /c AlignmentUtil.cpp Alignment.cpp Al
 
 cd /d C:\zzz\caiks\AlignmentRepaC-master
 
-cl -IC:../rapidjson-master/include -I../AlignmentC-master /EHsc /O2 /c AlignmentRepa.cpp AlignmentAesonRepa.cpp AlignmentRandomRepa.cpp AlignmentPracticableRepa.cpp 
+cl -IC:../rapidjson-master/include -I../AlignmentC-master /EHsc /O2 /c AlignmentRepa.cpp AlignmentAesonRepa.cpp AlignmentRandomRepa.cpp AlignmentPracticableRepa.cpp AlignmentPracticableIORepa.cpp
 
 cd /d C:\zzz\caiks\NISTC-master
 
-cl -IC:../rapidjson-master/include -I../AlignmentC-master -I../AlignmentRepaC-master /EHsc /O2 main.cpp NISTDev.cpp ../AlignmentRepaC-master/AlignmentRepa.obj ../AlignmentRepaC-master/AlignmentAesonRepa.obj ../AlignmentRepaC-master/AlignmentRandomRepa.obj ../AlignmentRepaC-master/AlignmentPracticableRepa.obj ../AlignmentC-master/AlignmentUtil.obj ../AlignmentC-master/Alignment.obj ../AlignmentC-master/AlignmentApprox.obj ../AlignmentC-master/AlignmentAeson.obj 
+cl -IC:../rapidjson-master/include -I../AlignmentC-master -I../AlignmentRepaC-master /EHsc /O2 main.cpp NISTDev.cpp ../AlignmentRepaC-master/AlignmentRepa.obj ../AlignmentRepaC-master/AlignmentAesonRepa.obj ../AlignmentRepaC-master/AlignmentRandomRepa.obj ../AlignmentRepaC-master/AlignmentPracticableIORepa.obj ../AlignmentRepaC-master/AlignmentPracticableRepa.obj ../AlignmentC-master/AlignmentUtil.obj ../AlignmentC-master/Alignment.obj ../AlignmentC-master/AlignmentApprox.obj ../AlignmentC-master/AlignmentAeson.obj 
 
 main
 ```
@@ -45,11 +45,11 @@ g++ -I../rapidjson/include -std=gnu++17 -g -c AlignmentUtil.cpp Alignment.cpp Al
 
 cd ../AlignmentRepaC
 
-g++ -I../rapidjson/include -I../AlignmentC -std=gnu++17 -g -c AlignmentRepa.cpp AlignmentAesonRepa.cpp AlignmentRandomRepa.cpp AlignmentPracticableRepa.cpp
+g++ -I../rapidjson/include -I../AlignmentC -std=gnu++17 -g -c AlignmentRepa.cpp AlignmentAesonRepa.cpp AlignmentRandomRepa.cpp AlignmentPracticableRepa.cpp AlignmentPracticableIORepa.cpp
 
 cd ../NISTC
 
-g++ -I../rapidjson/include -I../AlignmentC -I../AlignmentRepaC -std=gnu++17 -g -o main main.cpp NISTDev.cpp ../AlignmentRepaC/AlignmentRepa.o ../AlignmentRepaC/AlignmentAesonRepa.o ../AlignmentRepaC/AlignmentRandomRepa.o ../AlignmentRepaC/AlignmentPracticableRepa.o ../AlignmentC/AlignmentUtil.o ../AlignmentC/Alignment.o ../AlignmentC/AlignmentApprox.o ../AlignmentC/AlignmentAeson.o
+g++ -I../rapidjson/include -I../AlignmentC -I../AlignmentRepaC -std=gnu++17 -g -o main main.cpp NISTDev.cpp ../AlignmentRepaC/AlignmentRepa.o ../AlignmentRepaC/AlignmentAesonRepa.o ../AlignmentRepaC/AlignmentRandomRepa.o ../AlignmentRepaC/AlignmentPracticableRepa.o ../AlignmentRepaC/AlignmentPracticableIORepa.o ../AlignmentC/AlignmentUtil.o ../AlignmentC/Alignment.o ../AlignmentC/AlignmentApprox.o ../AlignmentC/AlignmentAeson.o
 
 ./main
 
@@ -65,11 +65,11 @@ g++ -I../rapidjson/include -std=gnu++17 -O3 -c AlignmentUtil.cpp Alignment.cpp A
 
 cd ../AlignmentRepaC
 
-g++ -I../rapidjson/include -I../AlignmentC -std=gnu++17 -O3 -c AlignmentRepa.cpp AlignmentAesonRepa.cpp AlignmentRandomRepa.cpp AlignmentPracticableRepa.cpp
+g++ -I../rapidjson/include -I../AlignmentC -std=gnu++17 -O3 -c AlignmentRepa.cpp AlignmentAesonRepa.cpp AlignmentRandomRepa.cpp AlignmentPracticableRepa.cpp AlignmentPracticableIORepa.cpp
 
 cd ../NISTC
 
-g++ -I../rapidjson/include -I../AlignmentC -I../AlignmentRepaC -std=gnu++17 -O3 -o main main.cpp NISTDev.cpp ../AlignmentRepaC/AlignmentRepa.o ../AlignmentRepaC/AlignmentAesonRepa.o ../AlignmentRepaC/AlignmentRandomRepa.o ../AlignmentRepaC/AlignmentPracticableRepa.o ../AlignmentC/AlignmentUtil.o ../AlignmentC/Alignment.o ../AlignmentC/AlignmentApprox.o ../AlignmentC/AlignmentAeson.o
+g++ -I../rapidjson/include -I../AlignmentC -I../AlignmentRepaC -std=gnu++17 -O3 -o main main.cpp NISTDev.cpp ../AlignmentRepaC/AlignmentRepa.o ../AlignmentRepaC/AlignmentAesonRepa.o ../AlignmentRepaC/AlignmentRandomRepa.o ../AlignmentRepaC/AlignmentPracticableRepa.o ../AlignmentRepaC/AlignmentPracticableIORepa.o ../AlignmentC/AlignmentUtil.o ../AlignmentC/Alignment.o ../AlignmentC/AlignmentApprox.o ../AlignmentC/AlignmentAeson.o
 
 ./main
 
