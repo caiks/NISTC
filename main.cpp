@@ -1913,7 +1913,7 @@ int main(int argc, char **argv)
 	}
     }
 
-    if (true)
+    if (false)
     {
 	auto uvars = systemsSetVar;
 	auto hrsel = [](const HistoryRepa& hr, const SizeList& ll)
@@ -1976,6 +1976,61 @@ int main(int argc, char **argv)
 	    // cout << "treesPaths(dr.slices)" << endl;
 	    // rpln(cout, *treesPaths(*dr->slices)); cout << endl;
 	}
+    }
+
+    if (true)
+    {
+	auto uvars = systemsSetVar;
+	auto hrsel = [](const HistoryRepa& hr, const SizeList& ll)
+	{
+	    return eventsHistoryRepasHistoryRepaSelection_u(ll.size(), (std::size_t*)ll.data(), hr);
+	};
+	auto applicationer = parametersSystemsHistoryRepasApplicationerMaxRollByMExcludedSelfHighestFmaxIORepa;
+
+	auto xx = trainBucketedIO(2);
+	auto& uu = std::get<0>(xx);
+	auto& ur = std::get<1>(xx);
+	auto& hrtr = std::get<2>(xx);
+
+	Variable digit("digit");
+	auto vv = *uvars(*uu);
+	auto vvl = VarUSet();
+	vvl.insert(digit);
+	auto vvk = VarUSet(vv);
+	vvk.erase(digit);
+
+	cout << "hrtr->dimension" << endl
+	    << hrtr->dimension << endl << endl;
+	cout << "hrtr->size" << endl
+	    << hrtr->size << endl << endl;
+
+	SizeList ll;
+	for (size_t i = 0; i < hrtr->size; i += 8)
+	    ll.push_back(i);
+	auto hr = hrsel(*hrtr, ll);
+	cout << "hr->dimension" << endl
+	    << hr->dimension << endl << endl;
+	cout << "hr->size" << endl
+	    << hr->size << endl << endl;
+
+	auto& vvi = ur->mapVarSize();
+	auto vvk0 = sorted(vvk);
+	SizeList vvk1;
+	for (auto& v : vvk0)
+	    vvk1.push_back(vvi[v]);
+
+	size_t wmax = 18;
+	size_t lmax = 8;
+	size_t xmax = 128;
+	size_t omax = 10;
+	size_t bmax = 10 * 3;
+	size_t mmax = 3;
+	size_t umax = 128;
+	size_t pmax = 1;
+	size_t fmax = 127;
+	size_t mult = 1;
+	size_t seed = 5;
+	auto dr = applicationer(wmax, lmax, xmax, omax, bmax, mmax, umax, pmax, fmax, mult, seed, vvk1, *hr, *ur);
     }
 
     return 0;
