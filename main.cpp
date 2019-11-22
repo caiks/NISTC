@@ -2125,6 +2125,7 @@ int main(int argc, char **argv)
 		ll1.push_back(pp1);
 	}
 	auto ll0 = *treesPaths(*pathsTree(ll1));
+	sort(ll0.begin(), ll0.end());
 	reverse(ll0.begin(), ll0.end());
 	std::vector<Bitmap> ll2;
 	for (auto pp : ll0)
