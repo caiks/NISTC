@@ -45,6 +45,35 @@ Bitmap NIST::bmhstack(const std::vector<Bitmap>& ll)
     return bm1;
 }
 
+Bitmap NIST::bmvstack(const std::vector<Bitmap>& ll)
+{
+    if (!ll.size())
+    {
+	cout << "bmvstack : empty list" << endl;
+	return Bitmap();
+    }
+    int w = 0;
+    int h = 0;
+    for (int k = 0; k < ll.size(); k++)
+    {
+	h += ll[k].height;
+	if (ll[k].width > w)
+	    w = ll[k].width;
+    }
+    Bitmap bm1(h, w);
+    int q = 0;
+    for (int k = 0; k < ll.size(); k++)
+    {
+	auto& bm = ll[k];
+	for (int i = 0; i<bm.height; i++)
+	    for (int j = 0; j<bm.width; j++)
+		for (int l = 0; l<3; l++)
+		    bm1.image[(i + q)*bm1.width * 3 + j * 3 + l] = bm.image[i*bm.width * 3 + j * 3 + l];
+	q += ll[k].height;
+    }
+    return bm1;
+}
+
 // https://stackoverflow.com/questions/2654480/writing-bmp-image-in-pure-c-c-without-other-libraries
 
 const int bytesPerPixel = 3; /// red, green, blue
