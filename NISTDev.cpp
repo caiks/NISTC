@@ -1,5 +1,7 @@
 ﻿#include "NISTDev.h"
 
+#include <stdlib.h>
+
 using namespace Alignment;
 using namespace NIST;
 using namespace std;
@@ -276,5 +278,85 @@ SystemHistoryRepaTuple NIST::trainBucketedIO(int d)
     return SystemHistoryRepaTuple(move(uu), move(ur), move(hr));
 }
 
+
+// trainBucketedRegionRandomIO :: Int -> Int -> Int -> IO (System, HistoryRepa)
+SystemHistoryRepaTuple NIST::trainBucketedRegionRandomIO(int d, int b, int s)
+{
+    auto lluu = listsSystem_u;
+    auto uuur = systemsSystemRepa;
+
+    const int a = 28;
+    const int z = 60000;
+    unsigned char* images = new unsigned char[z*a*a];
+    unsigned char* labels = new unsigned char[z];
+    try
+    {
+	ifstream fimages("train-images-idx3-ubyte", ios::binary);
+	ifstream flabels("train-labels-idx1-ubyte", ios::binary);
+	if (!fimages.is_open() || !flabels.is_open())
+	{
+	    cout << "trainBucketedIO : cannot open files" << endl;
+	    delete[] images;
+	    delete[] labels;
+	    return SystemHistoryRepaTuple();
+	}
+	fimages.read((char*)images, 16);
+	fimages.read((char*)images, z*a*a);
+	fimages.close();
+	flabels.read((char*)labels, 8);
+	flabels.read((char*)labels, z);
+	flabels.close();
+    }
+    catch (const exception& e)
+    {
+	cout << "trainBucketedIO : " << e.what() << endl;
+	delete[] images;
+	delete[] labels;
+	return SystemHistoryRepaTuple();
+    }
+    ValSet digits;
+    for (int i = 0; i < 10; i++)
+	digits.insert(Value(i));
+    ValSet buckets;
+    for (int i = 0; i < d; i++)
+	buckets.insert(Value(i));
+    vector<VarValSetPair> ll;
+    ll.push_back(VarValSetPair(Variable("digit"), digits));
+    for (int i = 0; i < b; i++)
+	for (int j = 0; j < b; j++)
+	    ll.push_back(VarValSetPair(Variable(Variable(i + 1), Variable(j + 1)), buckets));
+    auto uu = lluu(ll);
+    auto ur = uuur(*uu);
+    auto hr = make_unique<HistoryRepa>();
+    hr->dimension = b*b + 1;
+    auto n = hr->dimension;
+    hr->vectorVar = new size_t[n];
+    auto vv = hr->vectorVar;
+    hr->shape = new size_t[n];
+    auto sh = hr->shape;
+    hr->size = z;
+    hr->evient = true;
+    hr->arr = new unsigned char[z*n];
+    auto rr = hr->arr;
+    for (size_t i = 0; i < n; i++)
+	vv[i] = i;
+    sh[0] = 10;
+    for (size_t i = 1; i < n; i++)
+	sh[i] = d;
+    srand(s);
+    for (size_t j = 0; j < z; j++)
+    {
+	auto ox = rand() % (a-b+1);
+	auto oy = rand() % (a-b+1);
+	rr[j*n] = labels[j];
+	for (size_t ix = 0; ix < b; ix++)
+	    for (size_t iy = 0; iy < b; iy++)
+		rr[j*n + 1 + ix*b + iy] = images[j*a*a + (ox+ix)*a + oy + iy] * d / 256;
+    }
+    hr->transpose();
+    delete[] images;
+    delete[] labels;
+    return SystemHistoryRepaTuple(move(uu), move(ur), move(hr));
+}
 
 

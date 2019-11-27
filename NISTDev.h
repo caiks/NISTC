@@ -54,6 +54,9 @@ namespace NIST
     // trainBucketedIO :: Int -> IO (System, HistoryRepa)
     SystemHistoryRepaTuple trainBucketedIO(int);
 
+    // trainBucketedIO :: Int -> IO (System, HistoryRepa)
+    SystemHistoryRepaTuple trainBucketedRegionRandomIO(int,int,int);
+
     // testBucketedIO :: Int -> IO (System, HistoryRepa)
     SystemHistoryRepaTuple testBucketedIO(int);
 
