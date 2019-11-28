@@ -2422,7 +2422,7 @@ int main(int argc, char **argv)
 	bmwrite("NIST_model101.bmp", bmvstack(ll2));
     }
 
-    if (true)
+    if (false)
     {
 	auto uvars = systemsSetVar;
 	auto single = histogramSingleton_u;
@@ -2488,6 +2488,106 @@ int main(int argc, char **argv)
 	mark = clk::now();
 	auto hr1 = frmul(*hr, *dr->fud);
 	cout << "frmul " << ((sec)(clk::now() - mark)).count() << "s" << endl; // 84MB
+	this_thread::sleep_for(60s);
+    }
+
+    if (true)
+    {
+	auto uvars = systemsSetVar;
+	auto single = histogramSingleton_u;
+	auto aahr = [](const System& uu, const SystemRepa& ur, const Histogram& aa)
+	{
+	    return systemsHistoriesHistoryRepa_u(uu, ur, *histogramsHistory_u(aa));
+	};
+	auto hrsel = eventsHistoryRepasHistoryRepaSelection_u;
+	auto hrhrred = setVarsHistoryRepasHistoryRepaReduced_u;
+	auto hrred = setVarsHistoryRepasReduce_u;
+	auto frmul = historyRepasFudRepasMultiply_u;
+	auto frvars = fudRepasSetVar;
+	auto frder = fudRepasDerived;
+	auto frund = fudRepasUnderlying;
+	auto frdep = fudsSetVarsDepends;
+	auto drcopy = applicationRepasApplicationRepa_u;
+
+	auto mark = clk::now();
+
+	auto xx = trainBucketedIO(2);
+	auto& uu = std::get<0>(xx);
+	auto& ur = std::get<1>(xx);
+	auto& hrtr = std::get<2>(xx);
+
+	Variable digit("digit");
+	auto vv = *uvars(*uu);
+	auto vvl = VarUSet();
+	vvl.insert(digit);
+	auto vvk = VarUSet(vv);
+	vvk.erase(digit);
+
+	auto& vvi = ur->mapVarSize();
+	SizeList vvk1;
+	for (auto& v : sorted(vvk))
+	    vvk1.push_back(vvi[v]);
+
+	cout << "hrtr->dimension" << endl
+	    << hrtr->dimension << endl << endl;
+	cout << "hrtr->size" << endl
+	    << hrtr->size << endl << endl;
+
+	std::unique_ptr<HistoryRepa> hr;
+	{
+	    SizeList ll;
+	    for (size_t i = 0; i < hrtr->size; i += 8)
+		ll.push_back(i);
+	    hr = hrsel(ll.size(), ll.data(), *hrtr);
+	    cout << "hr->size" << endl
+		<< hr->size << endl << endl;
+	}
+
+	mark = clk::now();
+	StrVarPtrMap m;
+	std::ifstream in("NIST_model101.bin", std::ios::binary);
+	auto ur1 = persistentsSystemRepa(in, m);
+	auto dr1 = persistentsApplicationRepa(in);
+	in.close();
+	cout << "model " << ((sec)(clk::now() - mark)).count() << "s" << endl;
+
+	mark = clk::now();
+	auto& llu = ur->listVarSizePair;
+	auto& llu1 = ur1->listVarSizePair;
+	VarSizeUMap ur0 = ur->mapVarSize();
+	auto n = fudRepasSize(*dr1->fud);
+	size_t a = 28;
+	size_t b = 10;
+	SizeList xs{ 10 };
+	SizeList ys{ 10 };
+	llu.reserve(n * xs.size() * ys.size() + a*a);
+	ApplicationRepa dr;
+	dr.slices = std::make_shared<SizeTree>();
+	dr.slices->_list.reserve(dr1->slices->_list.size() * xs.size() * ys.size());
+	dr.fud = std::make_shared<FudRepa>();
+	dr.fud->layers.reserve(dr1->fud->layers.size() * xs.size() * ys.size());
+	dr.substrate.reserve(dr1->substrate.size() * xs.size() * ys.size());
+	for (auto x : xs)
+	    for (auto y : xs)
+	    {
+		auto dr2 = drcopy(*dr1);
+		SizeSizeUMap nn;
+		nn.reserve(n + b*b);
+		for (auto x1 : dr1->substrate)
+		{
+		    auto& p = llu1[x1];
+
+		}
+		dr2->reframe_u(nn);
+		dr.slices->_list.insert(dr.slices->_list.end(), dr2->slices->_list.begin(), dr2->slices->_list.end());
+		dr.fud->layers.insert(dr.fud->layers.end(), dr2->fud->layers.begin(), dr2->fud->layers.end());
+		dr.substrate.insert(dr.substrate.end(), dr2->substrate.begin(), dr2->substrate.end());
+	    }
+	cout << "reframe_u " << ((sec)(clk::now() - mark)).count() << "s" << endl;
+
+	mark = clk::now();
+	auto hr1 = frmul(*hr, *dr.fud);
+	cout << "frmul " << ((sec)(clk::now() - mark)).count() << "s" << endl; 
 	this_thread::sleep_for(60s);
     }
 
