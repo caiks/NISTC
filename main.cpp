@@ -1981,7 +1981,7 @@ int main(int argc, char **argv)
 	}
     }
 
-    if (false)
+    if (true)
     {
 	auto uvars = systemsSetVar;
 	auto hrsel = [](const HistoryRepa& hr, const SizeList& ll)
@@ -2148,7 +2148,7 @@ int main(int argc, char **argv)
 	bmwrite("NIST01.bmp", bmvstack(ll2));
     }
 
-    if (false)
+    if (true)
     {
 	auto uvars = systemsSetVar;
 	auto single = histogramSingleton_u;
@@ -2255,7 +2255,7 @@ int main(int argc, char **argv)
 	bmwrite("NIST_model100.bmp", bmvstack(ll2));
     }
 
-    if (false)
+    if (true)
     {
 	auto uvars = systemsSetVar;
 	auto hrsel = [](const HistoryRepa& hr, const SizeList& ll)
@@ -2315,7 +2315,7 @@ int main(int argc, char **argv)
 
     }
 
-    if (false)
+    if (true)
     {
 	auto uvars = systemsSetVar;
 	auto single = histogramSingleton_u;
@@ -2422,7 +2422,7 @@ int main(int argc, char **argv)
 	bmwrite("NIST_model101.bmp", bmvstack(ll2));
     }
 
-    if (false)
+    if (true)
     {
 	auto uvars = systemsSetVar;
 	auto single = histogramSingleton_u;
@@ -2479,11 +2479,34 @@ int main(int argc, char **argv)
 	auto dr = persistentsApplicationRepa(in);
 	in.close();
 
+	cout << "treesSize(*dr->slices)" << endl
+	    << treesSize(*dr->slices) << endl << endl;
+
+	cout << "frder(*dr->fud)->size()" << endl
+	    << frder(*dr->fud)->size() << endl << endl;
+
 	cout << "frund(*dr->fud)->size()" << endl
 	    << frund(*dr->fud)->size() << endl << endl;
 
 	cout << "frvars(*dr->fud)->size()" << endl
 	    << frvars(*dr->fud)->size() << endl << endl;
+
+	{
+	    auto& llu = ur1->listVarSizePair;
+	    VarSet qq;
+	    for (std::size_t i = 0; i < dr->substrate.size(); i++)
+		qq.insert(*(llu[dr->substrate[i]]).first);
+	    cout << "substrate " << qq << endl;
+	}
+
+	{
+	    auto& llu = ur1->listVarSizePair;
+	    VarSet qq;
+	    auto ww = frder(*dr->fud);
+	    for (auto& w : *ww)
+		qq.insert(*(llu[w]).first);
+	    cout << "derived " << qq << endl;
+	}
 
 	mark = clk::now();
 	auto hr1 = frmul(*hr, *dr->fud);
@@ -2491,7 +2514,7 @@ int main(int argc, char **argv)
 	this_thread::sleep_for(60s);
     }
 
-    if (true)
+    if (false)
     {
 	auto uvars = systemsSetVar;
 	auto single = histogramSingleton_u;
@@ -2583,6 +2606,25 @@ int main(int argc, char **argv)
 		    auto v = std::make_shared<Variable>(vx, vy);
 		    nn[x1] = ur0[*v];
 		}
+		auto vx1 = std::make_shared<Variable>(x);
+		auto vy1 = std::make_shared<Variable>(y);
+		auto vd1 = std::make_shared<Variable>(vx1, vy1);
+		for (auto& ll : dr1->fud->layers)
+		    for (auto& tr : ll)
+		    {
+			auto x1 = tr->derived;
+			auto& p = llu1[x1];
+			auto vdfl = p.first->_var0;
+			auto vb = p.first->_var1;
+			auto vdf = vdfl->_var0;
+			auto vl = vdfl->_var1;
+			auto vf = vdf->_var1;
+			auto vdf1 = std::make_shared<Variable>(vd1, vf);
+			auto vdfl1 = std::make_shared<Variable>(vdf1, vl);
+			auto vdflb1 = std::make_shared<Variable>(vdfl1, vb);
+			llu.push_back(VarSizePair(vdflb1, p.second));
+			nn[x1] = llu.size() - 1;
+		    }
 		dr2->reframe_u(nn);
 		dr.slices->_list.insert(dr.slices->_list.end(), dr2->slices->_list.begin(), dr2->slices->_list.end());
 		dr.fud->layers.insert(dr.fud->layers.end(), dr2->fud->layers.begin(), dr2->fud->layers.end());
@@ -2590,10 +2632,20 @@ int main(int argc, char **argv)
 	    }
 	cout << "reframe_u " << ((sec)(clk::now() - mark)).count() << "s" << endl;
 
-	VarSet qq;
-	for (std::size_t i = 0; i < dr.substrate.size(); i++)
-	    qq.insert(*(llu[dr.substrate[i]]).first);
-	cout << "substrate " << qq << endl;
+	{
+	    VarSet qq;
+	    for (std::size_t i = 0; i < dr.substrate.size(); i++)
+		qq.insert(*(llu[dr.substrate[i]]).first);
+	    cout << "substrate " << qq << endl;
+	}
+
+	{
+	    VarSet qq;
+	    auto ww = frder(*dr.fud);
+	    for (auto& w : *ww)
+		qq.insert(*(llu[w]).first);
+	    cout << "derived " << qq << endl;
+	}
 
 	mark = clk::now();
 	auto hr1 = frmul(*hr, *dr.fud);
