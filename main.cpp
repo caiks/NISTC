@@ -2665,8 +2665,8 @@ int main(int argc, char **argv)
 	cout << "frmul " << ((sec)(clk::now() - mark)).count() << "s" << endl; 
 	this_thread::sleep_for(60s);
 	/*
-	model 0.0338052s
-	reframe_u 0.657494s
+	model 0.0309985s
+	reframe_u 0.634182s
 	treesSize(*dr.slices)
 	17500
 
@@ -2679,7 +2679,7 @@ int main(int argc, char **argv)
 	frvars(*dr.fud)->size()
 	71476
 
-	frmul 6.65814s 
+	frmul 6.23653s
 	
 	566MB
 	*/
@@ -2831,6 +2831,7 @@ int main(int argc, char **argv)
 	//    cout << "derived " << qq << endl;
 	//}
 
+//	hr->transpose();
 	mark = clk::now();
 	auto hr1 = frmul(*hr, *dr.fud);
 	cout << "frmul " << ((sec)(clk::now() - mark)).count() << "s" << endl;
@@ -2850,7 +2851,7 @@ int main(int argc, char **argv)
 	frvars(*dr.fud)->size()
 	139444
 
-	frmul 12.7636s = 12.2 ns/z/var
+	frmul 12.6613s = 12.1 ns/z/var
 
 	1,092MB => 7738/var = (7500 + 238)/var
 	*/
