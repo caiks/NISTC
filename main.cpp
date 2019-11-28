@@ -1981,7 +1981,7 @@ int main(int argc, char **argv)
 	}
     }
 
-    if (true)
+    if (false)
     {
 	auto uvars = systemsSetVar;
 	auto hrsel = [](const HistoryRepa& hr, const SizeList& ll)
@@ -2148,7 +2148,7 @@ int main(int argc, char **argv)
 	bmwrite("NIST01.bmp", bmvstack(ll2));
     }
 
-    if (true)
+    if (false)
     {
 	auto uvars = systemsSetVar;
 	auto single = histogramSingleton_u;
@@ -2255,7 +2255,7 @@ int main(int argc, char **argv)
 	bmwrite("NIST_model100.bmp", bmvstack(ll2));
     }
 
-    if (true)
+    if (false)
     {
 	auto uvars = systemsSetVar;
 	auto hrsel = [](const HistoryRepa& hr, const SizeList& ll)
@@ -2315,7 +2315,7 @@ int main(int argc, char **argv)
 
     }
 
-    if (true)
+    if (false)
     {
 	auto uvars = systemsSetVar;
 	auto single = histogramSingleton_u;
@@ -2422,7 +2422,7 @@ int main(int argc, char **argv)
 	bmwrite("NIST_model101.bmp", bmvstack(ll2));
     }
 
-    if (true)
+    if (false)
     {
 	auto uvars = systemsSetVar;
 	auto single = histogramSingleton_u;
@@ -2514,7 +2514,7 @@ int main(int argc, char **argv)
 	this_thread::sleep_for(60s);
     }
 
-    if (false)
+    if (true)
     {
 	auto uvars = systemsSetVar;
 	auto single = histogramSingleton_u;
@@ -2580,8 +2580,8 @@ int main(int argc, char **argv)
 	auto n = fudRepasSize(*dr1->fud);
 	size_t a = 28;
 	size_t b = 10;
-	SizeList xs{ 10 };
-	SizeList ys{ 10 };
+	SizeList xs{ 2,6,10,14,18 };
+	SizeList ys{ 2,6,10,14,18 };
 	auto& llu = ur->listVarSizePair;
 	ApplicationRepa dr;
 	{
@@ -2593,7 +2593,7 @@ int main(int argc, char **argv)
 	    dr.substrate.reserve(dr1->substrate.size() * xs.size() * ys.size());
 	}
 	for (auto x : xs)
-	    for (auto y : xs)
+	    for (auto y : ys)
 	    {
 		auto dr2 = drcopy(*dr1);
 		SizeSizeUMap nn;
@@ -2632,25 +2632,56 @@ int main(int argc, char **argv)
 	    }
 	cout << "reframe_u " << ((sec)(clk::now() - mark)).count() << "s" << endl;
 
-	{
-	    VarSet qq;
-	    for (std::size_t i = 0; i < dr.substrate.size(); i++)
-		qq.insert(*(llu[dr.substrate[i]]).first);
-	    cout << "substrate " << qq << endl;
-	}
+	cout << "treesSize(*dr.slices)" << endl
+	    << treesSize(*dr.slices) << endl << endl;
 
-	{
-	    VarSet qq;
-	    auto ww = frder(*dr.fud);
-	    for (auto& w : *ww)
-		qq.insert(*(llu[w]).first);
-	    cout << "derived " << qq << endl;
-	}
+	cout << "frder(*dr.fud)->size()" << endl
+	    << frder(*dr.fud)->size() << endl << endl;
+
+	cout << "frund(*dr.fud)->size()" << endl
+	    << frund(*dr.fud)->size() << endl << endl;
+
+	cout << "frvars(*dr.fud)->size()" << endl
+	    << frvars(*dr.fud)->size() << endl << endl;
+
+	//{
+	//    VarSet qq;
+	//    for (std::size_t i = 0; i < dr.substrate.size(); i++)
+	//	qq.insert(*(llu[dr.substrate[i]]).first);
+	//    cout << "substrate " << qq << endl;
+	//}
+
+	//{
+	//    VarSet qq;
+	//    auto ww = frder(*dr.fud);
+	//    for (auto& w : *ww)
+	//	qq.insert(*(llu[w]).first);
+	//    cout << "derived " << qq << endl;
+	//}
 
 	mark = clk::now();
 	auto hr1 = frmul(*hr, *dr.fud);
 	cout << "frmul " << ((sec)(clk::now() - mark)).count() << "s" << endl; 
 	this_thread::sleep_for(60s);
+	/*
+	model 0.0338052s
+	reframe_u 0.657494s
+	treesSize(*dr.slices)
+	17500
+
+	frder(*dr.fud)->size()
+	14350
+
+	frund(*dr.fud)->size()
+	676
+
+	frvars(*dr.fud)->size()
+	71476
+
+	frmul 6.65814s 
+	
+	600MB
+	*/
     }
 
     return 0;
