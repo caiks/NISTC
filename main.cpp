@@ -2552,7 +2552,6 @@ int main(int argc, char **argv)
 	cout << "model " << ((sec)(clk::now() - mark)).count() << "s" << endl;
 
 	mark = clk::now();
-	auto& llu = ur->listVarSizePair;
 	auto& llu1 = ur1->listVarSizePair;
 	VarSizeUMap ur0 = ur->mapVarSize();
 	auto n = fudRepasSize(*dr1->fud);
@@ -2560,13 +2559,16 @@ int main(int argc, char **argv)
 	size_t b = 10;
 	SizeList xs{ 10 };
 	SizeList ys{ 10 };
-	llu.reserve(n * xs.size() * ys.size() + a*a);
+	auto& llu = ur->listVarSizePair;
 	ApplicationRepa dr;
-	dr.slices = std::make_shared<SizeTree>();
-	dr.slices->_list.reserve(dr1->slices->_list.size() * xs.size() * ys.size());
-	dr.fud = std::make_shared<FudRepa>();
-	dr.fud->layers.reserve(dr1->fud->layers.size() * xs.size() * ys.size());
-	dr.substrate.reserve(dr1->substrate.size() * xs.size() * ys.size());
+	{
+	    llu.reserve(n * xs.size() * ys.size() + a*a);
+	    dr.slices = std::make_shared<SizeTree>();
+	    dr.slices->_list.reserve(dr1->slices->_list.size() * xs.size() * ys.size());
+	    dr.fud = std::make_shared<FudRepa>();
+	    dr.fud->layers.reserve(dr1->fud->layers.size() * xs.size() * ys.size());
+	    dr.substrate.reserve(dr1->substrate.size() * xs.size() * ys.size());
+	}
 	for (auto x : xs)
 	    for (auto y : xs)
 	    {
@@ -2576,7 +2578,10 @@ int main(int argc, char **argv)
 		for (auto x1 : dr1->substrate)
 		{
 		    auto& p = llu1[x1];
-
+		    auto vx = std::make_shared<Variable>(p.first->_var0->_int + x - 1);
+		    auto vy = std::make_shared<Variable>(p.first->_var1->_int + y - 1);
+		    auto v = std::make_shared<Variable>(vx, vy);
+		    nn[x1] = ur0[*v];
 		}
 		dr2->reframe_u(nn);
 		dr.slices->_list.insert(dr.slices->_list.end(), dr2->slices->_list.begin(), dr2->slices->_list.end());
@@ -2584,6 +2589,11 @@ int main(int argc, char **argv)
 		dr.substrate.insert(dr.substrate.end(), dr2->substrate.begin(), dr2->substrate.end());
 	    }
 	cout << "reframe_u " << ((sec)(clk::now() - mark)).count() << "s" << endl;
+
+	VarSet qq;
+	for (std::size_t i = 0; i < dr.substrate.size(); i++)
+	    qq.insert(*(llu[dr.substrate[i]]).first);
+	cout << "substrate " << qq << endl;
 
 	mark = clk::now();
 	auto hr1 = frmul(*hr, *dr.fud);
