@@ -4,6 +4,9 @@ using namespace Alignment;
 using namespace NIST;
 using namespace std;
 
+typedef std::chrono::duration<double> sec; 
+typedef std::chrono::high_resolution_clock clk;
+
 int main(int argc, char **argv)
 {
     if (false)
@@ -2252,7 +2255,7 @@ int main(int argc, char **argv)
 	bmwrite("NIST_model100.bmp", bmvstack(ll2));
     }
 
-    if (true)
+    if (false)
     {
 	auto uvars = systemsSetVar;
 	auto hrsel = [](const HistoryRepa& hr, const SizeList& ll)
@@ -2312,7 +2315,7 @@ int main(int argc, char **argv)
 
     }
 
-    if (true)
+    if (false)
     {
 	auto uvars = systemsSetVar;
 	auto single = histogramSingleton_u;
@@ -2417,6 +2420,75 @@ int main(int argc, char **argv)
 		ll2.push_back(bmhstack(pp1));
 	}
 	bmwrite("NIST_model101.bmp", bmvstack(ll2));
+    }
+
+    if (true)
+    {
+	auto uvars = systemsSetVar;
+	auto single = histogramSingleton_u;
+	auto aahr = [](const System& uu, const SystemRepa& ur, const Histogram& aa)
+	{
+	    return systemsHistoriesHistoryRepa_u(uu, ur, *histogramsHistory_u(aa));
+	};
+	auto hrsel = eventsHistoryRepasHistoryRepaSelection_u;
+	auto hrhrred = setVarsHistoryRepasHistoryRepaReduced_u;
+	auto hrred = setVarsHistoryRepasReduce_u;
+	auto frmul = historyRepasFudRepasMultiply_u;
+	auto frvars = fudRepasSetVar;
+	auto frder = fudRepasDerived;
+	auto frund = fudRepasUnderlying;
+	auto frdep = fudsSetVarsDepends;
+
+	auto mark = clk::now();
+
+	auto xx = trainBucketedRegionRandomIO(2, 10, 13);
+	auto& uu = std::get<0>(xx);
+	auto& ur = std::get<1>(xx);
+	auto& hrtr = std::get<2>(xx);
+
+	Variable digit("digit");
+	auto vv = *uvars(*uu);
+	auto vvl = VarUSet();
+	vvl.insert(digit);
+	auto vvk = VarUSet(vv);
+	vvk.erase(digit);
+
+	auto& vvi = ur->mapVarSize();
+	SizeList vvk1;
+	for (auto& v : sorted(vvk))
+	    vvk1.push_back(vvi[v]);
+
+	cout << "hrtr->dimension" << endl
+	    << hrtr->dimension << endl << endl;
+	cout << "hrtr->size" << endl
+	    << hrtr->size << endl << endl;
+
+	std::unique_ptr<HistoryRepa> hr;
+	{
+	    SizeList ll;
+	    for (size_t i = 0; i < hrtr->size; i += 8)
+		ll.push_back(i);
+	    hr = hrsel(ll.size(), ll.data(), *hrtr);
+	    cout << "hr->size" << endl
+		<< hr->size << endl << endl;
+	}
+
+	StrVarPtrMap m;
+	std::ifstream in("NIST_model101.bin", std::ios::binary);
+	auto ur1 = persistentsSystemRepa(in, m);
+	auto dr = persistentsApplicationRepa(in);
+	in.close();
+
+	cout << "frund(*dr->fud)->size()" << endl
+	    << frund(*dr->fud)->size() << endl << endl;
+
+	cout << "frvars(*dr->fud)->size()" << endl
+	    << frvars(*dr->fud)->size() << endl << endl;
+
+	mark = clk::now();
+	auto hr1 = frmul(*hr, *dr->fud);
+	cout << "frmul " << ((sec)(clk::now() - mark)).count() << "s" << endl; // 84MB
+	this_thread::sleep_for(60s);
     }
 
     return 0;
