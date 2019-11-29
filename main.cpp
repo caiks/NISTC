@@ -3163,7 +3163,7 @@ int main(int argc, char **argv)
 	size_t wmax = 18;
 	size_t lmax = 8;
 	size_t xmax = 128;
-	size_t znnmax = 7500 * 2 * 100 * 100;
+	double znnmax = 7500.0 * 2.0 * 100.0 * 100.0;
 	size_t omax = 10;
 	size_t bmax = 10 * 3;
 	size_t mmax = 3;
@@ -3287,11 +3287,12 @@ int main(int argc, char **argv)
 	bmwrite("NIST_model100_1.bmp", bmvstack(ll2));
     }
 
-    if (false)
+    if (true)
     {
 	auto uvars = systemsSetVar;
 	auto hrsel = eventsHistoryRepasHistoryRepaSelection_u;
 	auto drcopy = applicationRepasApplicationRepa_u;
+	auto drjoin = applicationRepaPairsJoin_u;
 	auto applicationer = parametersSystemsFudRepasHistoryRepasApplicationerSubstrateEntropyMaxRollByMExcludedSelfHighestFmaxIORepa;
 
 	auto xx = trainBucketedIO(2);
@@ -3314,7 +3315,7 @@ int main(int argc, char **argv)
 	std::unique_ptr<HistoryRepa> hr;
 	{
 	    SizeList ll;
-	    for (size_t i = 0; i < hrtr->size; i += 64)
+	    for (size_t i = 0; i < hrtr->size; i += 8)
 		ll.push_back(i);
 	    hr = hrsel(ll.size(), ll.data(), *hrtr);
 	    cout << "hr->size" << endl
@@ -3386,7 +3387,7 @@ int main(int argc, char **argv)
 	size_t wmax = 18;
 	size_t lmax = 8;
 	size_t xmax = 128;
-	size_t znnmax = 937 * 2 * 800 * 800;
+	double znnmax = 7500.0 * 2.0 * 100.0 * 100.0;
 	size_t omax = 10;
 	size_t bmax = 10 * 3;
 	size_t mmax = 3;
@@ -3396,10 +3397,11 @@ int main(int argc, char **argv)
 	size_t mult = 1;
 	size_t seed = 5;
 	auto sl = treesElements(*dr.slices);
-	auto dr0 = applicationer(wmax, lmax, xmax, znnmax, omax, bmax, mmax, umax, pmax, fmax, mult, seed, *sl, *dr.fud, *hr, *ur);
+	auto dr2 = applicationer(wmax, lmax, xmax, znnmax, omax, bmax, mmax, umax, pmax, fmax, mult, seed, *sl, *dr.fud, *hr, *ur);
+	auto dr3 = drjoin(dr,*dr2);
 	std::ofstream out("NIST_model102.bin", std::ios::binary);
 	systemRepasPersistent(*ur, out); cout << endl;
-	applicationRepasPersistent(*dr0, out); cout << endl;
+	applicationRepasPersistent(*dr3, out); cout << endl;
 	out.close();
     }
 
