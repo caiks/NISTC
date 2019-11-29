@@ -3024,6 +3024,15 @@ int main(int argc, char **argv)
 	    << ee1->front() << endl << endl;
 	cout << "prents back" << endl
 	    << ee1->back() << endl << endl;
+	std::sort(ee1->begin(), ee1->end());
+	DoubleSizePairList ee2;
+	for (std::size_t i = ee1->size() - 1000; i < ee1->size(); i++)
+	    ee2.push_back((*ee1)[i]);
+	cout << "prents 1000" << endl;
+	for (auto& p : ee2)
+	    cout << "(" << *(llu[p.second]).first << "," << p.first << "),";
+	cout << endl << endl;
+
     }
 
 
