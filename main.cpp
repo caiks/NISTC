@@ -2857,7 +2857,7 @@ int main(int argc, char **argv)
 	*/
     }
 
-    if (true)
+    if (false)
     {
 	auto uvars = systemsSetVar;
 	auto single = histogramSingleton_u;
@@ -3033,6 +3033,90 @@ int main(int argc, char **argv)
 	    cout << "(" << *(llu[p.second]).first << "," << p.first << "),";
 	cout << endl << endl;
 
+    }
+
+    if (true)
+    {
+	auto uvars = systemsSetVar;
+	auto single = histogramSingleton_u;
+	auto aahr = [](const System& uu, const SystemRepa& ur, const Histogram& aa)
+	{
+	    return systemsHistoriesHistoryRepa_u(uu, ur, *histogramsHistory_u(aa));
+	};
+	auto hrsel = eventsHistoryRepasHistoryRepaSelection_u;
+	auto hrhrred = [](const HistoryRepa& hr, const SystemRepa& ur, const VarUSet& kk)
+	{
+	    auto& vvi = ur.mapVarSize();
+	    std::size_t m = kk.size();
+	    auto kk0 = sorted(kk);
+	    SizeList kk1;
+	    for (auto& v : kk0)
+		kk1.push_back(vvi[v]);
+	    return setVarsHistoryRepasHistoryRepaReduced_u(m, kk1.data(), hr);
+	};
+	auto hrred = setVarsHistoryRepasReduce_u;
+	auto hrpr = historyRepasRed;
+	auto prents = histogramRepaRedsListEntropy;
+	auto frmul = historyRepasFudRepasMultiply_u;
+	auto frvars = fudRepasSetVar;
+	auto frder = fudRepasDerived;
+	auto frund = fudRepasUnderlying;
+	auto frdep = fudsSetVarsDepends;
+	auto drcopy = applicationRepasApplicationRepa_u;
+
+	auto mark = clk::now();
+
+	auto xx = trainBucketedIO(2);
+	auto& uu = std::get<0>(xx);
+	auto& ur = std::get<1>(xx);
+	auto& hrtr = std::get<2>(xx);
+
+	Variable digit("digit");
+	auto vv = *uvars(*uu);
+	auto vvl = VarUSet();
+	vvl.insert(digit);
+	auto vvk = VarUSet(vv);
+	vvk.erase(digit);
+
+	auto& vvi = ur->mapVarSize();
+	SizeList vvk1;
+	for (auto& v : sorted(vvk))
+	    vvk1.push_back(vvi[v]);
+
+	cout << "hrtr->dimension" << endl
+	    << hrtr->dimension << endl << endl;
+	cout << "hrtr->size" << endl
+	    << hrtr->size << endl << endl;
+
+	std::unique_ptr<HistoryRepa> hr;
+	{
+	    SizeList ll;
+	    for (size_t i = 0; i < hrtr->size; i += 8)
+		ll.push_back(i);
+	    hr = hrsel(ll.size(), ll.data(), *hrtr);
+	    cout << "hr->size" << endl
+		<< hr->size << endl << endl;
+	    hrtr.reset();
+	}
+
+	auto hr1 = hrhrred(*hr, *ur, vvk);
+	auto pr1 = hrpr(*hr1);
+	auto ee1 = prents(*pr1);
+	std::map<std::size_t, double> mm1;
+	for (auto& p : *ee1)
+	    mm1[p.second] = p.first;
+	int b = 28;
+	int c = 3;
+	Bitmap bm(b*c, b*c);
+	for (int i = 0; i < bm.height; i++) {
+	    for (int j = 0; j< bm.width; j++) {
+		unsigned char x = (unsigned char)(mm1[(b - 1 - (i / c))*b + (j / c)]*255/log(2));
+		int k = i*bm.width * 3 + j * 3;
+		for (int l = 0; l<3; l++)
+		    bm.image[k + l] = x;
+	    }
+	}
+	bmwrite("NIST_ents.bmp", bm);
     }
 
 
