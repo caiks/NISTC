@@ -3180,7 +3180,7 @@ int main(int argc, char **argv)
 
     }
 
-    if (true)
+    if (false)
     {
 	auto uvars = systemsSetVar;
 	auto single = histogramSingleton_u;
@@ -3287,7 +3287,228 @@ int main(int argc, char **argv)
 	bmwrite("NIST_model100_1.bmp", bmvstack(ll2));
     }
 
+    if (false)
+    {
+	auto uvars = systemsSetVar;
+	auto hrsel = eventsHistoryRepasHistoryRepaSelection_u;
+	auto drcopy = applicationRepasApplicationRepa_u;
+	auto applicationer = parametersSystemsFudRepasHistoryRepasApplicationerSubstrateEntropyMaxRollByMExcludedSelfHighestFmaxIORepa;
 
+	auto xx = trainBucketedIO(2);
+	auto& uu = std::get<0>(xx);
+	auto& ur = std::get<1>(xx);
+	auto& hrtr = std::get<2>(xx);
+
+	Variable digit("digit");
+	auto vv = *uvars(*uu);
+	auto vvl = VarUSet();
+	vvl.insert(digit);
+	auto vvk = VarUSet(vv);
+	vvk.erase(digit);
+
+	cout << "hrtr->dimension" << endl
+	    << hrtr->dimension << endl << endl;
+	cout << "hrtr->size" << endl
+	    << hrtr->size << endl << endl;
+
+	std::unique_ptr<HistoryRepa> hr;
+	{
+	    SizeList ll;
+	    for (size_t i = 0; i < hrtr->size; i += 64)
+		ll.push_back(i);
+	    hr = hrsel(ll.size(), ll.data(), *hrtr);
+	    cout << "hr->size" << endl
+		<< hr->size << endl << endl;
+	    hrtr.reset();
+	}
+
+	StrVarPtrMap m;
+	std::ifstream in("NIST_model101.bin", std::ios::binary);
+	auto ur1 = persistentsSystemRepa(in, m);
+	auto dr1 = persistentsApplicationRepa(in);
+	in.close();
+	auto& llu1 = ur1->listVarSizePair;
+	VarSizeUMap ur0 = ur->mapVarSize();
+	auto n = fudRepasSize(*dr1->fud);
+	size_t a = 28;
+	size_t b = 10;
+	SizeList xs{ 2,6,8,10,12,14,18 };
+	SizeList ys{ 2,6,8,10,12,14,18 };
+	auto& llu = ur->listVarSizePair;
+	ApplicationRepa dr;
+	{
+	    llu.reserve(n * xs.size() * ys.size() + a*a);
+	    dr.slices = std::make_shared<SizeTree>();
+	    dr.slices->_list.reserve(dr1->slices->_list.size() * xs.size() * ys.size());
+	    dr.fud = std::make_shared<FudRepa>();
+	    dr.fud->layers.reserve(dr1->fud->layers.size() * xs.size() * ys.size());
+	    dr.substrate.reserve(dr1->substrate.size() * xs.size() * ys.size());
+	}
+	for (auto x : xs)
+	    for (auto y : ys)
+	    {
+		auto dr2 = drcopy(*dr1);
+		SizeSizeUMap nn;
+		nn.reserve(n + b*b);
+		for (auto x1 : dr1->substrate)
+		{
+		    auto& p = llu1[x1];
+		    auto vx = std::make_shared<Variable>(p.first->_var0->_int + x - 1);
+		    auto vy = std::make_shared<Variable>(p.first->_var1->_int + y - 1);
+		    auto v = std::make_shared<Variable>(vx, vy);
+		    nn[x1] = ur0[*v];
+		}
+		auto vx1 = std::make_shared<Variable>(x);
+		auto vy1 = std::make_shared<Variable>(y);
+		auto vd1 = std::make_shared<Variable>(vx1, vy1);
+		for (auto& ll : dr1->fud->layers)
+		    for (auto& tr : ll)
+		    {
+			auto x1 = tr->derived;
+			auto& p = llu1[x1];
+			auto vdfl = p.first->_var0;
+			auto vb = p.first->_var1;
+			auto vdf = vdfl->_var0;
+			auto vl = vdfl->_var1;
+			auto vf = vdf->_var1;
+			auto vdf1 = std::make_shared<Variable>(vd1, vf);
+			auto vdfl1 = std::make_shared<Variable>(vdf1, vl);
+			auto vdflb1 = std::make_shared<Variable>(vdfl1, vb);
+			llu.push_back(VarSizePair(vdflb1, p.second));
+			nn[x1] = llu.size() - 1;
+		    }
+		dr2->reframe_u(nn);
+		dr.slices->_list.insert(dr.slices->_list.end(), dr2->slices->_list.begin(), dr2->slices->_list.end());
+		dr.fud->layers.insert(dr.fud->layers.end(), dr2->fud->layers.begin(), dr2->fud->layers.end());
+		dr.substrate.insert(dr.substrate.end(), dr2->substrate.begin(), dr2->substrate.end());
+	    }
+
+	size_t wmax = 18;
+	size_t lmax = 8;
+	size_t xmax = 128;
+	size_t znnmax = 937 * 2 * 800 * 800;
+	size_t omax = 10;
+	size_t bmax = 10 * 3;
+	size_t mmax = 3;
+	size_t umax = 128;
+	size_t pmax = 1;
+	size_t fmax = 127;
+	size_t mult = 1;
+	size_t seed = 5;
+	auto sl = treesElements(*dr.slices);
+	auto dr0 = applicationer(wmax, lmax, xmax, znnmax, omax, bmax, mmax, umax, pmax, fmax, mult, seed, *sl, *dr.fud, *hr, *ur);
+	std::ofstream out("NIST_model102.bin", std::ios::binary);
+	systemRepasPersistent(*ur, out); cout << endl;
+	applicationRepasPersistent(*dr0, out); cout << endl;
+	out.close();
+    }
+
+    if (true)
+    {
+	auto uvars = systemsSetVar;
+	auto single = histogramSingleton_u;
+	auto aahr = [](const System& uu, const SystemRepa& ur, const Histogram& aa)
+	{
+	    return systemsHistoriesHistoryRepa_u(uu, ur, *histogramsHistory_u(aa));
+	};
+	auto hrsel = eventsHistoryRepasHistoryRepaSelection_u;
+	auto hrhrred = setVarsHistoryRepasHistoryRepaReduced_u;
+	auto hrred = setVarsHistoryRepasReduce_u;
+	auto frmul = historyRepasFudRepasMultiply_u;
+	auto frvars = fudRepasSetVar;
+	auto frder = fudRepasDerived;
+	auto frund = fudRepasUnderlying;
+	auto frdep = fudsSetVarsDepends;
+
+	auto xx = trainBucketedIO(2);
+	auto& uu = std::get<0>(xx);
+	auto& ur = std::get<1>(xx);
+	auto& hrtr = std::get<2>(xx);
+
+	Variable digit("digit");
+	auto vv = *uvars(*uu);
+	auto vvl = VarUSet();
+	vvl.insert(digit);
+	auto vvk = VarUSet(vv);
+	vvk.erase(digit);
+
+	auto& vvi = ur->mapVarSize();
+	SizeList vvk1;
+	for (auto& v : sorted(vvk))
+	    vvk1.push_back(vvi[v]);
+
+	cout << "hrtr->dimension" << endl
+	    << hrtr->dimension << endl << endl;
+	cout << "hrtr->size" << endl
+	    << hrtr->size << endl << endl;
+
+	std::unique_ptr<HistoryRepa> hr;
+	{
+	    SizeList ll;
+	    for (size_t i = 0; i < hrtr->size; i += 8)
+		ll.push_back(i);
+	    hr = hrsel(ll.size(), ll.data(), *hrtr);
+	    cout << "hr->size" << endl
+		<< hr->size << endl << endl;
+	}
+
+	StrVarPtrMap m;
+	std::ifstream in("NIST_model102.bin", std::ios::binary);
+	auto ur1 = persistentsSystemRepa(in, m);
+	auto dr = persistentsApplicationRepa(in);
+	in.close();
+
+	cout << "frund(*dr->fud)->size()" << endl
+	    << frund(*dr->fud)->size() << endl << endl;
+
+	cout << "frvars(*dr->fud)->size()" << endl
+	    << frvars(*dr->fud)->size() << endl << endl;
+
+	auto hr1 = frmul(*hr, *dr->fud);
+	if (hr1->evient)
+	    hr1->transpose();
+	auto z = hr1->size;
+	auto& mvv = hr1->mapVarInt();
+	auto sl = treesElements(*dr->slices);
+	std::map<std::size_t, std::shared_ptr<HistoryRepa>> shr;
+	for (auto s : *sl)
+	{
+	    SizeList ev;
+	    auto pk = mvv[s];
+	    for (std::size_t j = 0; j < z; j++)
+	    {
+		std::size_t u = hr1->arr[pk*z + j];
+		if (u)
+		    ev.push_back(j);
+	    }
+	    shr[s] = move(hrhrred(vvk1.size(), vvk1.data(), *hrsel(ev.size(), ev.data(), *hr1)));
+	}
+	auto ll = treesPaths(*dr->slices);
+	vector<vector<pair<double, size_t>>> ll1;
+	for (auto pp : *ll)
+	{
+	    vector<pair<double, size_t>> pp1;
+	    for (auto s : pp)
+		if (shr[s]->size >= 50)
+		    pp1.push_back(pair<double, size_t>(shr[s]->size, s));
+	    if (pp1.size())
+		ll1.push_back(pp1);
+	}
+	auto ll0 = *treesPaths(*pathsTree(ll1));
+	sort(ll0.begin(), ll0.end());
+	reverse(ll0.begin(), ll0.end());
+	std::vector<Bitmap> ll2;
+	for (auto pp : ll0)
+	{
+	    std::vector<Bitmap> pp1;
+	    for (auto p : pp)
+		if (p.first > 0)
+		    pp1.push_back(hrbm(28, 1, 2, *shr[p.second]));
+	    if (pp1.size())
+		ll2.push_back(bmhstack(pp1));
+	}
+	bmwrite("NIST_model102.bmp", bmvstack(ll2));
+    }
 
     return 0;
 }
