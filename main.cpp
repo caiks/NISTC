@@ -3595,7 +3595,7 @@ int main(int argc, char **argv)
 	bmwrite("NIST_model102.bmp", bmvstack(ll2));
     }
 
-    if (true)
+    if (false)
     {
 	auto uvars = systemsSetVar;
 	auto hrsel = [](const HistoryRepa& hr, const SizeList& ll)
@@ -3655,7 +3655,7 @@ int main(int argc, char **argv)
 
     }
 
-    if (true)
+    if (false)
     {
 	auto uvars = systemsSetVar;
 	auto single = histogramSingleton_u;
@@ -3868,7 +3868,7 @@ int main(int argc, char **argv)
 	size_t mmax = 3;
 	size_t umax = 128;
 	size_t pmax = 1;
-	size_t fmax = 31;
+	size_t fmax = 127;
 	size_t mult = 1;
 	size_t seed = 5;
 	auto sl = treesElements(*dr.slices);
