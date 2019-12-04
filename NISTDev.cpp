@@ -360,3 +360,84 @@ SystemHistoryRepaTuple NIST::trainBucketedRegionRandomIO(int d, int b, int s)
 }
 
 
+// testBucketedIO :: Int -> IO (System, HistoryRepa)
+SystemHistoryRepaTuple NIST::testBucketedIO(int d)
+{
+    auto lluu = listsSystem_u;
+    auto uuur = systemsSystemRepa;
+
+    const int a = 28;
+    const int z = 10000;
+    unsigned char* images = new unsigned char[z*a*a];
+    unsigned char* labels = new unsigned char[z];
+    try
+    {
+	ifstream fimages("t10k-images-idx3-ubyte", ios::binary);
+	ifstream flabels("t10k-labels-idx1-ubyte", ios::binary);
+	if (!fimages.is_open() || !flabels.is_open())
+	{
+	    cout << "testBucketedIO : cannot open files" << endl;
+	    delete[] images;
+	    delete[] labels;
+	    return SystemHistoryRepaTuple();
+	}
+	fimages.read((char*)images, 16);
+	fimages.read((char*)images, z*a*a);
+	fimages.close();
+	flabels.read((char*)labels, 8);
+	flabels.read((char*)labels, z);
+	flabels.close();
+    }
+    catch (const exception& e)
+    {
+	cout << "testBucketedIO : " << e.what() << endl;
+	delete[] images;
+	delete[] labels;
+	return SystemHistoryRepaTuple();
+    }
+    ValSet digits;
+    for (int i = 0; i < 10; i++)
+	digits.insert(Value(i));
+    ValSet buckets;
+    for (int i = 0; i < d; i++)
+	buckets.insert(Value(i));
+    vector<VarValSetPair> ll;
+    ll.push_back(VarValSetPair(Variable("digit"), digits));
+    for (int i = 0; i < a; i++)
+	for (int j = 0; j < a; j++)
+	    ll.push_back(VarValSetPair(Variable(Variable(i + 1), Variable(j + 1)), buckets));
+    auto uu = lluu(ll);
+    auto ur = uuur(*uu);
+    auto hr = make_unique<HistoryRepa>();
+    hr->dimension = a*a + 1;
+    auto n = hr->dimension;
+    hr->vectorVar = new size_t[n];
+    auto vv = hr->vectorVar;
+    hr->shape = new size_t[n];
+    auto sh = hr->shape;
+    hr->size = z;
+    hr->evient = true;
+    hr->arr = new unsigned char[z*n];
+    auto rr = hr->arr;
+    for (size_t i = 0; i < n; i++)
+	vv[i] = i;
+    sh[0] = 10;
+    for (size_t i = 1; i < n; i++)
+	sh[i] = d;
+    size_t k = 0;
+    for (size_t j = 0; j < z; j++)
+    {
+	size_t jn = j*n;
+	rr[jn] = labels[j];
+	for (size_t i = 1; i < n; i++)
+	{
+	    rr[jn + i] = images[k] * d / 256;
+	    k++;
+	}
+    }
+    hr->transpose();
+    delete[] images;
+    delete[] labels;
+    return SystemHistoryRepaTuple(move(uu), move(ur), move(hr));
+}
+
