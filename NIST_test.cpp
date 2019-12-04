@@ -152,7 +152,6 @@ int main(int argc, char **argv)
 
     }
     cout << "effective size: " << hr->size - x << endl;
-    cout << "effective size: " << hr->size - x << endl;
     cout << "matches: " << a << endl;
 
     return 0;
