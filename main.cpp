@@ -4759,7 +4759,6 @@ int main(int argc, char **argv)
 	bmwrite("NIST_model108.bmp", bmvstack(ll2));
     }
 
-
     if (true)
     {
 	auto uvars = systemsSetVar;
@@ -4772,7 +4771,7 @@ int main(int argc, char **argv)
 	auto xx = trainBucketedIO(2);
 	auto& uu = std::get<0>(xx);
 	auto& ur = std::get<1>(xx);
-	auto& hr = std::get<2>(xx);
+	auto& hrtr = std::get<2>(xx);
 
 	Variable digit("digit");
 	auto vv = *uvars(*uu);
@@ -4786,6 +4785,22 @@ int main(int argc, char **argv)
 	for (auto& v : sorted(vvk))
 	    vvk1.push_back(vvi[v]);
 
+	cout << "hrtr->dimension" << endl
+	    << hrtr->dimension << endl << endl;
+	cout << "hrtr->size" << endl
+	    << hrtr->size << endl << endl;
+
+	std::unique_ptr<HistoryRepa> hr;
+	{
+	    SizeList ll;
+	    for (size_t i = 0; i < hrtr->size; i += 8)
+		ll.push_back(i);
+	    hr = hrsel(ll.size(), ll.data(), *hrtr);
+	    cout << "hr->size" << endl
+		<< hr->size << endl << endl;
+	    hrtr.reset();
+	}
+
 	StrVarPtrMap m;
 	std::ifstream in("NIST_model100.bin", std::ios::binary);
 	auto ur1 = persistentsSystemRepa(in, m);
@@ -4796,7 +4811,7 @@ int main(int argc, char **argv)
 
 	SizeList vvk2;
 	for (std::size_t i = 0; i < hr1->dimension; i++)
-	    vvk2.push_back(hr1->arr[i]);
+	    vvk2.push_back(hr1->vectorVar[i]);
 
 	size_t fmax = 127;
 	auto dr2 = applicationer(fmax, vvk2, vvi[digit], *hr1, 1, *ur1);
@@ -4827,7 +4842,7 @@ int main(int argc, char **argv)
 	auto xx = trainBucketedIO(2);
 	auto& uu = std::get<0>(xx);
 	auto& ur = std::get<1>(xx);
-	auto& hr = std::get<2>(xx);
+	auto& hrtr = std::get<2>(xx);
 
 	Variable digit("digit");
 	auto vv = *uvars(*uu);
@@ -4840,6 +4855,21 @@ int main(int argc, char **argv)
 	SizeList vvk1;
 	for (auto& v : sorted(vvk))
 	    vvk1.push_back(vvi[v]);
+
+	cout << "hrtr->dimension" << endl
+	    << hrtr->dimension << endl << endl;
+	cout << "hrtr->size" << endl
+	    << hrtr->size << endl << endl;
+
+	std::unique_ptr<HistoryRepa> hr;
+	{
+	    SizeList ll;
+	    for (size_t i = 0; i < hrtr->size; i += 8)
+		ll.push_back(i);
+	    hr = hrsel(ll.size(), ll.data(), *hrtr);
+	    cout << "hr->size" << endl
+		<< hr->size << endl << endl;
+	}
 
 	StrVarPtrMap m;
 	std::ifstream in("NIST_model100_2.bin", std::ios::binary);
@@ -4887,7 +4917,7 @@ int main(int argc, char **argv)
 	{
 	    vector<pair<double, size_t>> pp1;
 	    for (auto s : pp)
-		if (shr[s]->size >= 10)
+		if (shr[s]->size >= 50)
 		    pp1.push_back(pair<double, size_t>(shr[s]->size, s));
 	    if (pp1.size())
 		ll1.push_back(pp1);
