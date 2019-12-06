@@ -5001,7 +5001,7 @@ int main(int argc, char **argv)
 	out.close();
     }
 
-    if (true)
+    if (false)
     {
 	auto uvars = systemsSetVar;
 	auto hrsel = eventsHistoryRepasHistoryRepaSelection_u;
@@ -5114,6 +5114,368 @@ int main(int argc, char **argv)
 	auto dr2 = applicationer(fmax, vvk2, vvi[digit], *hr1, 1, *ur);
 	auto dr3 = drjoin(dr, *dr2);
 	std::ofstream out("NIST_model109.bin", std::ios::binary);
+	systemRepasPersistent(*ur, out); cout << endl;
+	applicationRepasPersistent(*dr3, out); cout << endl;
+	out.close();
+    }
+
+    if (false)
+    {
+	auto uvars = systemsSetVar;
+	auto hrsel = eventsHistoryRepasHistoryRepaSelection_u;
+	auto frmul = historyRepasFudRepasMultiply_u;
+	auto drcopy = applicationRepasApplicationRepa_u;
+	auto drjoin = applicationRepaPairsJoin_u;
+	auto applicationer = parametersSystemsHistoryRepasApplicationerConditionalFmaxIORepa_u;
+
+	auto xx = trainBucketedIO(2);
+	auto& uu = std::get<0>(xx);
+	auto& ur = std::get<1>(xx);
+	auto& hr = std::get<2>(xx);
+
+	Variable digit("digit");
+	auto vv = *uvars(*uu);
+	auto vvl = VarUSet();
+	vvl.insert(digit);
+	auto vvk = VarUSet(vv);
+	vvk.erase(digit);
+
+	auto& vvi = ur->mapVarSize();
+	SizeList vvk1;
+	for (auto& v : sorted(vvk))
+	    vvk1.push_back(vvi[v]);
+
+	StrVarPtrMap m;
+	std::ifstream in("NIST_model103.bin", std::ios::binary);
+	auto ur1 = persistentsSystemRepa(in, m);
+	auto dr1 = persistentsApplicationRepa(in);
+	in.close();
+	auto& llu1 = ur1->listVarSizePair;
+	VarSizeUMap ur0 = ur->mapVarSize();
+	auto n = fudRepasSize(*dr1->fud);
+	size_t a = 28;
+	size_t b = 10;
+	SizeList xs{ 2,6,8,10,12,14,18 };
+	SizeList ys{ 2,6,8,10,12,14,18 };
+	auto& llu = ur->listVarSizePair;
+	ApplicationRepa dr;
+	{
+	    llu.reserve(n * xs.size() * ys.size() + a*a);
+	    dr.slices = std::make_shared<SizeTree>();
+	    dr.slices->_list.reserve(dr1->slices->_list.size() * xs.size() * ys.size());
+	    dr.fud = std::make_shared<FudRepa>();
+	    dr.fud->layers.reserve(dr1->fud->layers.size() * xs.size() * ys.size());
+	    dr.substrate.reserve(dr1->substrate.size() * xs.size() * ys.size());
+	}
+	for (auto x : xs)
+	    for (auto y : ys)
+	    {
+		auto dr2 = drcopy(*dr1);
+		SizeSizeUMap nn;
+		nn.reserve(n + b*b);
+		for (auto x1 : dr1->substrate)
+		{
+		    auto& p = llu1[x1];
+		    auto vx = std::make_shared<Variable>(p.first->_var0->_int + x - 1);
+		    auto vy = std::make_shared<Variable>(p.first->_var1->_int + y - 1);
+		    auto v = std::make_shared<Variable>(vx, vy);
+		    nn[x1] = ur0[*v];
+		}
+		auto vx1 = std::make_shared<Variable>(x);
+		auto vy1 = std::make_shared<Variable>(y);
+		auto vd1 = std::make_shared<Variable>(vx1, vy1);
+		for (auto& ll : dr1->fud->layers)
+		    for (auto& tr : ll)
+		    {
+			auto x1 = tr->derived;
+			auto& p = llu1[x1];
+			auto vdfl = p.first->_var0;
+			auto vb = p.first->_var1;
+			auto vdf = vdfl->_var0;
+			auto vl = vdfl->_var1;
+			auto vf = vdf->_var1;
+			auto vdf1 = std::make_shared<Variable>(vd1, vf);
+			auto vdfl1 = std::make_shared<Variable>(vdf1, vl);
+			auto vdflb1 = std::make_shared<Variable>(vdfl1, vb);
+			llu.push_back(VarSizePair(vdflb1, p.second));
+			nn[x1] = llu.size() - 1;
+		    }
+		dr2->reframe_u(nn);
+		dr.slices->_list.insert(dr.slices->_list.end(), dr2->slices->_list.begin(), dr2->slices->_list.end());
+		dr.fud->layers.insert(dr.fud->layers.end(), dr2->fud->layers.begin(), dr2->fud->layers.end());
+		dr.substrate.insert(dr.substrate.end(), dr2->substrate.begin(), dr2->substrate.end());
+	    }
+
+	auto hr1 = frmul(*hr, *dr.fud);
+
+	SizeList vvk2;
+	for (std::size_t i = 0; i < hr1->dimension; i++)
+	    vvk2.push_back(hr1->vectorVar[i]);
+
+	size_t fmax = 1023;
+	auto dr2 = applicationer(fmax, vvk2, vvi[digit], *hr1, 1, *ur);
+	auto dr3 = drjoin(dr, *dr2);
+	std::ofstream out("NIST_model110.bin", std::ios::binary);
+	systemRepasPersistent(*ur, out); cout << endl;
+	applicationRepasPersistent(*dr3, out); cout << endl;
+	out.close();
+    }
+
+    if (false)
+    {
+	auto uvars = systemsSetVar;
+	auto hrsel = eventsHistoryRepasHistoryRepaSelection_u;
+	auto frmul = historyRepasFudRepasMultiply_u;
+	auto drcopy = applicationRepasApplicationRepa_u;
+	auto drjoin = applicationRepaPairsJoin_u;
+	auto applicationer = parametersSystemsHistoryRepasApplicationerConditionalFmaxIORepa_u;
+
+	auto xx = trainBucketedIO(2);
+	auto& uu = std::get<0>(xx);
+	auto& ur = std::get<1>(xx);
+	auto& hr = std::get<2>(xx);
+
+	Variable digit("digit");
+	auto vv = *uvars(*uu);
+	auto vvl = VarUSet();
+	vvl.insert(digit);
+	auto vvk = VarUSet(vv);
+	vvk.erase(digit);
+
+	auto& vvi = ur->mapVarSize();
+	SizeList vvk1;
+	for (auto& v : sorted(vvk))
+	    vvk1.push_back(vvi[v]);
+
+	StrVarPtrMap m;
+	std::ifstream in("NIST_model103.bin", std::ios::binary);
+	auto ur1 = persistentsSystemRepa(in, m);
+	auto dr1 = persistentsApplicationRepa(in);
+	in.close();
+	auto& llu1 = ur1->listVarSizePair;
+	VarSizeUMap ur0 = ur->mapVarSize();
+	auto n = fudRepasSize(*dr1->fud);
+	size_t a = 28;
+	size_t b = 10;
+	SizeList xs{ 2,6,8,10,12,14,18 };
+	SizeList ys{ 2,6,8,10,12,14,18 };
+	auto& llu = ur->listVarSizePair;
+	ApplicationRepa dr;
+	{
+	    llu.reserve(n * xs.size() * ys.size() + a*a);
+	    dr.slices = std::make_shared<SizeTree>();
+	    dr.slices->_list.reserve(dr1->slices->_list.size() * xs.size() * ys.size());
+	    dr.fud = std::make_shared<FudRepa>();
+	    dr.fud->layers.reserve(dr1->fud->layers.size() * xs.size() * ys.size());
+	    dr.substrate.reserve(dr1->substrate.size() * xs.size() * ys.size());
+	}
+	for (auto x : xs)
+	    for (auto y : ys)
+	    {
+		auto dr2 = drcopy(*dr1);
+		SizeSizeUMap nn;
+		nn.reserve(n + b*b);
+		for (auto x1 : dr1->substrate)
+		{
+		    auto& p = llu1[x1];
+		    auto vx = std::make_shared<Variable>(p.first->_var0->_int + x - 1);
+		    auto vy = std::make_shared<Variable>(p.first->_var1->_int + y - 1);
+		    auto v = std::make_shared<Variable>(vx, vy);
+		    nn[x1] = ur0[*v];
+		}
+		auto vx1 = std::make_shared<Variable>(x);
+		auto vy1 = std::make_shared<Variable>(y);
+		auto vd1 = std::make_shared<Variable>(vx1, vy1);
+		for (auto& ll : dr1->fud->layers)
+		    for (auto& tr : ll)
+		    {
+			auto x1 = tr->derived;
+			auto& p = llu1[x1];
+			auto vdfl = p.first->_var0;
+			auto vb = p.first->_var1;
+			auto vdf = vdfl->_var0;
+			auto vl = vdfl->_var1;
+			auto vf = vdf->_var1;
+			auto vdf1 = std::make_shared<Variable>(vd1, vf);
+			auto vdfl1 = std::make_shared<Variable>(vdf1, vl);
+			auto vdflb1 = std::make_shared<Variable>(vdfl1, vb);
+			llu.push_back(VarSizePair(vdflb1, p.second));
+			nn[x1] = llu.size() - 1;
+		    }
+		dr2->reframe_u(nn);
+		dr.slices->_list.insert(dr.slices->_list.end(), dr2->slices->_list.begin(), dr2->slices->_list.end());
+		dr.fud->layers.insert(dr.fud->layers.end(), dr2->fud->layers.begin(), dr2->fud->layers.end());
+		dr.substrate.insert(dr.substrate.end(), dr2->substrate.begin(), dr2->substrate.end());
+	    }
+
+	auto hr1 = frmul(*hr, *dr.fud);
+
+	auto sl = treesElements(*dr.slices);
+
+	size_t fmax = 1023;
+	auto dr2 = applicationer(fmax, *sl, vvi[digit], *hr1, 1, *ur);
+	auto dr3 = drjoin(dr, *dr2);
+	std::ofstream out("NIST_model111.bin", std::ios::binary);
+	systemRepasPersistent(*ur, out); cout << endl;
+	applicationRepasPersistent(*dr3, out); cout << endl;
+	out.close();
+    }
+
+    if (true)
+    {
+	auto uvars = systemsSetVar;
+	auto hrsel = [](const HistoryRepa& hr, const SizeList& ll)
+	{
+	    return eventsHistoryRepasHistoryRepaSelection_u(ll.size(), (std::size_t*)ll.data(), hr);
+	};
+	auto applicationer = parametersSystemsHistoryRepasApplicationerMaxRollByMExcludedSelfHighestFmaxIORepa;
+
+	auto xx = trainBucketedRegionRandomIO(2, 10, 13);
+	auto& uu = std::get<0>(xx);
+	auto& ur = std::get<1>(xx);
+	auto& hrtr = std::get<2>(xx);
+
+	Variable digit("digit");
+	auto vv = *uvars(*uu);
+	auto vvl = VarUSet();
+	vvl.insert(digit);
+	auto vvk = VarUSet(vv);
+	vvk.erase(digit);
+
+	cout << "hrtr->dimension" << endl
+	    << hrtr->dimension << endl << endl;
+	cout << "hrtr->size" << endl
+	    << hrtr->size << endl << endl;
+
+	SizeList ll;
+	for (size_t i = 0; i < hrtr->size; i += 2)
+	    ll.push_back(i);
+	auto hr = hrsel(*hrtr, ll);
+	cout << "hr->dimension" << endl
+	    << hr->dimension << endl << endl;
+	cout << "hr->size" << endl
+	    << hr->size << endl << endl;
+
+	auto& vvi = ur->mapVarSize();
+	auto vvk0 = sorted(vvk);
+	SizeList vvk1;
+	for (auto& v : vvk0)
+	    vvk1.push_back(vvi[v]);
+
+	size_t wmax = 4;
+	size_t lmax = 12;
+	size_t xmax = 128;
+	size_t omax = 10;
+	size_t bmax = 10 * 3;
+	size_t mmax = 3;
+	size_t umax = 128;
+	size_t pmax = 1;
+	size_t fmax = 63;
+	size_t mult = 1;
+	size_t seed = 5;
+	auto dr = applicationer(wmax, lmax, xmax, omax, bmax, mmax, umax, pmax, fmax, mult, seed, vvk1, *hr, *ur);
+	std::ofstream out("NIST_model112.bin", std::ios::binary);
+	systemRepasPersistent(*ur, out); cout << endl;
+	applicationRepasPersistent(*dr, out); cout << endl;
+	out.close();
+
+    }
+
+    if (true)
+    {
+	auto uvars = systemsSetVar;
+	auto hrsel = eventsHistoryRepasHistoryRepaSelection_u;
+	auto frmul = historyRepasFudRepasMultiply_u;
+	auto drcopy = applicationRepasApplicationRepa_u;
+	auto drjoin = applicationRepaPairsJoin_u;
+	auto applicationer = parametersSystemsHistoryRepasApplicationerConditionalFmaxIORepa_u;
+
+	auto xx = trainBucketedIO(2);
+	auto& uu = std::get<0>(xx);
+	auto& ur = std::get<1>(xx);
+	auto& hr = std::get<2>(xx);
+
+	Variable digit("digit");
+	auto vv = *uvars(*uu);
+	auto vvl = VarUSet();
+	vvl.insert(digit);
+	auto vvk = VarUSet(vv);
+	vvk.erase(digit);
+
+	auto& vvi = ur->mapVarSize();
+	SizeList vvk1;
+	for (auto& v : sorted(vvk))
+	    vvk1.push_back(vvi[v]);
+
+	StrVarPtrMap m;
+	std::ifstream in("NIST_model112.bin", std::ios::binary);
+	auto ur1 = persistentsSystemRepa(in, m);
+	auto dr1 = persistentsApplicationRepa(in);
+	in.close();
+	auto& llu1 = ur1->listVarSizePair;
+	VarSizeUMap ur0 = ur->mapVarSize();
+	auto n = fudRepasSize(*dr1->fud);
+	size_t a = 28;
+	size_t b = 10;
+	SizeList xs{ 2,4,6,8,10,12,14,12,18 };
+	SizeList ys{ 2,4,6,8,10,12,14,12,18 };
+	auto& llu = ur->listVarSizePair;
+	ApplicationRepa dr;
+	{
+	    llu.reserve(n * xs.size() * ys.size() + a*a);
+	    dr.slices = std::make_shared<SizeTree>();
+	    dr.slices->_list.reserve(dr1->slices->_list.size() * xs.size() * ys.size());
+	    dr.fud = std::make_shared<FudRepa>();
+	    dr.fud->layers.reserve(dr1->fud->layers.size() * xs.size() * ys.size());
+	    dr.substrate.reserve(dr1->substrate.size() * xs.size() * ys.size());
+	}
+	for (auto x : xs)
+	    for (auto y : ys)
+	    {
+		auto dr2 = drcopy(*dr1);
+		SizeSizeUMap nn;
+		nn.reserve(n + b*b);
+		for (auto x1 : dr1->substrate)
+		{
+		    auto& p = llu1[x1];
+		    auto vx = std::make_shared<Variable>(p.first->_var0->_int + x - 1);
+		    auto vy = std::make_shared<Variable>(p.first->_var1->_int + y - 1);
+		    auto v = std::make_shared<Variable>(vx, vy);
+		    nn[x1] = ur0[*v];
+		}
+		auto vx1 = std::make_shared<Variable>(x);
+		auto vy1 = std::make_shared<Variable>(y);
+		auto vd1 = std::make_shared<Variable>(vx1, vy1);
+		for (auto& ll : dr1->fud->layers)
+		    for (auto& tr : ll)
+		    {
+			auto x1 = tr->derived;
+			auto& p = llu1[x1];
+			auto vdfl = p.first->_var0;
+			auto vb = p.first->_var1;
+			auto vdf = vdfl->_var0;
+			auto vl = vdfl->_var1;
+			auto vf = vdf->_var1;
+			auto vdf1 = std::make_shared<Variable>(vd1, vf);
+			auto vdfl1 = std::make_shared<Variable>(vdf1, vl);
+			auto vdflb1 = std::make_shared<Variable>(vdfl1, vb);
+			llu.push_back(VarSizePair(vdflb1, p.second));
+			nn[x1] = llu.size() - 1;
+		    }
+		dr2->reframe_u(nn);
+		dr.slices->_list.insert(dr.slices->_list.end(), dr2->slices->_list.begin(), dr2->slices->_list.end());
+		dr.fud->layers.insert(dr.fud->layers.end(), dr2->fud->layers.begin(), dr2->fud->layers.end());
+		dr.substrate.insert(dr.substrate.end(), dr2->substrate.begin(), dr2->substrate.end());
+	    }
+
+	auto hr1 = frmul(*hr, *dr.fud);
+
+	auto sl = treesElements(*dr.slices);
+
+	size_t fmax = 2047;
+	auto dr2 = applicationer(fmax, *sl, vvi[digit], *hr1, 1, *ur);
+	auto dr3 = drjoin(dr, *dr2);
+	std::ofstream out("NIST_model113.bin", std::ios::binary);
 	systemRepasPersistent(*ur, out); cout << endl;
 	applicationRepasPersistent(*dr3, out); cout << endl;
 	out.close();
