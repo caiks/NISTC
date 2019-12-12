@@ -32,8 +32,6 @@ gunzip *.gz
 
 Ubuntu debug -
 ```sh
-git clone https://github.com/Tencent/rapidjson.git
-
 cd AlignmentC
 
 g++ -I../rapidjson/include -std=gnu++17 -g -c AlignmentUtil.cpp Alignment.cpp AlignmentApprox.cpp AlignmentAeson.cpp 
