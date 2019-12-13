@@ -3339,7 +3339,7 @@ int main(int argc, char **argv)
 	size_t fmax = 127;
 	size_t mult = 1;
 	size_t seed = 5;
-	auto dr = applicationer(wmax, lmax, xmax, znnmax, omax, bmax, mmax, umax, pmax, fmax, mult, seed, vvk1, FudRepa(), *hr, 0, *ur);
+	auto dr = applicationer(wmax, lmax, xmax, znnmax, omax, bmax, mmax, umax, pmax, fmax, mult, 0, seed, vvk1, FudRepa(), *hr, 0, *ur);
 	std::ofstream out("NIST_model100_1.bin", std::ios::binary);
 	systemRepasPersistent(*ur, out); cout << endl;
 	applicationRepasPersistent(*dr, out); cout << endl;
@@ -3564,7 +3564,7 @@ int main(int argc, char **argv)
 	size_t mult = 1;
 	size_t seed = 5;
 	auto sl = treesElements(*dr.slices);
-	auto dr2 = applicationer(wmax, lmax, xmax, znnmax, omax, bmax, mmax, umax, pmax, fmax, mult, seed, *sl, *dr.fud, *hr, 0, *ur);
+	auto dr2 = applicationer(wmax, lmax, xmax, znnmax, omax, bmax, mmax, umax, pmax, fmax, mult, 0, seed, *sl, *dr.fud, *hr, 0, *ur);
 	auto dr3 = drjoin(dr,*dr2);
 	std::ofstream out("NIST_model102.bin", std::ios::binary);
 	systemRepasPersistent(*ur, out); cout << endl;
@@ -4039,7 +4039,7 @@ int main(int argc, char **argv)
 	size_t mult = 1;
 	size_t seed = 5;
 	auto sl = treesElements(*dr.slices);
-	auto dr2 = applicationer(wmax, lmax, xmax, znnmax, omax, bmax, mmax, umax, pmax, fmax, mult, seed, *sl, *dr.fud, *hr, 0, *ur);
+	auto dr2 = applicationer(wmax, lmax, xmax, znnmax, omax, bmax, mmax, umax, pmax, fmax, mult, 0, seed, *sl, *dr.fud, *hr, 0, *ur);
 	auto dr3 = drjoin(dr, *dr2);
 	std::ofstream out("NIST_model104.bin", std::ios::binary);
 	systemRepasPersistent(*ur, out); cout << endl;
@@ -4345,7 +4345,7 @@ int main(int argc, char **argv)
 	size_t fmax = 127;
 	size_t mult = 1;
 	size_t seed = 5;
-	auto dr = applicationer(wmax, lmax, xmax, znnmax, omax, bmax, mmax, umax, pmax, fmax, mult, seed, vvk1, FudRepa(), *hr, 0, *ur);
+	auto dr = applicationer(wmax, lmax, xmax, znnmax, omax, bmax, mmax, umax, pmax, fmax, mult, 0, seed, vvk1, FudRepa(), *hr, 0, *ur);
 	std::ofstream out("NIST_model105.bin", std::ios::binary);
 	systemRepasPersistent(*ur, out); cout << endl;
 	applicationRepasPersistent(*dr, out); cout << endl;
@@ -4392,7 +4392,7 @@ int main(int argc, char **argv)
 	size_t fmax = 1023;
 	size_t mult = 1;
 	size_t seed = 5;
-	auto dr = applicationer(wmax, lmax, xmax, znnmax, omax, bmax, mmax, umax, pmax, fmax, mult, seed, vvk1, FudRepa(), *hr, 0, *ur);
+	auto dr = applicationer(wmax, lmax, xmax, znnmax, omax, bmax, mmax, umax, pmax, fmax, mult, 0, seed, vvk1, FudRepa(), *hr, 0, *ur);
 	std::ofstream out("NIST_model106.bin", std::ios::binary);
 	systemRepasPersistent(*ur, out); cout << endl;
 	applicationRepasPersistent(*dr, out); cout << endl;
@@ -6120,6 +6120,128 @@ int main(int argc, char **argv)
 	}
 	cout << "effective size: " << hr->size - x << endl;
 	cout << "matches: " << a << endl;
+
+    }
+
+    if (argc >= 3 && string(argv[1]) == "induce" && string(argv[2]) == "model116")
+    {
+	auto uvars = systemsSetVar;
+	auto hrsel = [](const HistoryRepa& hr, const SizeList& ll)
+	{
+	    return eventsHistoryRepasHistoryRepaSelection_u(ll.size(), (std::size_t*)ll.data(), hr);
+	};
+	auto applicationer = parametersSystemsFudRepasHistoryRepasApplicationerSubstrateEntropyMaxRollByMExcludedSelfHighestFmaxIORepa;
+
+	auto xx = trainBucketedIO(2);
+	auto& uu = std::get<0>(xx);
+	auto& ur = std::get<1>(xx);
+	auto& hrtr = std::get<2>(xx);
+
+	Variable digit("digit");
+	auto vv = *uvars(*uu);
+	auto vvl = VarUSet();
+	vvl.insert(digit);
+	auto vvk = VarUSet(vv);
+	vvk.erase(digit);
+
+	cout << "hrtr->dimension" << endl
+	    << hrtr->dimension << endl << endl;
+	cout << "hrtr->size" << endl
+	    << hrtr->size << endl << endl;
+
+	SizeList ll;
+	for (size_t i = 0; i < hrtr->size; i += 128)
+	    ll.push_back(i);
+	auto hr = hrsel(*hrtr, ll);
+	cout << "hr->dimension" << endl
+	    << hr->dimension << endl << endl;
+	cout << "hr->size" << endl
+	    << hr->size << endl << endl;
+
+	auto& vvi = ur->mapVarSize();
+	auto vvk0 = sorted(vvk);
+	SizeList vvk1;
+	for (auto& v : vvk0)
+	    vvk1.push_back(vvi[v]);
+
+	size_t wmax = 18;
+	size_t lmax = 8;
+	size_t xmax = 128;
+	size_t omax = 10;
+	size_t bmax = 10 * 3;
+	size_t mmax = 3;
+	size_t umax = 128;
+	size_t pmax = 1;
+	size_t fmax = 1023;
+	size_t mult = 1;
+	size_t smin = 0;
+	size_t seed = 5;
+	auto dr = applicationer(wmax, lmax, xmax, 0, omax, bmax, mmax, umax, pmax, fmax, mult, smin, seed, vvk1, FudRepa(), *hr, 0, *ur);
+	std::ofstream out("NIST_model116.bin", std::ios::binary);
+	systemRepasPersistent(*ur, out); cout << endl;
+	applicationRepasPersistent(*dr, out); cout << endl;
+	out.close();
+
+    }
+
+    if (argc >= 3 && string(argv[1]) == "induce" && string(argv[2]) == "model117")
+    {
+	auto uvars = systemsSetVar;
+	auto hrsel = [](const HistoryRepa& hr, const SizeList& ll)
+	{
+	    return eventsHistoryRepasHistoryRepaSelection_u(ll.size(), (std::size_t*)ll.data(), hr);
+	};
+	auto applicationer = parametersSystemsFudRepasHistoryRepasApplicationerSubstrateEntropyMaxRollByMExcludedSelfHighestFmaxIORepa;
+
+	auto xx = trainBucketedIO(2);
+	auto& uu = std::get<0>(xx);
+	auto& ur = std::get<1>(xx);
+	auto& hrtr = std::get<2>(xx);
+
+	Variable digit("digit");
+	auto vv = *uvars(*uu);
+	auto vvl = VarUSet();
+	vvl.insert(digit);
+	auto vvk = VarUSet(vv);
+	vvk.erase(digit);
+
+	cout << "hrtr->dimension" << endl
+	    << hrtr->dimension << endl << endl;
+	cout << "hrtr->size" << endl
+	    << hrtr->size << endl << endl;
+
+	SizeList ll;
+	for (size_t i = 0; i < hrtr->size; i += 128)
+	    ll.push_back(i);
+	auto hr = hrsel(*hrtr, ll);
+	cout << "hr->dimension" << endl
+	    << hr->dimension << endl << endl;
+	cout << "hr->size" << endl
+	    << hr->size << endl << endl;
+
+	auto& vvi = ur->mapVarSize();
+	auto vvk0 = sorted(vvk);
+	SizeList vvk1;
+	for (auto& v : vvk0)
+	    vvk1.push_back(vvi[v]);
+
+	size_t wmax = 18;
+	size_t lmax = 8;
+	size_t xmax = 128;
+	size_t omax = 10;
+	size_t bmax = 10 * 3;
+	size_t mmax = 3;
+	size_t umax = 128;
+	size_t pmax = 1;
+	size_t fmax = 1023;
+	size_t mult = 1;
+	size_t smin = 100;
+	size_t seed = 5;
+	auto dr = applicationer(wmax, lmax, xmax, 0, omax, bmax, mmax, umax, pmax, fmax, mult, smin, seed, vvk1, FudRepa(), *hr, 0, *ur);
+	std::ofstream out("NIST_model117.bin", std::ios::binary);
+	systemRepasPersistent(*ur, out); cout << endl;
+	applicationRepasPersistent(*dr, out); cout << endl;
+	out.close();
 
     }
 
