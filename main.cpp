@@ -5974,6 +5974,107 @@ int main(int argc, char **argv)
 	out.close();
     }
 
+    if (argc >= 3 && string(argv[1]) == "induce" && string(argv[2]) == "NIST_model115_1")
+    {
+	auto uvars = systemsSetVar;
+	auto hrsel = eventsHistoryRepasHistoryRepaSelection_u;
+	auto frmul = historyRepasFudRepasMultiply_u;
+	auto drcopy = applicationRepasApplicationRepa_u;
+	auto drjoin = applicationRepaPairsJoin_u;
+	auto applicationer = parametersSystemsHistoryRepasApplicationerCondMultinomialFmaxIORepa_u;
+
+	auto xx = trainBucketedIO(2);
+	auto& uu = std::get<0>(xx);
+	auto& ur = std::get<1>(xx);
+	auto& hr = std::get<2>(xx);
+
+	Variable digit("digit");
+	auto vv = *uvars(*uu);
+	auto vvl = VarUSet();
+	vvl.insert(digit);
+	auto vvk = VarUSet(vv);
+	vvk.erase(digit);
+
+	auto& vvi = ur->mapVarSize();
+	SizeList vvk1;
+	for (auto& v : sorted(vvk))
+	    vvk1.push_back(vvi[v]);
+
+	StrVarPtrMap m;
+	std::ifstream in("NIST_model112.bin", std::ios::binary);
+	auto ur1 = persistentsSystemRepa(in, m);
+	auto dr1 = persistentsApplicationRepa(in);
+	in.close();
+	auto& llu1 = ur1->listVarSizePair;
+	VarSizeUMap ur0 = ur->mapVarSize();
+	auto n = fudRepasSize(*dr1->fud);
+	size_t a = 28;
+	size_t b = 10;
+	SizeList xs{ 2,4,6,8,10,12,14,12,18 };
+	SizeList ys{ 2,4,6,8,10,12,14,12,18 };
+	auto& llu = ur->listVarSizePair;
+	ApplicationRepa dr;
+	{
+	    llu.reserve(n * xs.size() * ys.size() + a*a);
+	    dr.slices = std::make_shared<SizeTree>();
+	    dr.slices->_list.reserve(dr1->slices->_list.size() * xs.size() * ys.size());
+	    dr.fud = std::make_shared<FudRepa>();
+	    dr.fud->layers.reserve(dr1->fud->layers.size() * xs.size() * ys.size());
+	    dr.substrate.reserve(dr1->substrate.size() * xs.size() * ys.size());
+	}
+	for (auto x : xs)
+	    for (auto y : ys)
+	    {
+		auto dr2 = drcopy(*dr1);
+		SizeSizeUMap nn;
+		nn.reserve(n + b*b);
+		for (auto x1 : dr1->substrate)
+		{
+		    auto& p = llu1[x1];
+		    auto vx = std::make_shared<Variable>(p.first->_var0->_int + x - 1);
+		    auto vy = std::make_shared<Variable>(p.first->_var1->_int + y - 1);
+		    auto v = std::make_shared<Variable>(vx, vy);
+		    nn[x1] = ur0[*v];
+		}
+		auto vx1 = std::make_shared<Variable>(x);
+		auto vy1 = std::make_shared<Variable>(y);
+		auto vd1 = std::make_shared<Variable>(vx1, vy1);
+		for (auto& ll : dr1->fud->layers)
+		    for (auto& tr : ll)
+		    {
+			auto x1 = tr->derived;
+			auto& p = llu1[x1];
+			auto vdfl = p.first->_var0;
+			auto vb = p.first->_var1;
+			auto vdf = vdfl->_var0;
+			auto vl = vdfl->_var1;
+			auto vf = vdf->_var1;
+			auto vdf1 = std::make_shared<Variable>(vd1, vf);
+			auto vdfl1 = std::make_shared<Variable>(vdf1, vl);
+			auto vdflb1 = std::make_shared<Variable>(vdfl1, vb);
+			llu.push_back(VarSizePair(vdflb1, p.second));
+			nn[x1] = llu.size() - 1;
+		    }
+		dr2->reframe_u(nn);
+		dr.slices->_list.insert(dr.slices->_list.end(), dr2->slices->_list.begin(), dr2->slices->_list.end());
+		dr.fud->layers.insert(dr.fud->layers.end(), dr2->fud->layers.begin(), dr2->fud->layers.end());
+		dr.substrate.insert(dr.substrate.end(), dr2->substrate.begin(), dr2->substrate.end());
+	    }
+
+	auto hr1 = frmul(*hr, *dr.fud);
+
+	auto sl = treesLeafElements(*dr.slices);
+
+	size_t fmax = 2048 * 16 - 1;
+	auto dr2 = applicationer(fmax, *sl, vvi[digit], *hr1, 1, *ur);
+	auto dr3 = drjoin(dr, *dr2);
+	std::ofstream out("NIST_model115_1.bin", std::ios::binary);
+	systemRepasPersistent(*ur, out); cout << endl;
+	applicationRepasPersistent(*dr3, out); cout << endl;
+	out.close();
+    }
+
+
     if (argc >= 3 && string(argv[1]) == "test")
     {
 	auto uvars = systemsSetVar;
