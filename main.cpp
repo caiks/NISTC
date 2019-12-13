@@ -6519,6 +6519,127 @@ int main(int argc, char **argv)
 
     }
 
+    if (false)
+    {
+	auto uvars = systemsSetVar;
+	auto hrsel = eventsHistoryRepasHistoryRepaSelection_u;
+	auto hrhrred = setVarsHistoryRepasHistoryRepaReduced_u;
+	auto frmul = historyRepasFudRepasMultiply_u;
+	auto drcopy = applicationRepasApplicationRepa_u;
+	auto drjoin = applicationRepaPairsJoin_u;
+	auto applicationer = parametersSystemsHistoryRepasApplicationerCondMultinomialFmaxIORepa_u;
+
+	auto xx = trainBucketedIO(2);
+	auto& uu = std::get<0>(xx);
+	auto& ur = std::get<1>(xx);
+	auto& hrtr = std::get<2>(xx);
+
+	Variable digit("digit");
+	auto vv = *uvars(*uu);
+	auto vvl = VarUSet();
+	vvl.insert(digit);
+	auto vvk = VarUSet(vv);
+	vvk.erase(digit);
+
+	SizeList ll;
+	for (size_t i = 0; i < hrtr->size; i += 3000)
+	    ll.push_back(i);
+	auto hr = hrsel(ll.size(), ll.data(), *hrtr);
+	hrtr.reset();
+	cout << "hr->dimension" << endl
+	    << hr->dimension << endl << endl;
+	cout << "hr->size" << endl
+	    << hr->size << endl << endl;
+
+	auto& vvi = ur->mapVarSize();
+	SizeList vvk1;
+	for (auto& v : sorted(vvk))
+	    vvk1.push_back(vvi[v]);
+
+	StrVarPtrMap m;
+	std::ifstream in("NIST_model118.bin", std::ios::binary);
+	auto ur1 = persistentsSystemRepa(in, m);
+	auto dr1 = persistentsApplicationRepa(in);
+	in.close();
+	auto& llu1 = ur1->listVarSizePair;
+	VarSizeUMap ur0 = ur->mapVarSize();
+	auto n = fudRepasSize(*dr1->fud);
+	size_t a = 28;
+	size_t b = 10;
+	SizeList xs{ 2,4,6,8,10,12,14,12,18 };
+	SizeList ys{ 2,4,6,8,10,12,14,12,18 };
+	auto& llu = ur->listVarSizePair;
+	ApplicationRepa dr;
+	{
+	    llu.reserve(n * xs.size() * ys.size() + a*a);
+	    dr.slices = std::make_shared<SizeTree>();
+	    dr.slices->_list.reserve(dr1->slices->_list.size() * xs.size() * ys.size());
+	    dr.fud = std::make_shared<FudRepa>();
+	    dr.fud->layers.reserve(dr1->fud->layers.size() * xs.size() * ys.size());
+	    dr.substrate.reserve(dr1->substrate.size() * xs.size() * ys.size());
+	}
+	SizeSizeUMap vvx;
+	SizeSizeUMap vvy;
+	for (auto x : xs)
+	    for (auto y : ys)
+	    {
+		auto dr2 = drcopy(*dr1);
+		SizeSizeUMap nn;
+		nn.reserve(n + b*b);
+		for (auto x1 : dr1->substrate)
+		{
+		    auto& p = llu1[x1];
+		    auto vx = std::make_shared<Variable>(p.first->_var0->_int + x - 1);
+		    auto vy = std::make_shared<Variable>(p.first->_var1->_int + y - 1);
+		    auto v = std::make_shared<Variable>(vx, vy);
+		    nn[x1] = ur0[*v];
+		}
+		auto vx1 = std::make_shared<Variable>(x);
+		auto vy1 = std::make_shared<Variable>(y);
+		auto vd1 = std::make_shared<Variable>(vx1, vy1);
+		for (auto& ll : dr1->fud->layers)
+		    for (auto& tr : ll)
+		    {
+			auto x1 = tr->derived;
+			auto& p = llu1[x1];
+			auto vdfl = p.first->_var0;
+			auto vb = p.first->_var1;
+			auto vdf = vdfl->_var0;
+			auto vl = vdfl->_var1;
+			auto vf = vdf->_var1;
+			auto vdf1 = std::make_shared<Variable>(vd1, vf);
+			auto vdfl1 = std::make_shared<Variable>(vdf1, vl);
+			auto vdflb1 = std::make_shared<Variable>(vdfl1, vb);
+			llu.push_back(VarSizePair(vdflb1, p.second));
+			auto i = llu.size() - 1;
+			nn[x1] = i;
+			vvx[i] = x;
+			vvy[i] = y;
+		    }
+		dr2->reframe_u(nn);
+		dr.slices->_list.insert(dr.slices->_list.end(), dr2->slices->_list.begin(), dr2->slices->_list.end());
+		dr.fud->layers.insert(dr.fud->layers.end(), dr2->fud->layers.begin(), dr2->fud->layers.end());
+		dr.substrate.insert(dr.substrate.end(), dr2->substrate.begin(), dr2->substrate.end());
+	    }
+
+	auto hr1 = frmul(*hr, *dr.fud);
+
+	//auto sl = treesLeafElements(*dr.slices);
+	//cout << "sl->size()" << endl
+	//    << sl->size() << endl << endl;
+
+	auto ll2 = treesPaths(*dr.slices);
+
+	std::vector<Bitmap> ll1;
+	for (size_t i = 0; i < hr->size; i++)
+	{
+	    std::vector<Bitmap> pp;
+	    SizeList ev{ i };
+	    pp.push_back(hrbm(28, 1, 2, *hrhrred(vvk1.size(), vvk1.data(), *hrsel(ev.size(), ev.data(), *hr1))));
+	    ll1.push_back(bmhstack(pp));
+	}
+	bmwrite("NIST.bmp", bmvstack(ll1));
+    }
 
 
     return 0;
