@@ -44,7 +44,7 @@ cd ../NISTC
 
 g++ -I../rapidjson/include -I../AlignmentC -I../AlignmentRepaC -std=gnu++17 -g -o main main.cpp NISTDev.cpp ../AlignmentRepaC/AlignmentRepa.o ../AlignmentRepaC/AlignmentAesonRepa.o ../AlignmentRepaC/AlignmentRandomRepa.o ../AlignmentRepaC/AlignmentPracticableRepa.o ../AlignmentRepaC/AlignmentPracticableIORepa.o ../AlignmentC/AlignmentUtil.o ../AlignmentC/Alignment.o ../AlignmentC/AlignmentApprox.o ../AlignmentC/AlignmentAeson.o
 
-./main
+./main induce model100 >NIST_model100.log
 
 ```
 Ubuntu release -
@@ -61,11 +61,7 @@ cd ../NISTC
 
 g++ -I../rapidjson/include -I../AlignmentC -I../AlignmentRepaC -std=gnu++17 -O3 -o main main.cpp NISTDev.cpp ../AlignmentRepaC/AlignmentRepa.o ../AlignmentRepaC/AlignmentAesonRepa.o ../AlignmentRepaC/AlignmentRandomRepa.o ../AlignmentRepaC/AlignmentPracticableRepa.o ../AlignmentRepaC/AlignmentPracticableIORepa.o ../AlignmentC/AlignmentUtil.o ../AlignmentC/Alignment.o ../AlignmentC/AlignmentApprox.o ../AlignmentC/AlignmentAeson.o
 
-./main
-
-g++ -I../rapidjson/include -I../AlignmentC -I../AlignmentRepaC -std=gnu++17 -O3 -o NIST_test NIST_test.cpp NISTDev.cpp ../AlignmentRepaC/AlignmentRepa.o ../AlignmentRepaC/AlignmentAesonRepa.o ../AlignmentRepaC/AlignmentRandomRepa.o ../AlignmentRepaC/AlignmentPracticableRepa.o ../AlignmentRepaC/AlignmentPracticableIORepa.o ../AlignmentC/AlignmentUtil.o ../AlignmentC/Alignment.o ../AlignmentC/AlignmentApprox.o ../AlignmentC/AlignmentAeson.o
-
-./NIST_test.exe NIST_model100 
+./main induce model100 >NIST_model100.log
 
 ```
 Windows debug -
@@ -82,7 +78,7 @@ cd ..\NISTC-master
 
 cl -IC:../rapidjson-master/include -I../AlignmentC-master -I../AlignmentRepaC-master /EHsc /DEBUG /Zi main.cpp NISTDev.cpp ../AlignmentRepaC-master/AlignmentRepa.obj ../AlignmentRepaC-master/AlignmentAesonRepa.obj ../AlignmentRepaC-master/AlignmentRandomRepa.obj ../AlignmentRepaC-master/AlignmentPracticableRepa.obj ../AlignmentRepaC-master/AlignmentPracticableIORepa.obj ../AlignmentC-master/AlignmentUtil.obj ../AlignmentC-master/Alignment.obj ../AlignmentC-master/AlignmentApprox.obj ../AlignmentC-master/AlignmentAeson.obj 
 
-main
+main induce model100 >NIST_model100.log
 ```
 Windows release -
 ```sh
@@ -98,6 +94,6 @@ cd ..\NISTC-master
 
 cl -IC:../rapidjson-master/include -I../AlignmentC-master -I../AlignmentRepaC-master /EHsc /O2 main.cpp NISTDev.cpp ../AlignmentRepaC-master/AlignmentRepa.obj ../AlignmentRepaC-master/AlignmentAesonRepa.obj ../AlignmentRepaC-master/AlignmentRandomRepa.obj ../AlignmentRepaC-master/AlignmentPracticableIORepa.obj ../AlignmentRepaC-master/AlignmentPracticableRepa.obj ../AlignmentC-master/AlignmentUtil.obj ../AlignmentC-master/Alignment.obj ../AlignmentC-master/AlignmentApprox.obj ../AlignmentC-master/AlignmentAeson.obj 
 
-main
+main induce model100 >NIST_model100.log
 ```
 
