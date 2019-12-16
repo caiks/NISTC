@@ -5614,7 +5614,7 @@ int main(int argc, char **argv)
 	out.close();
     }
 
-    if (argc >= 3 && string(argv[1]) == "induce" && string(argv[2]) == "NIST_model112")
+    if (argc >= 3 && string(argv[1]) == "induce" && string(argv[2]) == "model112")
     {
 	auto uvars = systemsSetVar;
 	auto hrsel = [](const HistoryRepa& hr, const SizeList& ll)
@@ -5874,7 +5874,7 @@ int main(int argc, char **argv)
 	out.close();
     }
 
-    if (argc >= 3 && string(argv[1]) == "induce" && string(argv[2]) == "NIST_model115")
+    if (argc >= 3 && string(argv[1]) == "induce" && string(argv[2]) == "model115")
     {
 	auto uvars = systemsSetVar;
 	auto hrsel = eventsHistoryRepasHistoryRepaSelection_u;
@@ -5974,7 +5974,7 @@ int main(int argc, char **argv)
 	out.close();
     }
 
-    if (argc >= 3 && string(argv[1]) == "induce" && string(argv[2]) == "NIST_model115_1")
+    if (argc >= 3 && string(argv[1]) == "induce" && string(argv[2]) == "model115_1")
     {
 	auto uvars = systemsSetVar;
 	auto hrsel = eventsHistoryRepasHistoryRepaSelection_u;
