@@ -2315,7 +2315,7 @@ int main(int argc, char **argv)
 	bmwrite("model35.bmp", bmvstack(ll2));
     }
 
-    if (argc >= 3 && string(argv[1]) == "bitmap" && string(argv[2]) == "model100")
+    if (argc >= 3 && string(argv[1]) == "bitmap")
     {
 	auto uvars = systemsSetVar;
 	auto single = histogramSingleton_u;
@@ -2331,6 +2331,9 @@ int main(int argc, char **argv)
 	auto frder = fudRepasDerived;
 	auto frund = fudRepasUnderlying;
 	auto frdep = fudRepasSetVarsDepends;
+
+	string model = string(argv[2]);
+	int zmin = argc >= 4 ? atoi(argv[3]) : 50;
 
 	auto xx = trainBucketedIO(2);
 	auto& uu = std::get<0>(xx);
@@ -2365,7 +2368,7 @@ int main(int argc, char **argv)
 	}
 
 	StrVarPtrMap m;
-	std::ifstream in("model100.bin", std::ios::binary);
+	std::ifstream in(model + ".bin", std::ios::binary);
 	auto ur1 = persistentsSystemRepa(in, m);
 	auto dr = persistentsApplicationRepa(in);
 	in.close();
@@ -2401,7 +2404,7 @@ int main(int argc, char **argv)
 	{
 	    vector<pair<double, size_t>> pp1;
 	    for (auto s : pp)
-		if (shr[s]->size >= 50)
+		if (shr[s]->size >= zmin)
 		    pp1.push_back(pair<double, size_t>(shr[s]->size, s));
 	    if (pp1.size())
 		ll1.push_back(pp1);
@@ -2419,7 +2422,7 @@ int main(int argc, char **argv)
 	    if (pp1.size())
 		ll2.push_back(bmhstack(pp1));
 	}
-	bmwrite("model100.bmp", bmvstack(ll2));
+	bmwrite(model + ".bmp", bmvstack(ll2));
     }
 
     if (argc >= 3 && string(argv[1]) == "induce" && string(argv[2]) == "model101")
@@ -6362,7 +6365,7 @@ int main(int argc, char **argv)
 	auto frund = fudRepasUnderlying;
 	auto frdep = fudRepasSetVarsDepends;
 
-	string model = string("") + string(argv[2]);
+	string model = string(argv[2]);
 	int zmin = argc >= 4 ? atoi(argv[3]) : 50;
 
 	auto xx = trainBucketedRegionRandomIO(2, 10, 13);
@@ -6442,8 +6445,6 @@ int main(int argc, char **argv)
 	auto ll0 = *treesPaths(*pathsTree(ll1));
 	sort(ll0.begin(), ll0.end());
 	reverse(ll0.begin(), ll0.end());
-	cout << "ll0" << endl;
-	rpln(cout, ll0); cout << endl;
 	std::vector<Bitmap> ll2;
 	for (auto pp : ll0)
 	{
@@ -6639,6 +6640,87 @@ int main(int argc, char **argv)
 	}
 	bmwrite("NIST.bmp", bmvstack(ll1));
     }
+
+    if (true)
+    {
+	auto uvars = systemsSetVar;
+	auto vol = systemsSetVarsVolume_u;
+	auto aall = histogramsList;
+	auto cart = systemsSetVarsSetStateCartesian_u;
+	auto single = histogramSingleton_u;
+	auto aaar = systemsHistogramsHistogramRepa_u;
+	auto araa = systemsHistogramRepasHistogram_u;
+	auto aahr = [](const System& uu, const SystemRepa& ur, const Histogram& aa)
+	{
+	    return systemsHistoriesHistoryRepa_u(uu, ur, *histogramsHistory_u(aa));
+	};
+	auto hrsel = [](const HistoryRepa& hr, const SizeList& ll)
+	{
+	    return eventsHistoryRepasHistoryRepaSelection_u(ll.size(), (std::size_t*)ll.data(), hr);
+	};
+	auto hrhrsel = [](const HistoryRepa& hr, const HistoryRepa& ss)
+	{
+	    return historyRepasHistoryRepasHistoryRepaSelection_u(ss, hr);
+	};
+	auto hrred = [](const HistoryRepa& hr, const SystemRepa& ur, const VarUSet& kk)
+	{
+	    auto& vvi = ur.mapVarSize();
+	    std::size_t m = kk.size();
+	    auto kk0 = sorted(kk);
+	    SizeList kk1;
+	    for (auto& v : kk0)
+		kk1.push_back(vvi[v]);
+	    return setVarsHistoryRepasReduce_u(1.0, m, kk1.data(), hr);
+	};
+	auto hrhrred = [](const HistoryRepa& hr, const SystemRepa& ur, const VarUSet& kk)
+	{
+	    auto& vvi = ur.mapVarSize();
+	    std::size_t m = kk.size();
+	    auto kk0 = sorted(kk);
+	    SizeList kk1;
+	    for (auto& v : kk0)
+		kk1.push_back(vvi[v]);
+	    return setVarsHistoryRepasHistoryRepaReduced_u(m, kk1.data(), hr);
+	};
+
+	auto xx = trainBucketedAffineIO(2,3,0.2,17);
+	auto& uu = std::get<0>(xx);
+	auto& ur = std::get<1>(xx);
+	auto& hrtr = std::get<2>(xx);
+
+	Variable digit("digit");
+	auto vv = *uvars(*uu);
+	auto vvl = VarUSet();
+	vvl.insert(digit);
+	auto vvk = VarUSet(vv);
+	vvk.erase(digit);
+
+	cout << "hrtr->dimension" << endl
+	    << hrtr->dimension << endl << endl;
+	cout << "hrtr->size" << endl
+	    << hrtr->size << endl << endl;
+
+	SizeList ll;
+	for (size_t i = 0; i < 50; i++)
+	    for (size_t j = 0; j < 3; j++)
+		ll.push_back(i + 60000*j);
+	auto hr = hrsel(*hrtr, ll);
+	cout << "hr->size" << endl
+	    << hr->size << endl << endl;
+
+	auto hr1 = hrhrred(*hr, *ur, vvk);
+
+	std::vector<Bitmap> bmv;
+	for (size_t i = 0; i < 50; i++)
+	{
+	    std::vector<Bitmap> bmh;
+	    for (size_t j = 0; j < 3; j++)
+		bmh.push_back(bmborder(1, hrbm(28, 2, 2, *hrsel(*hr1, SizeList{ i*3+j }))));
+	    bmv.push_back(bmhstack(bmh));
+	}
+	bmwrite("affine.bmp", bmvstack(bmv));
+    }
+
 
 
     return 0;

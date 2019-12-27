@@ -1,6 +1,7 @@
 ﻿#include "NISTDev.h"
 
 #include <stdlib.h>
+#include <random>
 
 using namespace Alignment;
 using namespace NIST;
@@ -277,6 +278,125 @@ SystemHistoryRepaTuple NIST::trainBucketedIO(int d)
     delete[] labels;
     return SystemHistoryRepaTuple(move(uu), move(ur), move(hr));
 }
+
+// trainBucketedAffineIO :: Int -> Int -> Double -> Int -> IO (System, HistoryRepa)
+SystemHistoryRepaTuple NIST::trainBucketedAffineIO(int d, int r, double af, int s)
+{
+    auto lluu = listsSystem_u;
+    auto uuur = systemsSystemRepa;
+
+    const int a = 28;
+    const int z = 60000;
+    unsigned char* images = new unsigned char[z*a*a];
+    unsigned char* labels = new unsigned char[z];
+    try
+    {
+	ifstream fimages("train-images-idx3-ubyte", ios::binary);
+	ifstream flabels("train-labels-idx1-ubyte", ios::binary);
+	if (!fimages.is_open() || !flabels.is_open())
+	{
+	    cout << "trainBucketedIO : cannot open files" << endl;
+	    delete[] images;
+	    delete[] labels;
+	    return SystemHistoryRepaTuple();
+	}
+	fimages.read((char*)images, 16);
+	fimages.read((char*)images, z*a*a);
+	fimages.close();
+	flabels.read((char*)labels, 8);
+	flabels.read((char*)labels, z);
+	flabels.close();
+    }
+    catch (const exception& e)
+    {
+	cout << "trainBucketedIO : " << e.what() << endl;
+	delete[] images;
+	delete[] labels;
+	return SystemHistoryRepaTuple();
+    }
+    ValSet digits;
+    for (int i = 0; i < 10; i++)
+	digits.insert(Value(i));
+    ValSet buckets;
+    for (int i = 0; i < d; i++)
+	buckets.insert(Value(i));
+    vector<VarValSetPair> ll;
+    ll.push_back(VarValSetPair(Variable("digit"), digits));
+    for (int i = 0; i < a; i++)
+	for (int j = 0; j < a; j++)
+	    ll.push_back(VarValSetPair(Variable(Variable(i + 1), Variable(j + 1)), buckets));
+    auto uu = lluu(ll);
+    auto ur = uuur(*uu);
+    auto hr = make_unique<HistoryRepa>();
+    hr->dimension = a*a + 1;
+    auto n = hr->dimension;
+    hr->vectorVar = new size_t[n];
+    auto vv = hr->vectorVar;
+    hr->shape = new size_t[n];
+    auto sh = hr->shape;
+    hr->size = r*z;
+    hr->evient = true;
+    hr->arr = new unsigned char[r*z*n];
+    auto rr = hr->arr;
+    for (size_t i = 0; i < n; i++)
+	vv[i] = i;
+    sh[0] = 10;
+    for (size_t i = 1; i < n; i++)
+	sh[i] = d;
+    size_t k = 0;
+    for (size_t j = 0; j < z; j++)
+    {
+	size_t jn = j*n;
+	rr[jn] = labels[j];
+	for (size_t i = 1; i < n; i++)
+	{
+	    rr[jn + i] = images[k];
+	    k++;
+	}
+    }
+    mt19937 gen(s); 
+    uniform_real_distribution<> dis(-af, af);
+    for (size_t j = z; j < r*z; j++)
+    {
+	size_t jn = j*n;
+	rr[jn] = rr[(j%z)*n];
+	double afw = dis(gen);
+	double afa = dis(gen);
+	double afb = dis(gen);
+	double afh = dis(gen);
+	for (int x = 0; x < a; x++)
+	    for (int y = 0; y < a; y++)
+	    {
+		double x1 = (1.0+afw)*(x-a/2) + afa*(y-a/2) + a/2;
+		double y1 = afb*(x-a/2) + (1.0+afh)*(y-a/2) + a/2;
+		double a1 = (int)floor(x1) < 0 || (int)floor(x1) >= a || (int)floor(y1) < 0 || (int)floor(y1) >= a ? 0.0 : (double)rr[(j%z)*n + 1 + a*(int)floor(x1) + (int)floor(y1)];
+		double a2 = (int)ceil(x1) < 0 || (int)ceil(x1) >= a || (int)floor(y1) < 0 || (int)floor(y1) >= a ? 0.0 : (double)rr[(j%z)*n + 1 + a*(int)ceil(x1) + (int)floor(y1)];
+		double a3 = (int)floor(x1) < 0 || (int)floor(x1) >= a || (int)ceil(y1) < 0 || (int)ceil(y1) >= a ? 0.0 : (double)rr[(j%z)*n + 1 + a*(int)floor(x1) + (int)ceil(y1)];
+		double a4 = (int)ceil(x1) < 0 || (int)ceil(x1) >= a || (int)ceil(y1) < 0 || (int)ceil(y1) >= a ? 0.0 : (double)rr[(j%z)*n + 1 + a*(int)ceil(x1) + (int)ceil(y1)];
+		double dx = x1 - floor(x1);
+		double dy = y1 - floor(y1);
+		double a5 = a1*(1.0-dx) + a2*dx;
+		double a6 = a3*(1.0-dx) + a4*dx;
+		double a7 = a5*(1.0-dy) + a6*dy;
+		if (a7 < 0.0)
+		    a7 = 0.0;
+		if (a7 > 255.0)
+		    a7 = 255.0;
+		rr[jn + 1 + a*x + y] = (int)a7;
+	    }
+    }
+    for (size_t j = 0; j < r*z; j++)
+    {
+	size_t jn = j*n;
+	for (size_t i = 1; i < n; i++)
+		rr[jn + i] = rr[jn + i] * d / 256;
+    }
+    hr->transpose();
+    delete[] images;
+    delete[] labels;
+    return SystemHistoryRepaTuple(move(uu), move(ur), move(hr));
+}
+
 
 
 // trainBucketedRegionRandomIO :: Int -> Int -> Int -> IO (System, HistoryRepa)
