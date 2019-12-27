@@ -18,6 +18,7 @@ git clone https://github.com/Tencent/rapidjson.git
 git clone https://github.com/caiks/AlignmentC.git
 git clone https://github.com/caiks/AlignmentRepaC.git
 git clone https://github.com/caiks/NISTC.git
+
 ```
 Then download the dataset files, for example -
 ```
@@ -27,6 +28,7 @@ wget http://yann.lecun.com/exdb/mnist/train-labels-idx1-ubyte.gz
 wget http://yann.lecun.com/exdb/mnist/t10k-images-idx3-ubyte.gz
 wget http://yann.lecun.com/exdb/mnist/t10k-labels-idx1-ubyte.gz
 gunzip *.gz
+
 ```
 
 ## Build
