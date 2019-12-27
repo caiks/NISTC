@@ -2422,7 +2422,7 @@ int main(int argc, char **argv)
 	bmwrite("model100.bmp", bmvstack(ll2));
     }
 
-    if (false)
+    if (argc >= 3 && string(argv[1]) == "induce" && string(argv[2]) == "model101")
     {
 	auto uvars = systemsSetVar;
 	auto hrsel = [](const HistoryRepa& hr, const SizeList& ll)
@@ -3286,7 +3286,7 @@ int main(int argc, char **argv)
 	bmwrite("ents.bmp", bm);
     }
 
-    if (false)
+    if (argc >= 3 && string(argv[1]) == "induce" && string(argv[2]) == "model100_1")
     {
 	auto uvars = systemsSetVar;
 	auto hrsel = [](const HistoryRepa& hr, const SizeList& ll)
