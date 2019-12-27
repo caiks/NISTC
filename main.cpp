@@ -1906,7 +1906,7 @@ int main(int argc, char **argv)
 	size_t seed = 5;
 	{
 	    auto dr = applicationer(wmax, lmax, xmax, omax, bmax, mmax, umax, pmax, fmax,  mult, seed, vvk1, *hr, *ur);
-	    std::ofstream out("NIST_model1.bin", std::ios::binary);
+	    std::ofstream out("model1.bin", std::ios::binary);
 	    systemRepasPersistent(*ur, out); cout << endl;
 	    applicationRepasPersistent(*dr, out); cout << endl;
 	    out.close();
@@ -1971,7 +1971,7 @@ int main(int argc, char **argv)
 	size_t seed = 5;
 	{
 	    auto dr = applicationer(wmax, lmax, xmax, omax, bmax, mmax, umax, pmax, fmax, mult, seed, vvk1, *hr, *ur);
-	    std::ofstream out("NIST_model2.bin", std::ios::binary);
+	    std::ofstream out("model2.bin", std::ios::binary);
 	    systemRepasPersistent(*ur, out); cout << endl;
 	    applicationRepasPersistent(*dr, out); cout << endl;
 	    out.close();
@@ -2034,7 +2034,7 @@ int main(int argc, char **argv)
 	size_t mult = 1;
 	size_t seed = 5;
 	auto dr = applicationer(wmax, lmax, xmax, omax, bmax, mmax, umax, pmax, fmax, mult, seed, vvk1, *hr, *ur);
-	std::ofstream out("NIST_model35.bin", std::ios::binary);
+	std::ofstream out("model35.bin", std::ios::binary);
 	systemRepasPersistent(*ur, out); cout << endl;
 	applicationRepasPersistent(*dr, out); cout << endl;
 	out.close();
@@ -2094,7 +2094,7 @@ int main(int argc, char **argv)
 	size_t mult = 1;
 	size_t seed = 5;
 	auto dr = applicationer(wmax, lmax, xmax, omax, bmax, mmax, umax, pmax, fmax, mult, seed, vvk1, *hr, *ur);
-	std::ofstream out("NIST_model100.bin", std::ios::binary);
+	std::ofstream out("model100.bin", std::ios::binary);
 	systemRepasPersistent(*ur, out); cout << endl;
 	applicationRepasPersistent(*dr, out); cout << endl;
 	out.close();
@@ -2151,7 +2151,7 @@ int main(int argc, char **argv)
 	}
 
 	StrVarPtrMap m;
-	std::ifstream in("NIST_model2.bin", std::ios::binary);
+	std::ifstream in("model2.bin", std::ios::binary);
 	auto ur1 = persistentsSystemRepa(in, m);
 	auto dr = persistentsApplicationRepa(in);
 	in.close();
@@ -2258,7 +2258,7 @@ int main(int argc, char **argv)
 	}
 
 	StrVarPtrMap m;
-	std::ifstream in("NIST_model35.bin", std::ios::binary);
+	std::ifstream in("model35.bin", std::ios::binary);
 	auto ur1 = persistentsSystemRepa(in, m);
 	auto dr = persistentsApplicationRepa(in);
 	in.close();
@@ -2312,7 +2312,7 @@ int main(int argc, char **argv)
 	    if (pp1.size())
 		ll2.push_back(bmhstack(pp1));
 	}
-	bmwrite("NIST_model35.bmp", bmvstack(ll2));
+	bmwrite("model35.bmp", bmvstack(ll2));
     }
 
     if (argc >= 3 && string(argv[1]) == "bitmap" && string(argv[2]) == "model100")
@@ -2365,7 +2365,7 @@ int main(int argc, char **argv)
 	}
 
 	StrVarPtrMap m;
-	std::ifstream in("NIST_model100.bin", std::ios::binary);
+	std::ifstream in("model100.bin", std::ios::binary);
 	auto ur1 = persistentsSystemRepa(in, m);
 	auto dr = persistentsApplicationRepa(in);
 	in.close();
@@ -2419,7 +2419,7 @@ int main(int argc, char **argv)
 	    if (pp1.size())
 		ll2.push_back(bmhstack(pp1));
 	}
-	bmwrite("NIST_model100.bmp", bmvstack(ll2));
+	bmwrite("model100.bmp", bmvstack(ll2));
     }
 
     if (false)
@@ -2475,7 +2475,7 @@ int main(int argc, char **argv)
 	size_t mult = 1;
 	size_t seed = 5;
 	auto dr = applicationer(wmax, lmax, xmax, omax, bmax, mmax, umax, pmax, fmax, mult, seed, vvk1, *hr, *ur);
-	std::ofstream out("NIST_model101.bin", std::ios::binary);
+	std::ofstream out("model101.bin", std::ios::binary);
 	systemRepasPersistent(*ur, out); cout << endl;
 	applicationRepasPersistent(*dr, out); cout << endl;
 	out.close();
@@ -2532,7 +2532,7 @@ int main(int argc, char **argv)
 	}
 
 	StrVarPtrMap m;
-	std::ifstream in("NIST_model101.bin", std::ios::binary);
+	std::ifstream in("model101.bin", std::ios::binary);
 	auto ur1 = persistentsSystemRepa(in, m);
 	auto dr = persistentsApplicationRepa(in);
 	in.close();
@@ -2586,7 +2586,7 @@ int main(int argc, char **argv)
 	    if (pp1.size())
 		ll2.push_back(bmhstack(pp1));
 	}
-	bmwrite("NIST_model101.bmp", bmvstack(ll2));
+	bmwrite("model101.bmp", bmvstack(ll2));
     }
 
     if (false)
@@ -2641,7 +2641,7 @@ int main(int argc, char **argv)
 	}
 
 	StrVarPtrMap m;
-	std::ifstream in("NIST_model101.bin", std::ios::binary);
+	std::ifstream in("model101.bin", std::ios::binary);
 	auto ur1 = persistentsSystemRepa(in, m);
 	auto dr = persistentsApplicationRepa(in);
 	in.close();
@@ -2736,7 +2736,7 @@ int main(int argc, char **argv)
 
 	mark = clk::now();
 	StrVarPtrMap m;
-	std::ifstream in("NIST_model101.bin", std::ios::binary);
+	std::ifstream in("model101.bin", std::ios::binary);
 	auto ur1 = persistentsSystemRepa(in, m);
 	auto dr1 = persistentsApplicationRepa(in);
 	in.close();
@@ -2907,7 +2907,7 @@ int main(int argc, char **argv)
 
 	mark = clk::now();
 	StrVarPtrMap m;
-	std::ifstream in("NIST_model101.bin", std::ios::binary);
+	std::ifstream in("model101.bin", std::ios::binary);
 	auto ur1 = persistentsSystemRepa(in, m);
 	auto dr1 = persistentsApplicationRepa(in);
 	in.close();
@@ -3081,7 +3081,7 @@ int main(int argc, char **argv)
 
 	mark = clk::now();
 	StrVarPtrMap m;
-	std::ifstream in("NIST_model101.bin", std::ios::binary);
+	std::ifstream in("model101.bin", std::ios::binary);
 	auto ur1 = persistentsSystemRepa(in, m);
 	auto dr1 = persistentsApplicationRepa(in);
 	in.close();
@@ -3283,7 +3283,7 @@ int main(int argc, char **argv)
 		    bm.image[k + l] = x;
 	    }
 	}
-	bmwrite("NIST_ents.bmp", bm);
+	bmwrite("ents.bmp", bm);
     }
 
     if (false)
@@ -3340,7 +3340,7 @@ int main(int argc, char **argv)
 	size_t mult = 1;
 	size_t seed = 5;
 	auto dr = applicationer(wmax, lmax, xmax, znnmax, omax, bmax, mmax, umax, pmax, fmax, mult, 0, seed, vvk1, FudRepa(), *hr, 0, *ur);
-	std::ofstream out("NIST_model100_1.bin", std::ios::binary);
+	std::ofstream out("model100_1.bin", std::ios::binary);
 	systemRepasPersistent(*ur, out); cout << endl;
 	applicationRepasPersistent(*dr, out); cout << endl;
 	out.close();
@@ -3397,7 +3397,7 @@ int main(int argc, char **argv)
 	}
 
 	StrVarPtrMap m;
-	std::ifstream in("NIST_model100_1.bin", std::ios::binary);
+	std::ifstream in("model100_1.bin", std::ios::binary);
 	auto ur1 = persistentsSystemRepa(in, m);
 	auto dr = persistentsApplicationRepa(in);
 	in.close();
@@ -3451,10 +3451,10 @@ int main(int argc, char **argv)
 	    if (pp1.size())
 		ll2.push_back(bmhstack(pp1));
 	}
-	bmwrite("NIST_model100_1.bmp", bmvstack(ll2));
+	bmwrite("model100_1.bmp", bmvstack(ll2));
     }
 
-    if (false)
+    if (argc >= 3 && string(argv[1]) == "induce" && string(argv[2]) == "model102")
     {
 	auto uvars = systemsSetVar;
 	auto hrsel = eventsHistoryRepasHistoryRepaSelection_u;
@@ -3491,7 +3491,7 @@ int main(int argc, char **argv)
 	}
 
 	StrVarPtrMap m;
-	std::ifstream in("NIST_model101.bin", std::ios::binary);
+	std::ifstream in("model101.bin", std::ios::binary);
 	auto ur1 = persistentsSystemRepa(in, m);
 	auto dr1 = persistentsApplicationRepa(in);
 	in.close();
@@ -3566,7 +3566,7 @@ int main(int argc, char **argv)
 	auto sl = treesElements(*dr.slices);
 	auto dr2 = applicationer(wmax, lmax, xmax, znnmax, omax, bmax, mmax, umax, pmax, fmax, mult, 0, seed, *sl, *dr.fud, *hr, 0, *ur);
 	auto dr3 = drjoin(dr,*dr2);
-	std::ofstream out("NIST_model102.bin", std::ios::binary);
+	std::ofstream out("model102.bin", std::ios::binary);
 	systemRepasPersistent(*ur, out); cout << endl;
 	applicationRepasPersistent(*dr3, out); cout << endl;
 	out.close();
@@ -3622,7 +3622,7 @@ int main(int argc, char **argv)
 	}
 
 	StrVarPtrMap m;
-	std::ifstream in("NIST_model102.bin", std::ios::binary);
+	std::ifstream in("model102.bin", std::ios::binary);
 	auto ur1 = persistentsSystemRepa(in, m);
 	auto dr = persistentsApplicationRepa(in);
 	in.close();
@@ -3696,7 +3696,7 @@ int main(int argc, char **argv)
 	}
 
 	StrVarPtrMap m;
-	std::ifstream in("NIST_model102.bin", std::ios::binary);
+	std::ifstream in("model102.bin", std::ios::binary);
 	auto ur1 = persistentsSystemRepa(in, m);
 	auto dr = persistentsApplicationRepa(in);
 	in.close();
@@ -3759,10 +3759,10 @@ int main(int argc, char **argv)
 	    if (pp1.size())
 		ll2.push_back(bmhstack(pp1));
 	}
-	bmwrite("NIST_model102.bmp", bmvstack(ll2));
+	bmwrite("model102.bmp", bmvstack(ll2));
     }
 
-    if (false)
+    if (argc >= 3 && string(argv[1]) == "induce" && string(argv[2]) == "model103")
     {
 	auto uvars = systemsSetVar;
 	auto hrsel = [](const HistoryRepa& hr, const SizeList& ll)
@@ -3815,7 +3815,7 @@ int main(int argc, char **argv)
 	size_t mult = 1;
 	size_t seed = 5;
 	auto dr = applicationer(wmax, lmax, xmax, omax, bmax, mmax, umax, pmax, fmax, mult, seed, vvk1, *hr, *ur);
-	std::ofstream out("NIST_model103.bin", std::ios::binary);
+	std::ofstream out("model103.bin", std::ios::binary);
 	systemRepasPersistent(*ur, out); cout << endl;
 	applicationRepasPersistent(*dr, out); cout << endl;
 	out.close();
@@ -3872,7 +3872,7 @@ int main(int argc, char **argv)
 	}
 
 	StrVarPtrMap m;
-	std::ifstream in("NIST_model103.bin", std::ios::binary);
+	std::ifstream in("model103.bin", std::ios::binary);
 	auto ur1 = persistentsSystemRepa(in, m);
 	auto dr = persistentsApplicationRepa(in);
 	in.close();
@@ -3926,10 +3926,10 @@ int main(int argc, char **argv)
 	    if (pp1.size())
 		ll2.push_back(bmhstack(pp1));
 	}
-	bmwrite("NIST_model103.bmp", bmvstack(ll2));
+	bmwrite("model103.bmp", bmvstack(ll2));
     }
 
-    if (false)
+    if (argc >= 3 && string(argv[1]) == "induce" && string(argv[2]) == "model104")
     {
 	auto uvars = systemsSetVar;
 	auto hrsel = eventsHistoryRepasHistoryRepaSelection_u;
@@ -3966,7 +3966,7 @@ int main(int argc, char **argv)
 	}
 
 	StrVarPtrMap m;
-	std::ifstream in("NIST_model103.bin", std::ios::binary);
+	std::ifstream in("model103.bin", std::ios::binary);
 	auto ur1 = persistentsSystemRepa(in, m);
 	auto dr1 = persistentsApplicationRepa(in);
 	in.close();
@@ -4041,7 +4041,7 @@ int main(int argc, char **argv)
 	auto sl = treesElements(*dr.slices);
 	auto dr2 = applicationer(wmax, lmax, xmax, znnmax, omax, bmax, mmax, umax, pmax, fmax, mult, 0, seed, *sl, *dr.fud, *hr, 0, *ur);
 	auto dr3 = drjoin(dr, *dr2);
-	std::ofstream out("NIST_model104.bin", std::ios::binary);
+	std::ofstream out("model104.bin", std::ios::binary);
 	systemRepasPersistent(*ur, out); cout << endl;
 	applicationRepasPersistent(*dr3, out); cout << endl;
 	out.close();
@@ -4097,7 +4097,7 @@ int main(int argc, char **argv)
 	}
 
 	StrVarPtrMap m;
-	std::ifstream in("NIST_model104.bin", std::ios::binary);
+	std::ifstream in("model104.bin", std::ios::binary);
 	auto ur1 = persistentsSystemRepa(in, m);
 	auto dr = persistentsApplicationRepa(in);
 	in.close();
@@ -4160,7 +4160,7 @@ int main(int argc, char **argv)
 	    if (pp1.size())
 		ll2.push_back(bmhstack(pp1));
 	}
-	bmwrite("NIST_model104.bmp", bmvstack(ll2));
+	bmwrite("model104.bmp", bmvstack(ll2));
     }
 
     if (false)
@@ -4208,7 +4208,7 @@ int main(int argc, char **argv)
 	    << hr->size << endl << endl;
 
 	StrVarPtrMap m;
-	std::ifstream in("NIST_model100.bin", std::ios::binary);
+	std::ifstream in("model100.bin", std::ios::binary);
 	auto ur1 = persistentsSystemRepa(in, m);
 	auto dr = persistentsApplicationRepa(in);
 	in.close();
@@ -4306,7 +4306,7 @@ int main(int argc, char **argv)
 	cout << "ineffective = " << (double)x / (double)hr->size *100.0 << "%" << endl;
     }
 
-    if (false)
+    if (argc >= 3 && string(argv[1]) == "induce" && string(argv[2]) == "model105")
     {
 	auto uvars = systemsSetVar;
 	auto hrsel = [](const HistoryRepa& hr, const SizeList& ll)
@@ -4346,14 +4346,14 @@ int main(int argc, char **argv)
 	size_t mult = 1;
 	size_t seed = 5;
 	auto dr = applicationer(wmax, lmax, xmax, znnmax, omax, bmax, mmax, umax, pmax, fmax, mult, 0, seed, vvk1, FudRepa(), *hr, 0, *ur);
-	std::ofstream out("NIST_model105.bin", std::ios::binary);
+	std::ofstream out("model105.bin", std::ios::binary);
 	systemRepasPersistent(*ur, out); cout << endl;
 	applicationRepasPersistent(*dr, out); cout << endl;
 	out.close();
 
     }
 
-    if (false)
+    if (argc >= 3 && string(argv[1]) == "induce" && string(argv[2]) == "model106")
     {
 	auto uvars = systemsSetVar;
 	auto hrsel = [](const HistoryRepa& hr, const SizeList& ll)
@@ -4393,7 +4393,7 @@ int main(int argc, char **argv)
 	size_t mult = 1;
 	size_t seed = 5;
 	auto dr = applicationer(wmax, lmax, xmax, znnmax, omax, bmax, mmax, umax, pmax, fmax, mult, 0, seed, vvk1, FudRepa(), *hr, 0, *ur);
-	std::ofstream out("NIST_model106.bin", std::ios::binary);
+	std::ofstream out("model106.bin", std::ios::binary);
 	systemRepasPersistent(*ur, out); cout << endl;
 	applicationRepasPersistent(*dr, out); cout << endl;
 	out.close();
@@ -4435,7 +4435,7 @@ int main(int argc, char **argv)
 	    vvk1.push_back(vvi[v]);
 
 	StrVarPtrMap m;
-	std::ifstream in("NIST_model106.bin", std::ios::binary);
+	std::ifstream in("model106.bin", std::ios::binary);
 	auto ur1 = persistentsSystemRepa(in, m);
 	auto dr = persistentsApplicationRepa(in);
 	in.close();
@@ -4498,7 +4498,7 @@ int main(int argc, char **argv)
 	    if (pp1.size())
 		ll2.push_back(bmhstack(pp1));
 	}
-	bmwrite("NIST_model106.bmp", bmvstack(ll2));
+	bmwrite("model106.bmp", bmvstack(ll2));
     }
 
     if (false)
@@ -4615,7 +4615,7 @@ int main(int argc, char **argv)
 	*/
     }
 
-    if (false)
+    if (argc >= 3 && string(argv[1]) == "induce" && string(argv[2]) == "model107")
     {
 	auto uvars = systemsSetVar;
 	auto hrsel = [](const HistoryRepa& hr, const SizeList& ll)
@@ -4668,7 +4668,7 @@ int main(int argc, char **argv)
 	size_t mult = 1;
 	size_t seed = 5;
 	auto dr = applicationer(wmax, lmax, xmax, omax, bmax, mmax, umax, pmax, fmax, mult, seed, vvk1, *hr, *ur);
-	std::ofstream out("NIST_model107.bin", std::ios::binary);
+	std::ofstream out("model107.bin", std::ios::binary);
 	systemRepasPersistent(*ur, out); cout << endl;
 	applicationRepasPersistent(*dr, out); cout << endl;
 	out.close();
@@ -4728,7 +4728,7 @@ int main(int argc, char **argv)
 	}
 
 	StrVarPtrMap m;
-	std::ifstream in("NIST_model107.bin", std::ios::binary);
+	std::ifstream in("model107.bin", std::ios::binary);
 	auto ur1 = persistentsSystemRepa(in, m);
 	auto dr = persistentsApplicationRepa(in);
 	in.close();
@@ -4741,7 +4741,7 @@ int main(int argc, char **argv)
 
 	uruu(*ur1, *uu);
 	auto ff = frff(*uu, *ur1, *dr->fud);
-	std::ofstream out("NIST_model107.json");
+	std::ofstream out("model107.json");
 	fudsPersistentPretty(1, *ff, out); cout << endl;
 	out.close();
 
@@ -4788,10 +4788,10 @@ int main(int argc, char **argv)
 	    if (pp1.size())
 		ll2.push_back(bmhstack(pp1));
 	}
-	bmwrite("NIST_model107.bmp", bmvstack(ll2));
+	bmwrite("model107.bmp", bmvstack(ll2));
     }
 
-    if (false)
+    if (argc >= 3 && string(argv[1]) == "induce" && string(argv[2]) == "model108")
     {
 	auto uvars = systemsSetVar;
 	auto hrsel = eventsHistoryRepasHistoryRepaSelection_u;
@@ -4819,7 +4819,7 @@ int main(int argc, char **argv)
 
 	size_t fmax = 127;
 	auto dr = applicationer(fmax, vvk1, vvi[digit], *hr, 1, *ur);
-	std::ofstream out("NIST_model108.bin", std::ios::binary);
+	std::ofstream out("model108.bin", std::ios::binary);
 	systemRepasPersistent(*ur, out); cout << endl;
 	applicationRepasPersistent(*dr, out); cout << endl;
 	out.close();
@@ -4860,7 +4860,7 @@ int main(int argc, char **argv)
 	    vvk1.push_back(vvi[v]);
 
 	StrVarPtrMap m;
-	std::ifstream in("NIST_model108.bin", std::ios::binary);
+	std::ifstream in("model108.bin", std::ios::binary);
 	auto ur1 = persistentsSystemRepa(in, m);
 	auto dr = persistentsApplicationRepa(in);
 	in.close();
@@ -4923,10 +4923,10 @@ int main(int argc, char **argv)
 	    if (pp1.size())
 		ll2.push_back(bmhstack(pp1));
 	}
-	bmwrite("NIST_model108.bmp", bmvstack(ll2));
+	bmwrite("model108.bmp", bmvstack(ll2));
     }
 
-    if (false)
+    if (argc >= 3 && string(argv[1]) == "induce" && string(argv[2]) == "model100_2")
     {
 	auto uvars = systemsSetVar;
 	auto hrsel = eventsHistoryRepasHistoryRepaSelection_u;
@@ -4969,7 +4969,7 @@ int main(int argc, char **argv)
 	}
 
 	StrVarPtrMap m;
-	std::ifstream in("NIST_model100.bin", std::ios::binary);
+	std::ifstream in("model100.bin", std::ios::binary);
 	auto ur1 = persistentsSystemRepa(in, m);
 	auto dr = persistentsApplicationRepa(in);
 	in.close();
@@ -4983,7 +4983,7 @@ int main(int argc, char **argv)
 	size_t fmax = 127;
 	auto dr2 = applicationer(fmax, vvk2, vvi[digit], *hr1, 1, *ur1);
 	auto dr3 = drjoin(*dr, *dr2);
-	std::ofstream out("NIST_model100_2.bin", std::ios::binary);
+	std::ofstream out("model100_2.bin", std::ios::binary);
 	systemRepasPersistent(*ur1, out); cout << endl;
 	applicationRepasPersistent(*dr3, out); cout << endl;
 	out.close();
@@ -5039,7 +5039,7 @@ int main(int argc, char **argv)
 	}
 
 	StrVarPtrMap m;
-	std::ifstream in("NIST_model100_2.bin", std::ios::binary);
+	std::ifstream in("model100_2.bin", std::ios::binary);
 	auto ur1 = persistentsSystemRepa(in, m);
 	auto dr = persistentsApplicationRepa(in);
 	in.close();
@@ -5102,10 +5102,10 @@ int main(int argc, char **argv)
 	    if (pp1.size())
 		ll2.push_back(bmhstack(pp1));
 	}
-	bmwrite("NIST_model100_2.bmp", bmvstack(ll2));
+	bmwrite("model100_2.bmp", bmvstack(ll2));
     }
 
-    if (false)
+    if (argc >= 3 && string(argv[1]) == "induce" && string(argv[2]) == "model106_1")
     {
 	auto uvars = systemsSetVar;
 	auto hrsel = eventsHistoryRepasHistoryRepaSelection_u;
@@ -5148,7 +5148,7 @@ int main(int argc, char **argv)
 	}
 
 	StrVarPtrMap m;
-	std::ifstream in("NIST_model106.bin", std::ios::binary);
+	std::ifstream in("model106.bin", std::ios::binary);
 	auto ur1 = persistentsSystemRepa(in, m);
 	auto dr = persistentsApplicationRepa(in);
 	in.close();
@@ -5162,7 +5162,7 @@ int main(int argc, char **argv)
 	size_t fmax = 1023;
 	auto dr2 = applicationer(fmax, vvk2, vvi[digit], *hr1, 1, *ur1);
 	auto dr3 = drjoin(*dr, *dr2);
-	std::ofstream out("NIST_model106_1.bin", std::ios::binary);
+	std::ofstream out("model106_1.bin", std::ios::binary);
 	systemRepasPersistent(*ur1, out); cout << endl;
 	applicationRepasPersistent(*dr3, out); cout << endl;
 	out.close();
@@ -5211,7 +5211,7 @@ int main(int argc, char **argv)
 	}
 
 	StrVarPtrMap m;
-	std::ifstream in("NIST_model106.bin", std::ios::binary);
+	std::ifstream in("model106.bin", std::ios::binary);
 	auto ur1 = persistentsSystemRepa(in, m);
 	auto dr = persistentsApplicationRepa(in);
 	in.close();
@@ -5225,7 +5225,7 @@ int main(int argc, char **argv)
 	size_t fmax = 1023;
 	auto dr2 = applicationer(fmax, vvk2, vvi[digit], *hr1, 1, *ur1);
 	auto dr3 = drjoin(*dr, *dr2);
-	std::ofstream out("NIST_model106_2.bin", std::ios::binary);
+	std::ofstream out("model106_2.bin", std::ios::binary);
 	systemRepasPersistent(*ur1, out); cout << endl;
 	applicationRepasPersistent(*dr3, out); cout << endl;
 	out.close();
@@ -5274,7 +5274,7 @@ int main(int argc, char **argv)
 	}
 
 	StrVarPtrMap m;
-	std::ifstream in("NIST_model106.bin", std::ios::binary);
+	std::ifstream in("model106.bin", std::ios::binary);
 	auto ur1 = persistentsSystemRepa(in, m);
 	auto dr = persistentsApplicationRepa(in);
 	in.close();
@@ -5288,13 +5288,13 @@ int main(int argc, char **argv)
 	size_t fmax = 1023;
 	auto dr2 = applicationer(fmax, vvk2, vvi[digit], *hr1, 1, *ur1);
 	auto dr3 = drjoin(*dr, *dr2);
-	std::ofstream out("NIST_model106_3.bin", std::ios::binary);
+	std::ofstream out("model106_3.bin", std::ios::binary);
 	systemRepasPersistent(*ur1, out); cout << endl;
 	applicationRepasPersistent(*dr3, out); cout << endl;
 	out.close();
     }
 
-    if (false)
+    if (argc >= 3 && string(argv[1]) == "induce" && string(argv[2]) == "model109")
     {
 	auto uvars = systemsSetVar;
 	auto hrsel = eventsHistoryRepasHistoryRepaSelection_u;
@@ -5337,7 +5337,7 @@ int main(int argc, char **argv)
 	}
 
 	StrVarPtrMap m;
-	std::ifstream in("NIST_model103.bin", std::ios::binary);
+	std::ifstream in("model103.bin", std::ios::binary);
 	auto ur1 = persistentsSystemRepa(in, m);
 	auto dr1 = persistentsApplicationRepa(in);
 	in.close();
@@ -5406,13 +5406,13 @@ int main(int argc, char **argv)
 	size_t fmax = 127;
 	auto dr2 = applicationer(fmax, vvk2, vvi[digit], *hr1, 1, *ur);
 	auto dr3 = drjoin(dr, *dr2);
-	std::ofstream out("NIST_model109.bin", std::ios::binary);
+	std::ofstream out("model109.bin", std::ios::binary);
 	systemRepasPersistent(*ur, out); cout << endl;
 	applicationRepasPersistent(*dr3, out); cout << endl;
 	out.close();
     }
 
-    if (false)
+    if (argc >= 3 && string(argv[1]) == "induce" && string(argv[2]) == "model110")
     {
 	auto uvars = systemsSetVar;
 	auto hrsel = eventsHistoryRepasHistoryRepaSelection_u;
@@ -5439,7 +5439,7 @@ int main(int argc, char **argv)
 	    vvk1.push_back(vvi[v]);
 
 	StrVarPtrMap m;
-	std::ifstream in("NIST_model103.bin", std::ios::binary);
+	std::ifstream in("model103.bin", std::ios::binary);
 	auto ur1 = persistentsSystemRepa(in, m);
 	auto dr1 = persistentsApplicationRepa(in);
 	in.close();
@@ -5508,13 +5508,13 @@ int main(int argc, char **argv)
 	size_t fmax = 1023;
 	auto dr2 = applicationer(fmax, vvk2, vvi[digit], *hr1, 1, *ur);
 	auto dr3 = drjoin(dr, *dr2);
-	std::ofstream out("NIST_model110.bin", std::ios::binary);
+	std::ofstream out("model110.bin", std::ios::binary);
 	systemRepasPersistent(*ur, out); cout << endl;
 	applicationRepasPersistent(*dr3, out); cout << endl;
 	out.close();
     }
 
-    if (false)
+    if (argc >= 3 && string(argv[1]) == "induce" && string(argv[2]) == "model111")
     {
 	auto uvars = systemsSetVar;
 	auto hrsel = eventsHistoryRepasHistoryRepaSelection_u;
@@ -5541,7 +5541,7 @@ int main(int argc, char **argv)
 	    vvk1.push_back(vvi[v]);
 
 	StrVarPtrMap m;
-	std::ifstream in("NIST_model103.bin", std::ios::binary);
+	std::ifstream in("model103.bin", std::ios::binary);
 	auto ur1 = persistentsSystemRepa(in, m);
 	auto dr1 = persistentsApplicationRepa(in);
 	in.close();
@@ -5608,7 +5608,7 @@ int main(int argc, char **argv)
 	size_t fmax = 1023;
 	auto dr2 = applicationer(fmax, *sl, vvi[digit], *hr1, 1, *ur);
 	auto dr3 = drjoin(dr, *dr2);
-	std::ofstream out("NIST_model111.bin", std::ios::binary);
+	std::ofstream out("model111.bin", std::ios::binary);
 	systemRepasPersistent(*ur, out); cout << endl;
 	applicationRepasPersistent(*dr3, out); cout << endl;
 	out.close();
@@ -5667,14 +5667,14 @@ int main(int argc, char **argv)
 	size_t mult = 1;
 	size_t seed = 5;
 	auto dr = applicationer(wmax, lmax, xmax, omax, bmax, mmax, umax, pmax, fmax, mult, seed, vvk1, *hr, *ur);
-	std::ofstream out("NIST_model112.bin", std::ios::binary);
+	std::ofstream out("model112.bin", std::ios::binary);
 	systemRepasPersistent(*ur, out); cout << endl;
 	applicationRepasPersistent(*dr, out); cout << endl;
 	out.close();
 
     }
 
-    if (false)
+    if (argc >= 3 && string(argv[1]) == "induce" && string(argv[2]) == "model113")
     {
 	auto uvars = systemsSetVar;
 	auto hrsel = eventsHistoryRepasHistoryRepaSelection_u;
@@ -5701,7 +5701,7 @@ int main(int argc, char **argv)
 	    vvk1.push_back(vvi[v]);
 
 	StrVarPtrMap m;
-	std::ifstream in("NIST_model112.bin", std::ios::binary);
+	std::ifstream in("model112.bin", std::ios::binary);
 	auto ur1 = persistentsSystemRepa(in, m);
 	auto dr1 = persistentsApplicationRepa(in);
 	in.close();
@@ -5768,13 +5768,13 @@ int main(int argc, char **argv)
 	size_t fmax = 2047;
 	auto dr2 = applicationer(fmax, *sl, vvi[digit], *hr1, 1, *ur);
 	auto dr3 = drjoin(dr, *dr2);
-	std::ofstream out("NIST_model113.bin", std::ios::binary);
+	std::ofstream out("model113.bin", std::ios::binary);
 	systemRepasPersistent(*ur, out); cout << endl;
 	applicationRepasPersistent(*dr3, out); cout << endl;
 	out.close();
     }
 
-    if (false)
+    if (argc >= 3 && string(argv[1]) == "induce" && string(argv[2]) == "model114")
     {
 	auto uvars = systemsSetVar;
 	auto hrsel = eventsHistoryRepasHistoryRepaSelection_u;
@@ -5801,7 +5801,7 @@ int main(int argc, char **argv)
 	    vvk1.push_back(vvi[v]);
 
 	StrVarPtrMap m;
-	std::ifstream in("NIST_model112.bin", std::ios::binary);
+	std::ifstream in("model112.bin", std::ios::binary);
 	auto ur1 = persistentsSystemRepa(in, m);
 	auto dr1 = persistentsApplicationRepa(in);
 	in.close();
@@ -5868,7 +5868,7 @@ int main(int argc, char **argv)
 	size_t fmax = 2047;
 	auto dr2 = applicationer(fmax, *sl, vvi[digit], *hr1, 1, *ur);
 	auto dr3 = drjoin(dr, *dr2);
-	std::ofstream out("NIST_model114.bin", std::ios::binary);
+	std::ofstream out("model114.bin", std::ios::binary);
 	systemRepasPersistent(*ur, out); cout << endl;
 	applicationRepasPersistent(*dr3, out); cout << endl;
 	out.close();
@@ -5901,7 +5901,7 @@ int main(int argc, char **argv)
 	    vvk1.push_back(vvi[v]);
 
 	StrVarPtrMap m;
-	std::ifstream in("NIST_model112.bin", std::ios::binary);
+	std::ifstream in("model112.bin", std::ios::binary);
 	auto ur1 = persistentsSystemRepa(in, m);
 	auto dr1 = persistentsApplicationRepa(in);
 	in.close();
@@ -5968,7 +5968,7 @@ int main(int argc, char **argv)
 	size_t fmax = 2048*16-1;
 	auto dr2 = applicationer(fmax, *sl, vvi[digit], *hr1, 1, *ur);
 	auto dr3 = drjoin(dr, *dr2);
-	std::ofstream out("NIST_model115.bin", std::ios::binary);
+	std::ofstream out("model115.bin", std::ios::binary);
 	systemRepasPersistent(*ur, out); cout << endl;
 	applicationRepasPersistent(*dr3, out); cout << endl;
 	out.close();
@@ -6001,7 +6001,7 @@ int main(int argc, char **argv)
 	    vvk1.push_back(vvi[v]);
 
 	StrVarPtrMap m;
-	std::ifstream in("NIST_model112.bin", std::ios::binary);
+	std::ifstream in("model112.bin", std::ios::binary);
 	auto ur1 = persistentsSystemRepa(in, m);
 	auto dr1 = persistentsApplicationRepa(in);
 	in.close();
@@ -6068,12 +6068,11 @@ int main(int argc, char **argv)
 	size_t fmax = 2048 * 16 - 1;
 	auto dr2 = applicationer(fmax, *sl, vvi[digit], *hr1, 1, *ur);
 	auto dr3 = drjoin(dr, *dr2);
-	std::ofstream out("NIST_model115_1.bin", std::ios::binary);
+	std::ofstream out("model115_1.bin", std::ios::binary);
 	systemRepasPersistent(*ur, out); cout << endl;
 	applicationRepasPersistent(*dr3, out); cout << endl;
 	out.close();
     }
-
 
     if (argc >= 3 && string(argv[1]) == "test")
     {
@@ -6092,7 +6091,7 @@ int main(int argc, char **argv)
 	auto frund = fudRepasUnderlying;
 	auto frdep = fudRepasSetVarsDepends;
 
-	string model = string("NIST_") + string(argv[2]);
+	string model = string(argv[2]);
 
 	cout << "model: " << model << endl;
 
@@ -6278,7 +6277,7 @@ int main(int argc, char **argv)
 	size_t smin = 0;
 	size_t seed = 5;
 	auto dr = applicationer(wmax, lmax, xmax, 0, omax, bmax, mmax, umax, pmax, fmax, mult, smin, seed, vvk1, FudRepa(), *hr, 0, *ur);
-	std::ofstream out("NIST_model116.bin", std::ios::binary);
+	std::ofstream out("model116.bin", std::ios::binary);
 	systemRepasPersistent(*ur, out); cout << endl;
 	applicationRepasPersistent(*dr, out); cout << endl;
 	out.close();
@@ -6339,7 +6338,7 @@ int main(int argc, char **argv)
 	size_t smin = 100;
 	size_t seed = 5;
 	auto dr = applicationer(wmax, lmax, xmax, 0, omax, bmax, mmax, umax, pmax, fmax, mult, smin, seed, vvk1, FudRepa(), *hr, 0, *ur);
-	std::ofstream out("NIST_model117.bin", std::ios::binary);
+	std::ofstream out("model117.bin", std::ios::binary);
 	systemRepasPersistent(*ur, out); cout << endl;
 	applicationRepasPersistent(*dr, out); cout << endl;
 	out.close();
@@ -6363,7 +6362,7 @@ int main(int argc, char **argv)
 	auto frund = fudRepasUnderlying;
 	auto frdep = fudRepasSetVarsDepends;
 
-	string model = string("NIST_") + string(argv[2]);
+	string model = string("") + string(argv[2]);
 	int zmin = argc >= 4 ? atoi(argv[3]) : 50;
 
 	auto xx = trainBucketedRegionRandomIO(2, 10, 13);
@@ -6512,7 +6511,7 @@ int main(int argc, char **argv)
 	size_t mult = 1;
 	size_t seed = 5;
 	auto dr = applicationer(wmax, lmax, xmax, omax, bmax, mmax, umax, pmax, fmax, mult, seed, vvk1, *hr, *ur);
-	std::ofstream out("NIST_model118.bin", std::ios::binary);
+	std::ofstream out("model118.bin", std::ios::binary);
 	systemRepasPersistent(*ur, out); cout << endl;
 	applicationRepasPersistent(*dr, out); cout << endl;
 	out.close();
@@ -6557,7 +6556,7 @@ int main(int argc, char **argv)
 	    vvk1.push_back(vvi[v]);
 
 	StrVarPtrMap m;
-	std::ifstream in("NIST_model118.bin", std::ios::binary);
+	std::ifstream in("model118.bin", std::ios::binary);
 	auto ur1 = persistentsSystemRepa(in, m);
 	auto dr1 = persistentsApplicationRepa(in);
 	in.close();
