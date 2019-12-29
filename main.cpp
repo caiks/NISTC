@@ -6728,7 +6728,9 @@ int main(int argc, char **argv)
 	auto frmul = historyRepasFudRepasMultiply_u;
 	auto drcopy = applicationRepasApplicationRepa_u;
 	auto drjoin = applicationRepaPairsJoin_u;
-	auto applicationer = parametersSystemsHistoryRepasApplicationerCondMultinomialFmaxIORepa_u;
+	auto applicationer = parametersSystemsHistoryRepasApplicationerCondMultinomialFmaxIORepa_up;
+
+	size_t tint = argc >= 4 ? atoi(argv[3]) : 1;
 
 	auto xx = trainBucketedAffineIO(2, 10, 0.2, 17);
 	auto& uu = std::get<0>(xx);
@@ -6813,7 +6815,7 @@ int main(int argc, char **argv)
 	auto sl = treesElements(*dr.slices);
 
 	size_t fmax = 2048*8-1;
-	auto dr2 = applicationer(fmax, *sl, vvi[digit], *hr1, 1, *ur);
+	auto dr2 = applicationer(fmax, tint, *sl, vvi[digit], *hr1, 1, *ur);
 	auto dr3 = drjoin(dr, *dr2);
 	std::ofstream out("model119.bin", std::ios::binary);
 	systemRepasPersistent(*ur, out); cout << endl;
@@ -6829,6 +6831,8 @@ int main(int argc, char **argv)
 	auto drcopy = applicationRepasApplicationRepa_u;
 	auto drjoin = applicationRepaPairsJoin_u;
 	auto applicationer = parametersSystemsHistoryRepasApplicationerCondMultinomialFmaxIORepa_up;
+
+	size_t tint = argc >= 4 ? atoi(argv[3]) : 1;
 
 	auto xx = trainBucketedIO(2);
 	auto& uu = std::get<0>(xx);
@@ -6913,7 +6917,6 @@ int main(int argc, char **argv)
 	auto sl = treesElements(*dr.slices);
 
 	size_t fmax = 2047;
-	size_t tint = 10;
 	auto dr2 = applicationer(fmax, tint, *sl, vvi[digit], *hr1, 1, *ur);
 	auto dr3 = drjoin(dr, *dr2);
 	std::ofstream out("model120.bin", std::ios::binary);
