@@ -221,6 +221,18 @@ test size: 10000
 effective size: 10000
 matches: 8404
 
+main induce model106_2_p 4 >model106_2_p.log
+
+main test model106_2_p
+model: model106_2_p
+train size: 60000
+model cardinality: 4399
+derived  cardinality: 1995
+underlying cardinality: 373
+test size: 10000
+effective size: 10000
+matches: 8415
+
 main induce model106_3 >model106_3.log
 
 main test model106_3
@@ -354,6 +366,18 @@ main bitmap_10x10 model101 10
 main induce model118 >model118.log
 
 main bitmap_10x10 model118 1
+
+main induce model120 16 >model120_16.log
+
+main test model120
+model: model120
+train size: 60000
+model cardinality: 34522
+derived  cardinality: 2048
+underlying cardinality: 667
+test size: 10000
+effective size: 10000
+matches: 8892
 
 ```
 
