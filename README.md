@@ -22,7 +22,8 @@ git clone https://github.com/caiks/NISTC.git
 ```
 Then download the dataset files, for example -
 ```
-cd NISTC
+mkdir NISTC_run
+cd NISTC_run
 wget http://yann.lecun.com/exdb/mnist/train-images-idx3-ubyte.gz
 wget http://yann.lecun.com/exdb/mnist/train-labels-idx1-ubyte.gz
 wget http://yann.lecun.com/exdb/mnist/t10k-images-idx3-ubyte.gz
@@ -35,77 +36,67 @@ gunzip *.gz
 
 Ubuntu debug -
 ```sh
-cd AlignmentC
-
-g++ -I../rapidjson/include -std=gnu++17 -g -c AlignmentUtil.cpp Alignment.cpp AlignmentApprox.cpp AlignmentAeson.cpp 
-
-cd ../AlignmentRepaC
-
-g++ -I../rapidjson/include -I../AlignmentC -std=gnu++17 -g -c AlignmentRepa.cpp AlignmentAesonRepa.cpp AlignmentRandomRepa.cpp AlignmentPracticableRepa.cpp AlignmentPracticableIORepa.cpp
-
-cd ../NISTC
-
-g++ -pthread -I../rapidjson/include -I../AlignmentC -I../AlignmentRepaC -std=gnu++17 -g -o main main.cpp NISTDev.cpp ../AlignmentRepaC/AlignmentRepa.o ../AlignmentRepaC/AlignmentAesonRepa.o ../AlignmentRepaC/AlignmentRandomRepa.o ../AlignmentRepaC/AlignmentPracticableRepa.o ../AlignmentRepaC/AlignmentPracticableIORepa.o ../AlignmentC/AlignmentUtil.o ../AlignmentC/Alignment.o ../AlignmentC/AlignmentApprox.o ../AlignmentC/AlignmentAeson.o
-
+mkdir AlignmentC_build AlignmentRepaC_build NISTC_build
+cd NISTC_build
+cmake -DCMAKE_BUILD_TYPE=DEBUG ../NISTC
+make
 
 ```
 Ubuntu release -
 ```sh
-cd AlignmentC
-
-g++ -I../rapidjson/include -std=gnu++17 -O3 -c AlignmentUtil.cpp Alignment.cpp AlignmentApprox.cpp AlignmentAeson.cpp 
-
-cd ../AlignmentRepaC
-
-g++ -I../rapidjson/include -I../AlignmentC -std=gnu++17 -O3 -c AlignmentRepa.cpp AlignmentAesonRepa.cpp AlignmentRandomRepa.cpp AlignmentPracticableRepa.cpp AlignmentPracticableIORepa.cpp
-
-cd ../NISTC
-
-g++ -pthread -I../rapidjson/include -I../AlignmentC -I../AlignmentRepaC -std=gnu++17 -O3 -o main main.cpp NISTDev.cpp ../AlignmentRepaC/AlignmentRepa.o ../AlignmentRepaC/AlignmentAesonRepa.o ../AlignmentRepaC/AlignmentRandomRepa.o ../AlignmentRepaC/AlignmentPracticableRepa.o ../AlignmentRepaC/AlignmentPracticableIORepa.o ../AlignmentC/AlignmentUtil.o ../AlignmentC/Alignment.o ../AlignmentC/AlignmentApprox.o ../AlignmentC/AlignmentAeson.o
-
+mkdir AlignmentC_build AlignmentRepaC_build NISTC_build
+cd NISTC_build
+cmake -DCMAKE_BUILD_TYPE=RELEASE ../NISTC
+make
 
 ```
 Windows debug -
 ```sh
-cd AlignmentC-master
-
-cl -I../rapidjson-master/include /EHsc /DEBUG /Zi /c AlignmentUtil.cpp Alignment.cpp AlignmentApprox.cpp AlignmentAeson.cpp 
-
-cd ..\AlignmentRepaC-master
-
-cl -IC:../rapidjson-master/include -I../AlignmentC-master /EHsc /DEBUG /Zi main.cpp AlignmentRepa.cpp AlignmentAesonRepa.cpp AlignmentRandomRepa.cpp AlignmentPracticableRepa.cpp AlignmentPracticableIORepa.cpp ../AlignmentC-master/AlignmentUtil.obj ../AlignmentC-master/Alignment.obj ../AlignmentC-master/AlignmentApprox.obj ../AlignmentC-master/AlignmentAeson.obj 
-
-cd ..\NISTC-master
-
-cl -IC:../rapidjson-master/include -I../AlignmentC-master -I../AlignmentRepaC-master /EHsc /DEBUG /Zi main.cpp NISTDev.cpp ../AlignmentRepaC-master/AlignmentRepa.obj ../AlignmentRepaC-master/AlignmentAesonRepa.obj ../AlignmentRepaC-master/AlignmentRandomRepa.obj ../AlignmentRepaC-master/AlignmentPracticableRepa.obj ../AlignmentRepaC-master/AlignmentPracticableIORepa.obj ../AlignmentC-master/AlignmentUtil.obj ../AlignmentC-master/Alignment.obj ../AlignmentC-master/AlignmentApprox.obj ../AlignmentC-master/AlignmentAeson.obj 
-
+mkdir AlignmentC_build AlignmentRepaC_build NISTC_build
+cd /d NISTC_build
+"C:\Program Files\CMake\bin\cmake" -G "Visual Studio 14 2015" -A x64 ../NISTC
+"C:\Program Files\CMake\bin\cmake" --build . --config Debug --target NISTC
 
 ```
 Windows release -
 ```sh
-cd AlignmentC-master
-
-cl -I../rapidjson-master/include /EHsc /O2 /c AlignmentUtil.cpp Alignment.cpp AlignmentApprox.cpp AlignmentAeson.cpp 
-
-cd ..\AlignmentRepaC-master
-
-cl -IC:../rapidjson-master/include -I../AlignmentC-master /EHsc /O2 /c AlignmentRepa.cpp AlignmentAesonRepa.cpp AlignmentRandomRepa.cpp AlignmentPracticableRepa.cpp AlignmentPracticableIORepa.cpp
-
-cd ..\NISTC-master
-
-cl -IC:../rapidjson-master/include -I../AlignmentC-master -I../AlignmentRepaC-master /EHsc /O2 main.cpp NISTDev.cpp ../AlignmentRepaC-master/AlignmentRepa.obj ../AlignmentRepaC-master/AlignmentAesonRepa.obj ../AlignmentRepaC-master/AlignmentRandomRepa.obj ../AlignmentRepaC-master/AlignmentPracticableIORepa.obj ../AlignmentRepaC-master/AlignmentPracticableRepa.obj ../AlignmentC-master/AlignmentUtil.obj ../AlignmentC-master/Alignment.obj ../AlignmentC-master/AlignmentApprox.obj ../AlignmentC-master/AlignmentAeson.obj 
-
+mkdir AlignmentC_build AlignmentRepaC_build NISTC_build
+cd /d NISTC_build
+"C:\Program Files\CMake\bin\cmake" -G "Visual Studio 14 2015" -A x64 ../NISTC
+"C:\Program Files\CMake\bin\cmake" --build . --config Release --target NISTC
 
 ```
 
 ## Usage
 
+Ubuntu -
+```sh
+cd ../NISTC_run
+ln -s ../NISTC_build/NISTC NISTC
+/usr/bin/time -v NISTC induce model112 >model112.log 2>&1
+
 ```
-main induce model100 >model100.log
+Windows debug -
+```sh
+cd /d ..\NISTC_run
+..\NISTC_build\Debug\NISTC.exe induce model112 >model112.log
 
-main bitmap model100
+```
+Windows release -
+```sh
+cd /d ..\NISTC_run
+..\AlignmentRepaC_build\Release\NISTC.exe induce model112 >model112.log
 
-main test model100
+```
+
+## Examples
+
+```
+NISTC induce model100 >model100.log
+
+NISTC bitmap model100
+
+NISTC test model100
 model: model100
 train size: 60000
 model cardinality: 2600
@@ -115,11 +106,11 @@ test size: 10000
 effective size: 10000
 matches: 6439
 
-main induce model35 >NIST_model35.log
+NISTC induce model35 >NIST_model35.log
 
-main bitmap model35
+NISTC bitmap model35
 
-main test model35
+NISTC test model35
 model: model35
 train size: 60000
 model cardinality: 4930
@@ -129,13 +120,13 @@ test size: 10000
 effective size: 10000
 matches: 6215
 
-main induce model100_1 >model100_1.log
+NISTC induce model100_1 >model100_1.log
 
-main test model100_1
+NISTC test model100_1
 
-main induce model100_2 >model100_2.log
+NISTC induce model100_2 >model100_2.log
 
-main test model100_2
+NISTC test model100_2
 model: model100_2
 train size: 60000
 model cardinality: 560
@@ -145,11 +136,11 @@ test size: 10000
 effective size: 10000
 matches: 7854
 
-main induce model101 >model101.log
+NISTC induce model101 >model101.log
 
-main induce model102 >model102.log
+NISTC induce model102 >model102.log
 
-main test model102
+NISTC test model102
 model: model102
 train size: 60000
 model cardinality: 13556
@@ -159,11 +150,11 @@ test size: 10000
 effective size: 9997
 matches: 6079
 
-main induce model103 >model103.log
+NISTC induce model103 >model103.log
 
-main induce model104 >model104.log
+NISTC induce model104 >model104.log
 
-main test model104
+NISTC test model104
 model: model104
 train size: 60000
 model cardinality: 8976
@@ -173,9 +164,9 @@ test size: 10000
 effective size: 9999
 matches: 6263
 
-main induce model105 >model105.log
+NISTC induce model105 >model105.log
 
-main test model105
+NISTC test model105
 model: model105
 train size: 60000
 model cardinality: 1981
@@ -185,9 +176,9 @@ test size: 10000
 effective size: 9987
 matches: 6522
 
-main induce model106 >model106.log
+NISTC induce model106 >model106.log
 
-main test model106
+NISTC test model106
 model: model106
 train size: 60000
 model cardinality: 15403
@@ -197,9 +188,9 @@ test size: 10000
 effective size: 9431
 matches: 7252
 
-main induce model106_1 >model106_1.log
+NISTC induce model106_1 >model106_1.log
 
-main test model106_1
+NISTC test model106_1
 model: model106_1
 train size: 60000
 model cardinality: 4216
@@ -209,9 +200,9 @@ test size: 10000
 effective size: 10000
 matches: 8471
 
-main induce model106_2 >model106_2.log
+NISTC induce model106_2 >model106_2.log
 
-main test model106_2
+NISTC test model106_2
 model: model106_2
 train size: 60000
 model cardinality: 4276
@@ -221,9 +212,9 @@ test size: 10000
 effective size: 10000
 matches: 8404
 
-main induce model106_2_p 4 >model106_2_p.log
+NISTC induce model106_2_p 4 >model106_2_p.log
 
-main test model106_2_p
+NISTC test model106_2_p
 model: model106_2_p
 train size: 60000
 model cardinality: 4399
@@ -233,13 +224,13 @@ test size: 10000
 effective size: 10000
 matches: 8415
 
-main induce model106_3 >model106_3.log
+NISTC induce model106_3 >model106_3.log
 
-main test model106_3
+NISTC test model106_3
 
-main induce model107 >model107.log
+NISTC induce model107 >model107.log
 
-main test model107
+NISTC test model107
 model: model107
 train size: 60000
 model cardinality: 2779
@@ -249,9 +240,9 @@ test size: 10000
 effective size: 10000
 matches: 4550
 
-main induce model108 >model108.log
+NISTC induce model108 >model108.log
 
-main test model108
+NISTC test model108
 model: model108
 train size: 60000
 model cardinality: 254
@@ -261,9 +252,9 @@ test size: 10000
 effective size: 10000
 matches: 7737
 
-main induce model109 >model109.log
+NISTC induce model109 >model109.log
 
-main test model109
+NISTC test model109
 model: model109
 train size: 60000
 model cardinality: 595
@@ -273,7 +264,7 @@ test size: 10000
 effective size: 10000
 matches: 7876
 
-main test model109
+NISTC test model109
 model: model109
 train size: 60000
 model cardinality: 593
@@ -283,9 +274,9 @@ test size: 10000
 effective size: 10000
 matches: 7761
 
-main induce model110 >model110.log
+NISTC induce model110 >model110.log
 
-main test model110
+NISTC test model110
 model: model110
 train size: 60000
 model cardinality: 6159
@@ -295,9 +286,9 @@ test size: 10000
 effective size: 9998
 matches: 8745
 
-main induce model111 >model111.log
+NISTC induce model111 >model111.log
 
-main test model111
+NISTC test model111
 model: model111
 train size: 60000
 model cardinality: 19724
@@ -307,11 +298,11 @@ test size: 10000
 effective size: 10000
 matches: 8753
 
-main induce model112 >model112.log
+NISTC induce model112 >model112.log
 
-main induce model113 >model113.log
+NISTC induce model113 >model113.log
 
-main test model113
+NISTC test model113
 model: model113
 train size: 60000
 model cardinality: 29253
@@ -321,9 +312,9 @@ test size: 10000
 effective size: 10000
 matches: 8902
 
-main induce model114 >model114.log
+NISTC induce model114 >model114.log
 
-main test model114
+NISTC test model114
 model: NIST_model114
 train size: 60000
 model cardinality: 29001
@@ -333,9 +324,9 @@ test size: 10000
 effective size: 10000
 matches: 8905
 
-main induce model115 >model115.log
+NISTC induce model115 >model115.log
 
-main test model115
+NISTC test model115
 model: model115
 train size: 60000
 model cardinality: 37479
@@ -345,9 +336,9 @@ test size: 10000
 effective size: 10000
 matches: 8889
 
-main induce model115_1 >model115_1.log
+NISTC induce model115_1 >model115_1.log
 
-main test model115_1
+NISTC test model115_1
 model: model115_1
 train size: 60000
 model cardinality: 59907
@@ -357,19 +348,31 @@ test size: 10000
 effective size: 10000
 matches: 8386
 
-main induce model116 >model116.log
+NISTC induce model116 >model116.log
 
-main induce model117 >model117.log
+NISTC induce model117 >model117.log
 
-main bitmap_10x10 model101 10
+NISTC bitmap_10x10 model101 10
 
-main induce model118 >model118.log
+NISTC induce model118 >model118.log
 
-main bitmap_10x10 model118 1
+NISTC bitmap_10x10 model118 1
 
-main induce model120 16 >model120_16.log
+NISTC induce model119 32 >model119.log
 
-main test model120
+NISTC affine_test model119
+model: model119
+train size: 600000
+model cardinality: 89164
+derived  cardinality: 16384
+underlying cardinality: 676
+test size: 10000
+effective size: 10000
+matches: 9286
+
+NISTC induce model120 16 >model120_16.log
+
+NISTC test model120
 model: model120
 train size: 60000
 model cardinality: 34522
