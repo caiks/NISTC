@@ -86,7 +86,7 @@ cd /d ..\NISTC_run
 Windows release -
 ```sh
 cd /d ..\NISTC_run
-..\AlignmentRepaC_build\Release\NISTC.exe induce model112 >model112.log
+..\NISTC_build\Release\NISTC.exe induce model112 >model112.log
 
 ```
 
