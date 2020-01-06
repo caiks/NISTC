@@ -92,6 +92,8 @@ cd /d ..\NISTC_ws
 
 ## Examples
 
+Some of these examples may be viewed in [NISTC_ws repository](https://github.com/caiks/NISTC_ws),
+
 ```
 NISTC induce model100 >model100.log
 
