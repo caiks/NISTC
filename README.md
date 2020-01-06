@@ -20,10 +20,10 @@ git clone https://github.com/caiks/AlignmentRepaC.git
 git clone https://github.com/caiks/NISTC.git
 
 ```
-Then download the dataset files, for example -
+Then download the dataset files to a workspace, for example -
 ```
-mkdir NISTC_run
-cd NISTC_run
+mkdir NISTC_ws
+cd NISTC_ws
 wget http://yann.lecun.com/exdb/mnist/train-images-idx3-ubyte.gz
 wget http://yann.lecun.com/exdb/mnist/train-labels-idx1-ubyte.gz
 wget http://yann.lecun.com/exdb/mnist/t10k-images-idx3-ubyte.gz
@@ -72,20 +72,20 @@ cd /d NISTC_build
 
 Ubuntu -
 ```sh
-cd ../NISTC_run
+cd ../NISTC_ws
 ln -s ../NISTC_build/NISTC NISTC
 /usr/bin/time -v NISTC induce model112 >model112.log 2>&1
 
 ```
 Windows debug -
 ```sh
-cd /d ..\NISTC_run
+cd /d ..\NISTC_ws
 ..\NISTC_build\Debug\NISTC.exe induce model112 >model112.log
 
 ```
 Windows release -
 ```sh
-cd /d ..\NISTC_run
+cd /d ..\NISTC_ws
 ..\NISTC_build\Release\NISTC.exe induce model112 >model112.log
 
 ```
