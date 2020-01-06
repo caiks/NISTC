@@ -361,6 +361,7 @@ NISTC induce model118 >model118.log
 
 NISTC bitmap_10x10 model118 1
 
+# note that model119 requires 100GB memory
 NISTC induce model119 32 >model119.log
 
 NISTC affine_test model119
