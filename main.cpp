@@ -7139,5 +7139,38 @@ int main(int argc, char **argv)
 
     }
 
+    if (false)
+    {
+	auto uvars = systemsSetVar;
+	auto single = histogramSingleton_u;
+	auto aahr = [](const System& uu, const SystemRepa& ur, const Histogram& aa)
+	{
+	    return systemsHistoriesHistoryRepa_u(uu, ur, *histogramsHistory_u(aa));
+	};
+	auto hrsel = eventsHistoryRepasHistoryRepaSelection_u;
+	auto hrhrred = setVarsHistoryRepasHistoryRepaReduced_u;
+	auto hrred = setVarsHistoryRepasReduce_u;
+	auto frmul = historyRepasFudRepasMultiply_u;
+	auto frvars = fudRepasSetVar;
+	auto frder = fudRepasDerived;
+	auto frund = fudRepasUnderlying;
+	auto frdep = fudRepasSetVarsDepends;
+
+	StrVarPtrMap m;
+	std::ifstream in("model106.bin", std::ios::binary);
+	auto ur1 = persistentsSystemRepa(in, m);
+	auto dr = persistentsApplicationRepa(in);
+	in.close();
+
+	SizeList ss;
+	for (auto& ll : dr->fud->layers)
+	    ss.push_back(ll.size());
+
+	cout << "dr->fud->layers" << endl
+	    << sorted(ss) << endl << endl;
+
+    }
+
+
     return 0;
 }
