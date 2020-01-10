@@ -7151,10 +7151,33 @@ int main(int argc, char **argv)
 	auto hrhrred = setVarsHistoryRepasHistoryRepaReduced_u;
 	auto hrred = setVarsHistoryRepasReduce_u;
 	auto frmul = historyRepasFudRepasMultiply_u;
+	auto frmul_p = historyRepasFudRepasMultiply_up;
 	auto frvars = fudRepasSetVar;
 	auto frder = fudRepasDerived;
 	auto frund = fudRepasUnderlying;
 	auto frdep = fudRepasSetVarsDepends;
+	auto llfr = setVariablesListTransformRepasFudRepa_u;
+
+	auto xx = trainBucketedIO(2);
+	auto& uu = std::get<0>(xx);
+	auto& ur = std::get<1>(xx);
+	auto& hr = std::get<2>(xx);
+
+	Variable digit("digit");
+	auto vv = *uvars(*uu);
+	auto vvl = VarUSet();
+	vvl.insert(digit);
+	auto vvk = VarUSet(vv);
+	vvk.erase(digit);
+
+	auto& vvi = ur->mapVarSize();
+	auto vvk0 = sorted(vvk);
+	SizeList vvk1;
+	for (auto& v : vvk0)
+	    vvk1.push_back(vvi[v]);
+	SizeUSet vvk2;
+	for (auto& v : vvk0)
+	    vvk2.insert(vvi[v]);
 
 	StrVarPtrMap m;
 	std::ifstream in("model106.bin", std::ios::binary);
@@ -7162,12 +7185,125 @@ int main(int argc, char **argv)
 	auto dr = persistentsApplicationRepa(in);
 	in.close();
 
-	SizeList ss;
-	for (auto& ll : dr->fud->layers)
-	    ss.push_back(ll.size());
+	{
+	    SizeList ss;
+	    for (auto& ll : dr->fud->layers)
+		ss.push_back(ll.size());
 
-	cout << "dr->fud->layers" << endl
-	    << sorted(ss) << endl << endl;
+	    cout << "fudRepasSize(*dr->fud)" << endl
+		<< fudRepasSize(*dr->fud) << endl << endl;
+
+	    cout << "dr->fud->layers.size()" << endl
+		<< dr->fud->layers.size() << endl << endl;
+
+	    cout << "dr->fud->layers" << endl
+		<< sorted(ss) << endl << endl;
+	}
+
+	{
+	    auto mark = clk::now();
+	    auto hr1 = frmul(*hr, *dr->fud);
+	    cout << "frmul " << ((sec)(clk::now() - mark)).count() << "s" << endl; 
+	    std::size_t h = 0;
+	    std::size_t s = 0;
+	    auto n = hr1->dimension;
+	    auto z = hr1->size;
+	    for (std::size_t j = 0; j < z; j++)
+		for (std::size_t i = 0; i < n; i++)
+		{
+		    h = 23*h + hr1->arr[j*n + i];
+		    s += hr1->arr[j*n + i];
+		}
+	    cout << "hash: " << h << endl;
+	    cout << "sum: " << s << endl << endl;
+	}
+
+	{
+	    auto mark = clk::now();
+	    auto hr1 = frmul_p(4, *hr, *dr->fud);
+	    cout << "frmul_p " << ((sec)(clk::now() - mark)).count() << "s" << endl;
+	    std::size_t h = 0;
+	    std::size_t s = 0;
+	    auto n = hr1->dimension;
+	    auto z = hr1->size;
+	    for (std::size_t j = 0; j < z; j++)
+		for (std::size_t i = 0; i < n; i++)
+		{
+		    h = 23 * h + hr1->arr[j*n + i];
+		    s += hr1->arr[j*n + i];
+		}
+	    cout << "hash: " << h << endl;
+	    cout << "sum: " << s << endl << endl;
+	}
+
+	{
+	    auto mark = clk::now();
+	    TransformRepaPtrList tt;
+	    tt.reserve(fudRepasSize(*dr->fud));
+	    for (auto& ll : dr->fud->layers)
+		for (auto& tr : ll)
+		    tt.push_back(tr);
+	    auto fr = llfr(vvk2, tt);
+	    cout << "llfr " << ((sec)(clk::now() - mark)).count() << "s" << endl;
+	    SizeList ss;
+	    for (auto& ll : fr->layers)
+		ss.push_back(ll.size());
+	    cout << "fudRepasSize(*fr)" << endl
+		<< fudRepasSize(*fr) << endl << endl;
+	    cout << "fr->layers.size()" << endl
+		<< fr->layers.size() << endl << endl;
+	    cout << "fr->layers" << endl
+		<< ss << endl << endl;
+	    mark = clk::now();
+	    auto hr1 = frmul_p(4, *hr, *fr);
+	    cout << "frmul_p " << ((sec)(clk::now() - mark)).count() << "s" << endl;
+	    std::size_t h = 0;
+	    std::size_t s = 0;
+	    auto n = hr1->dimension;
+	    auto z = hr1->size;
+	    for (std::size_t j = 0; j < z; j++)
+		for (std::size_t i = 0; i < n; i++)
+		{
+		    h = 23 * h + hr1->arr[j*n + i];
+		    s += hr1->arr[j*n + i];
+		}
+	    cout << "hash: " << h << endl;
+	    cout << "sum: " << s << endl << endl;
+	}
+	/*
+	fudRepasSize(*dr->fud)
+	15421
+
+	dr->fud->layers.size()
+	3735
+
+	dr->fud->layers
+	[1,1,1,1
+	...
+	,17,17]
+
+	frmul 5.98771s
+	hash: 14485459118646729375
+	sum: 348224699
+
+	frmul_p 5.18827s
+	hash: 14485459118646729375
+	sum: 348224699
+
+	llfr 0.0257498s
+	fudRepasSize(*fr)
+	15421
+
+	fr->layers.size()
+	18
+
+	fr->layers
+	[6910,3463,1163,337,92,37,44,84,151,249,434,669,833,595,266,78,13,3]
+
+	frmul_p 1.80618s
+	hash: 9834352411011248031
+	sum: 348224699
+	*/
 
     }
 
