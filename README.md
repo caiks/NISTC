@@ -109,6 +109,18 @@ test size: 10000
 effective size: 10000
 matches: 6439
 
+NISTC induce model100_p 4 >model100_p.log
+
+NISTC test model100_p
+model: model100_p
+train size: 60000
+model cardinality: 2591
+derived  cardinality: 507
+underlying cardinality: 377
+test size: 10000
+effective size: 10000
+matches: 6440
+
 NISTC induce model35 >NIST_model35.log
 
 NISTC bitmap model35
@@ -190,6 +202,18 @@ underlying cardinality: 507
 test size: 10000
 effective size: 9431
 matches: 7252
+
+NISTC induce model106_p 4 >model106_p.log
+
+NISTC test model106_p
+model: model106_p
+train size: 60000
+model cardinality: 15423
+derived  cardinality: 2421
+underlying cardinality: 504
+test size: 10000
+effective size: 9424
+matches: 7248
 
 NISTC induce model106_1 >model106_1.log
 
