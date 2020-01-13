@@ -7431,7 +7431,220 @@ int main(int argc, char **argv)
 
     }
 
+    if (argc >= 3 && string(argv[1]) == "induce" && string(argv[2]) == "model106_p")
+    {
+	auto uvars = systemsSetVar;
+	auto hrsel = [](const HistoryRepa& hr, const SizeList& ll)
+	{
+	    return eventsHistoryRepasHistoryRepaSelection_u(ll.size(), (std::size_t*)ll.data(), hr);
+	};
+	auto applicationer = parametersSystemsFudRepasHistoryRepasApplicationerSubstrateEntropyMaxRollByMExcludedSelfHighestFmaxIORepa_p;
 
+	size_t tint = argc >= 4 ? atoi(argv[3]) : 1;
+
+	auto xx = trainBucketedIO(2);
+	auto& uu = std::get<0>(xx);
+	auto& ur = std::get<1>(xx);
+	auto& hr = std::get<2>(xx);
+
+	Variable digit("digit");
+	auto vv = *uvars(*uu);
+	auto vvl = VarUSet();
+	vvl.insert(digit);
+	auto vvk = VarUSet(vv);
+	vvk.erase(digit);
+
+	auto& vvi = ur->mapVarSize();
+	auto vvk0 = sorted(vvk);
+	SizeList vvk1;
+	for (auto& v : vvk0)
+	    vvk1.push_back(vvi[v]);
+
+	size_t wmax = 4;
+	size_t lmax = 8;
+	size_t xmax = 128;
+	double znnmax = 60000.0 * 2.0 * 100.0 * 100.0;
+	size_t omax = 10;
+	size_t bmax = 10 * 3;
+	size_t mmax = 3;
+	size_t umax = 128;
+	size_t pmax = 1;
+	size_t fmax = 1023;
+	size_t mult = 1;
+	size_t seed = 5;
+	auto dr = applicationer(wmax, lmax, xmax, znnmax, omax, bmax, mmax, umax, pmax, fmax, mult, 0, seed, tint, vvk1, FudRepa(), *hr, 0, *ur);
+	std::ofstream out("model106_p.bin", std::ios::binary);
+	systemRepasPersistent(*ur, out); cout << endl;
+	applicationRepasPersistent(*dr, out); cout << endl;
+	out.close();
+
+    }
+
+    if (false)
+    {
+	auto uvars = systemsSetVar;
+	auto single = histogramSingleton_u;
+	auto aahr = [](const System& uu, const SystemRepa& ur, const Histogram& aa)
+	{
+	    return systemsHistoriesHistoryRepa_u(uu, ur, *histogramsHistory_u(aa));
+	};
+	auto hrsel = eventsHistoryRepasHistoryRepaSelection_u;
+	auto hrhrred = setVarsHistoryRepasHistoryRepaReduced_u;
+	auto hrred = setVarsHistoryRepasReduce_u;
+	auto frmul = historyRepasFudRepasMultiply_u;
+	auto frmul_p = historyRepasFudRepasMultiply_up;
+	auto frvars = fudRepasSetVar;
+	auto frder = fudRepasDerived;
+	auto frund = fudRepasUnderlying;
+	auto frdep = fudRepasSetVarsDepends;
+	auto llfr = setVariablesListTransformRepasFudRepa_u;
+
+	auto xx = trainBucketedIO(2);
+	auto& uu = std::get<0>(xx);
+	auto& ur = std::get<1>(xx);
+	auto& hr = std::get<2>(xx);
+
+	Variable digit("digit");
+	auto vv = *uvars(*uu);
+	auto vvl = VarUSet();
+	vvl.insert(digit);
+	auto vvk = VarUSet(vv);
+	vvk.erase(digit);
+
+	auto& vvi = ur->mapVarSize();
+	auto vvk0 = sorted(vvk);
+	SizeList vvk1;
+	for (auto& v : vvk0)
+	    vvk1.push_back(vvi[v]);
+	SizeUSet vvk2;
+	for (auto& v : vvk0)
+	    vvk2.insert(vvi[v]);
+
+	StrVarPtrMap m;
+	std::ifstream in("model106_p.bin", std::ios::binary);
+	auto ur1 = persistentsSystemRepa(in, m);
+	auto dr = persistentsApplicationRepa(in);
+	in.close();
+
+	{
+	    SizeList ss;
+	    for (auto& ll : dr->fud->layers)
+		ss.push_back(ll.size());
+
+	    cout << "fudRepasSize(*dr->fud)" << endl
+		<< fudRepasSize(*dr->fud) << endl << endl;
+
+	    cout << "dr->fud->layers.size()" << endl
+		<< dr->fud->layers.size() << endl << endl;
+
+	    cout << "dr->fud->layers" << endl
+		<< ss << endl << endl;
+	}
+
+	{
+	    auto mark = clk::now();
+	    auto hr1 = frmul(*hr, *dr->fud);
+	    cout << "frmul " << ((sec)(clk::now() - mark)).count() << "s" << endl;
+	    std::size_t h = 0;
+	    std::size_t s = 0;
+	    auto n = hr1->dimension;
+	    auto z = hr1->size;
+	    for (std::size_t j = 0; j < z; j++)
+		for (std::size_t i = 0; i < n; i++)
+		{
+		    h = 23 * h + hr1->arr[j*n + i];
+		    s += hr1->arr[j*n + i];
+		}
+	    cout << "hash: " << h << endl;
+	    cout << "sum: " << s << endl << endl;
+	}
+
+	{
+	    auto mark = clk::now();
+	    auto hr1 = frmul_p(4, *hr, *dr->fud);
+	    cout << "frmul_p " << ((sec)(clk::now() - mark)).count() << "s" << endl;
+	    std::size_t h = 0;
+	    std::size_t s = 0;
+	    auto n = hr1->dimension;
+	    auto z = hr1->size;
+	    for (std::size_t j = 0; j < z; j++)
+		for (std::size_t i = 0; i < n; i++)
+		{
+		    h = 23 * h + hr1->arr[j*n + i];
+		    s += hr1->arr[j*n + i];
+		}
+	    cout << "hash: " << h << endl;
+	    cout << "sum: " << s << endl << endl;
+	}
+
+	{
+	    auto mark = clk::now();
+	    TransformRepaPtrList tt;
+	    tt.reserve(fudRepasSize(*dr->fud));
+	    for (auto& ll : dr->fud->layers)
+		for (auto& tr : ll)
+		    tt.push_back(tr);
+	    auto fr = llfr(vvk2, tt);
+	    cout << "llfr " << ((sec)(clk::now() - mark)).count() << "s" << endl;
+	    SizeList ss;
+	    for (auto& ll : fr->layers)
+		ss.push_back(ll.size());
+	    cout << "fudRepasSize(*fr)" << endl
+		<< fudRepasSize(*fr) << endl << endl;
+	    cout << "fr->layers.size()" << endl
+		<< fr->layers.size() << endl << endl;
+	    cout << "fr->layers" << endl
+		<< ss << endl << endl;
+	    mark = clk::now();
+	    auto hr1 = frmul_p(4, *hr, *fr);
+	    cout << "frmul_p " << ((sec)(clk::now() - mark)).count() << "s" << endl;
+	    std::size_t h = 0;
+	    std::size_t s = 0;
+	    auto n = hr1->dimension;
+	    auto z = hr1->size;
+	    for (std::size_t j = 0; j < z; j++)
+		for (std::size_t i = 0; i < n; i++)
+		{
+		    h = 23 * h + hr1->arr[j*n + i];
+		    s += hr1->arr[j*n + i];
+		}
+	    cout << "hash: " << h << endl;
+	    cout << "sum: " << s << endl << endl;
+	}
+	/*
+	fudRepasSize(*dr->fud)
+	15423
+
+	dr->fud->layers.size()
+	29
+
+	dr->fud->layers
+	[6922,3473,1161,326,83,28,8,23,8,45,22,80,44,120,70,238,116,413,221,575,339,459,279,186,117,37,20,3,7]
+
+	frmul 6.17454s
+	hash: 7553982042899864222
+	sum: 348265622
+
+	frmul_p 1.76259s
+	hash: 7553982042899864222
+	sum: 348265622
+
+	llfr 0.0189569s
+	fudRepasSize(*fr)
+	15423
+
+	fr->layers.size()
+	18
+
+	fr->layers
+	[6922,3473,1161,326,90,32,43,85,151,249,434,672,833,592,266,78,13,3]
+
+	frmul_p 1.90916s
+	hash: 5649481198801195934
+	sum: 348265622
+	*/
+
+    }
 
 
     return 0;
