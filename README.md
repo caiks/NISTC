@@ -114,12 +114,12 @@ NISTC induce model100_p 4 >model100_p.log
 NISTC test model100_p
 model: model100_p
 train size: 60000
-model cardinality: 2591
-derived  cardinality: 507
-underlying cardinality: 377
+model cardinality: 2618
+derived  cardinality: 522
+underlying cardinality: 368
 test size: 10000
 effective size: 10000
-matches: 6440
+matches: 6442
 
 NISTC induce model35 >NIST_model35.log
 
