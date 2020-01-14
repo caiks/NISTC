@@ -4794,7 +4794,7 @@ int main(int argc, char **argv)
 	bmwrite("model107.bmp", bmvstack(ll2));
     }
 
-    if (argc >= 3 && string(argv[1]) == "induce" && string(argv[2]) == "model108")
+    if (argc >= 3 && string(argv[1]) == "condition" && string(argv[2]) == "model108")
     {
 	auto uvars = systemsSetVar;
 	auto hrsel = eventsHistoryRepasHistoryRepaSelection_u;
@@ -4929,7 +4929,7 @@ int main(int argc, char **argv)
 	bmwrite("model108.bmp", bmvstack(ll2));
     }
 
-    if (argc >= 3 && string(argv[1]) == "induce" && string(argv[2]) == "model100_2")
+    if (argc >= 3 && string(argv[1]) == "condition" && string(argv[2]) == "model100_2")
     {
 	auto uvars = systemsSetVar;
 	auto hrsel = eventsHistoryRepasHistoryRepaSelection_u;
@@ -5108,7 +5108,7 @@ int main(int argc, char **argv)
 	bmwrite("model100_2.bmp", bmvstack(ll2));
     }
 
-    if (argc >= 3 && string(argv[1]) == "induce" && string(argv[2]) == "model106_1")
+    if (argc >= 3 && string(argv[1]) == "condition" && string(argv[2]) == "model106_1")
     {
 	auto uvars = systemsSetVar;
 	auto hrsel = eventsHistoryRepasHistoryRepaSelection_u;
@@ -5171,7 +5171,7 @@ int main(int argc, char **argv)
 	out.close();
     }
 
-    if (argc >= 3 && string(argv[1]) == "induce" && string(argv[2]) == "model106_2")
+    if (argc >= 3 && string(argv[1]) == "condition" && string(argv[2]) == "model106_2")
     {
 	auto uvars = systemsSetVar;
 	auto hrsel = eventsHistoryRepasHistoryRepaSelection_u;
@@ -5234,7 +5234,7 @@ int main(int argc, char **argv)
 	out.close();
     }
 
-    if (argc >= 3 && string(argv[1]) == "induce" && string(argv[2]) == "model106_3")
+    if (argc >= 3 && string(argv[1]) == "condition" && string(argv[2]) == "model106_3")
     {
 	auto uvars = systemsSetVar;
 	auto hrsel = eventsHistoryRepasHistoryRepaSelection_u;
@@ -5297,7 +5297,7 @@ int main(int argc, char **argv)
 	out.close();
     }
 
-    if (argc >= 3 && string(argv[1]) == "induce" && string(argv[2]) == "model109")
+    if (argc >= 3 && string(argv[1]) == "condition" && string(argv[2]) == "model109")
     {
 	auto uvars = systemsSetVar;
 	auto hrsel = eventsHistoryRepasHistoryRepaSelection_u;
@@ -5415,7 +5415,7 @@ int main(int argc, char **argv)
 	out.close();
     }
 
-    if (argc >= 3 && string(argv[1]) == "induce" && string(argv[2]) == "model110")
+    if (argc >= 3 && string(argv[1]) == "condition" && string(argv[2]) == "model110")
     {
 	auto uvars = systemsSetVar;
 	auto hrsel = eventsHistoryRepasHistoryRepaSelection_u;
@@ -5517,7 +5517,7 @@ int main(int argc, char **argv)
 	out.close();
     }
 
-    if (argc >= 3 && string(argv[1]) == "induce" && string(argv[2]) == "model111")
+    if (argc >= 3 && string(argv[1]) == "condition" && string(argv[2]) == "model111")
     {
 	auto uvars = systemsSetVar;
 	auto hrsel = eventsHistoryRepasHistoryRepaSelection_u;
@@ -5677,7 +5677,7 @@ int main(int argc, char **argv)
 
     }
 
-    if (argc >= 3 && string(argv[1]) == "induce" && string(argv[2]) == "model113")
+    if (argc >= 3 && string(argv[1]) == "condition" && string(argv[2]) == "model113")
     {
 	auto uvars = systemsSetVar;
 	auto hrsel = eventsHistoryRepasHistoryRepaSelection_u;
@@ -5777,7 +5777,7 @@ int main(int argc, char **argv)
 	out.close();
     }
 
-    if (argc >= 3 && string(argv[1]) == "induce" && string(argv[2]) == "model114")
+    if (argc >= 3 && string(argv[1]) == "condition" && string(argv[2]) == "model114")
     {
 	auto uvars = systemsSetVar;
 	auto hrsel = eventsHistoryRepasHistoryRepaSelection_u;
@@ -5877,7 +5877,7 @@ int main(int argc, char **argv)
 	out.close();
     }
 
-    if (argc >= 3 && string(argv[1]) == "induce" && string(argv[2]) == "model115")
+    if (argc >= 3 && string(argv[1]) == "condition" && string(argv[2]) == "model115")
     {
 	auto uvars = systemsSetVar;
 	auto hrsel = eventsHistoryRepasHistoryRepaSelection_u;
@@ -5977,7 +5977,7 @@ int main(int argc, char **argv)
 	out.close();
     }
 
-    if (argc >= 3 && string(argv[1]) == "induce" && string(argv[2]) == "model115_1")
+    if (argc >= 3 && string(argv[1]) == "condition" && string(argv[2]) == "model115_1")
     {
 	auto uvars = systemsSetVar;
 	auto hrsel = eventsHistoryRepasHistoryRepaSelection_u;
@@ -6721,7 +6721,7 @@ int main(int argc, char **argv)
 	bmwrite("affine.bmp", bmvstack(bmv));
     }
 
-    if (argc >= 3 && string(argv[1]) == "induce" && string(argv[2]) == "model119")
+    if (argc >= 3 && string(argv[1]) == "condition" && string(argv[2]) == "model119")
     {
 	auto uvars = systemsSetVar;
 	auto hrsel = eventsHistoryRepasHistoryRepaSelection_u;
@@ -6823,7 +6823,7 @@ int main(int argc, char **argv)
 	out.close();
     }
 
-    if (argc >= 3 && string(argv[1]) == "induce" && string(argv[2]) == "model120")
+    if (argc >= 3 && string(argv[1]) == "condition" && string(argv[2]) == "model120")
     {
 	auto uvars = systemsSetVar;
 	auto hrsel = eventsHistoryRepasHistoryRepaSelection_u;
@@ -6925,7 +6925,7 @@ int main(int argc, char **argv)
 	out.close();
     }
 
-    if (argc >= 3 && string(argv[1]) == "induce" && string(argv[2]) == "model106_2_p")
+    if (argc >= 3 && string(argv[1]) == "condition" && string(argv[2]) == "model106_2_p")
     {
 	auto uvars = systemsSetVar;
 	auto hrsel = eventsHistoryRepasHistoryRepaSelection_u;
