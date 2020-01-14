@@ -139,7 +139,7 @@ NISTC induce model100_1 >model100_1.log
 
 NISTC test model100_1
 
-NISTC induce model100_2 >model100_2.log
+NISTC condition model100_2 >model100_2.log
 
 NISTC test model100_2
 model: model100_2
@@ -215,7 +215,7 @@ test size: 10000
 effective size: 9424
 matches: 7248
 
-NISTC induce model106_1 >model106_1.log
+NISTC condition model106_1 >model106_1.log
 
 NISTC test model106_1
 model: model106_1
@@ -227,7 +227,7 @@ test size: 10000
 effective size: 10000
 matches: 8471
 
-NISTC induce model106_2 >model106_2.log
+NISTC condition model106_2 >model106_2.log
 
 NISTC test model106_2
 model: model106_2
@@ -239,7 +239,7 @@ test size: 10000
 effective size: 10000
 matches: 8404
 
-NISTC induce model106_2_p 4 >model106_2_p.log
+NISTC condition model106_2_p 4 >model106_2_p.log
 
 NISTC test model106_2_p
 model: model106_2_p
@@ -251,7 +251,7 @@ test size: 10000
 effective size: 10000
 matches: 8415
 
-NISTC induce model106_3 >model106_3.log
+NISTC condition model106_3 >model106_3.log
 
 NISTC test model106_3
 
@@ -267,7 +267,7 @@ test size: 10000
 effective size: 10000
 matches: 4550
 
-NISTC induce model108 >model108.log
+NISTC condition model108 >model108.log
 
 NISTC test model108
 model: model108
@@ -279,7 +279,7 @@ test size: 10000
 effective size: 10000
 matches: 7737
 
-NISTC induce model109 >model109.log
+NISTC condition model109 >model109.log
 
 NISTC test model109
 model: model109
@@ -301,7 +301,7 @@ test size: 10000
 effective size: 10000
 matches: 7761
 
-NISTC induce model110 >model110.log
+NISTC condition model110 >model110.log
 
 NISTC test model110
 model: model110
@@ -313,7 +313,7 @@ test size: 10000
 effective size: 9998
 matches: 8745
 
-NISTC induce model111 >model111.log
+NISTC condition model111 >model111.log
 
 NISTC test model111
 model: model111
@@ -327,7 +327,7 @@ matches: 8753
 
 NISTC induce model112 >model112.log
 
-NISTC induce model113 >model113.log
+NISTC condition model113 >model113.log
 
 NISTC test model113
 model: model113
@@ -339,7 +339,7 @@ test size: 10000
 effective size: 10000
 matches: 8902
 
-NISTC induce model114 >model114.log
+NISTC condition model114 >model114.log
 
 NISTC test model114
 model: NIST_model114
@@ -351,7 +351,7 @@ test size: 10000
 effective size: 10000
 matches: 8905
 
-NISTC induce model115 >model115.log
+NISTC condition model115 >model115.log
 
 NISTC test model115
 model: model115
@@ -363,7 +363,7 @@ test size: 10000
 effective size: 10000
 matches: 8889
 
-NISTC induce model115_1 >model115_1.log
+NISTC condition model115_1 >model115_1.log
 
 NISTC test model115_1
 model: model115_1
@@ -386,7 +386,7 @@ NISTC induce model118 >model118.log
 NISTC bitmap_10x10 model118 1
 
 # note that model119 requires 100GB memory
-NISTC induce model119 32 >model119.log
+NISTC condition model119 32 >model119.log
 
 NISTC affine_test model119
 model: model119
@@ -398,7 +398,7 @@ test size: 10000
 effective size: 10000
 matches: 9286
 
-NISTC induce model120 16 >model120_16.log
+NISTC condition model120 16 >model120_16.log
 
 NISTC test model120
 model: model120
