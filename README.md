@@ -208,12 +208,12 @@ NISTC induce model106_p 4 >model106_p.log
 NISTC test model106_p
 model: model106_p
 train size: 60000
-model cardinality: 15423
-derived  cardinality: 2421
-underlying cardinality: 504
+model cardinality: 15399
+derived  cardinality: 2419
+underlying cardinality: 506
 test size: 10000
-effective size: 9424
-matches: 7248
+effective size: 9422
+matches: 7232
 
 NISTC condition model106_1 >model106_1.log
 
