@@ -74,6 +74,7 @@ Ubuntu -
 ```sh
 cd ../NISTC_ws
 ln -s ../NISTC_build/NISTC NISTC
+export PATH=$PATH:./
 /usr/bin/time -v NISTC induce model112 >model112.log 2>&1
 
 ```
