@@ -7,7 +7,7 @@ This repository contains tests of the [AlignmentRepaC repository](https://github
 
 There is an analysis of this dataset [here](https://greenlake.co.uk/pages/dataset_C_NIST). 
 -->
-## Installation
+## Download
 
 The `NIST` executables require the `AlignmentRepa` module which is in the [AlignmentRepaC repository](https://github.com/caiks/AlignmentRepaC). See the AlignmentRepaC repository for installation instructions of the C++ compiler.
 
