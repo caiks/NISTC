@@ -11,7 +11,7 @@ There is an analysis of this dataset [here](https://greenlake.co.uk/pages/datase
 
 The `NIST` executables require the `AlignmentRepa` module which is in the [AlignmentRepaC repository](https://github.com/caiks/AlignmentRepaC). See the AlignmentRepaC repository for installation instructions of the C++ compiler.
 
-Then download the zip files or use git to get the NISTC repository and the underlying rapidjson, AlignmentC and AlignmentRepaC repositories -
+Download the zip files or use git to get the `NISTC` repository and the underlying `rapidjson`, `AlignmentC` and `AlignmentRepaC` repositories -
 ```
 cd
 git clone https://github.com/Tencent/rapidjson.git
