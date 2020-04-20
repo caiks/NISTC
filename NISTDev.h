@@ -27,41 +27,41 @@
 
 namespace NIST
 {
-    struct Bitmap
-    {
-	Bitmap(int h = 1, int w = 1, unsigned char x = 0) {
-	    height = h;
-	    width = w;
-	    image.resize(h*w*3,x);
-	}
-	int height;
-	int width;
-	std::vector<unsigned char> image;
-    };
+	struct Bitmap
+	{
+		Bitmap(int h = 1, int w = 1, unsigned char x = 0) {
+			height = h;
+			width = w;
+			image.resize(h*w*3,x);
+		}
+		int height;
+		int width;
+		std::vector<unsigned char> image;
+	};
 
-    Bitmap bminsert(const Bitmap&, int, int, const Bitmap&);
-    Bitmap bmborder(int, const Bitmap&);
-    Bitmap bmhstack(const std::vector<Bitmap>&);
-    Bitmap bmvstack(const std::vector<Bitmap>&);
+	Bitmap bminsert(const Bitmap&, int, int, const Bitmap&);
+	Bitmap bmborder(int, const Bitmap&);
+	Bitmap bmhstack(const std::vector<Bitmap>&);
+	Bitmap bmvstack(const std::vector<Bitmap>&);
 
-    void bmwrite(std::string, const Bitmap&);
+	void bmwrite(std::string, const Bitmap&);
 
-    Bitmap hrbm(int,int,int,const Alignment::HistoryRepa&);
+	Bitmap hrbm(int,int,int,const Alignment::HistoryRepa&);
 
 
-    typedef std::tuple<std::unique_ptr<Alignment::System>, std::unique_ptr<Alignment::SystemRepa>, std::unique_ptr<Alignment::HistoryRepa>> SystemHistoryRepaTuple;
+	typedef std::tuple<std::unique_ptr<Alignment::System>, std::unique_ptr<Alignment::SystemRepa>, std::unique_ptr<Alignment::HistoryRepa>> SystemHistoryRepaTuple;
 
-    // trainBucketedIO :: Int -> IO (System, HistoryRepa)
-    SystemHistoryRepaTuple trainBucketedIO(int);
+	// trainBucketedIO :: Int -> IO (System, HistoryRepa)
+	SystemHistoryRepaTuple trainBucketedIO(int);
 
-    // trainBucketedAffineIO :: Int -> Int -> Double -> Int -> IO (System, HistoryRepa)
-    SystemHistoryRepaTuple trainBucketedAffineIO(int, int, double, int);
+	// trainBucketedAffineIO :: Int -> Int -> Double -> Int -> IO (System, HistoryRepa)
+	SystemHistoryRepaTuple trainBucketedAffineIO(int, int, double, int);
 
-    // trainBucketedIO :: Int -> IO (System, HistoryRepa)
-    SystemHistoryRepaTuple trainBucketedRegionRandomIO(int,int,int);
+	// trainBucketedIO :: Int -> IO (System, HistoryRepa)
+	SystemHistoryRepaTuple trainBucketedRegionRandomIO(int,int,int);
 
-    // testBucketedIO :: Int -> IO (System, HistoryRepa)
-    SystemHistoryRepaTuple testBucketedIO(int);
+	// testBucketedIO :: Int -> IO (System, HistoryRepa)
+	SystemHistoryRepaTuple testBucketedIO(int);
 
 }
 
