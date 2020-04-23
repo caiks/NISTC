@@ -5296,6 +5296,138 @@ int main(int argc, char **argv)
 		applicationRepasPersistent(*dr3, out); cout << endl;
 		out.close();
 	}
+	
+	if (argc >= 3 && string(argv[1]) == "condition" && string(argv[2]) == "model106_4")
+	{
+		auto uvars = systemsSetVar;
+		auto hrsel = eventsHistoryRepasHistoryRepaSelection_u;
+		auto frmul = historyRepasFudRepasMultiply_u;
+		auto drcopy = applicationRepasApplicationRepa_u;
+		auto drjoin = applicationRepaPairsJoin_u;
+		auto applicationer = parametersSystemsHistoryRepasApplicationerCondMultinomialMultiLabelFmaxIORepa_u;
+
+		auto xx = trainBucketedIO(2);
+		auto& uu = std::get<0>(xx);
+		auto& ur = std::get<1>(xx);
+		auto& hrtr = std::get<2>(xx);
+
+		Variable digit("digit");
+		auto vv = *uvars(*uu);
+		auto vvl = VarUSet();
+		vvl.insert(digit);
+		auto vvk = VarUSet(vv);
+		vvk.erase(digit);
+
+		auto& vvi = ur->mapVarSize();
+		SizeList vvk1;
+		for (auto& v : sorted(vvk))
+			vvk1.push_back(vvi[v]);
+
+		cout << "hrtr->dimension" << endl
+			<< hrtr->dimension << endl << endl;
+		cout << "hrtr->size" << endl
+			<< hrtr->size << endl << endl;
+
+		std::unique_ptr<HistoryRepa> hr;
+		{
+			SizeList ll;
+			for (size_t i = 0; i < hrtr->size; i += 2)
+				ll.push_back(i);
+			hr = hrsel(ll.size(), ll.data(), *hrtr);
+			cout << "hr->size" << endl
+				<< hr->size << endl << endl;
+			hrtr.reset();
+		}
+
+		StrVarPtrMap m;
+		std::ifstream in("model106.bin", std::ios::binary);
+		auto ur1 = persistentsSystemRepa(in, m);
+		auto dr = persistentsApplicationRepa(in);
+		in.close();
+
+		auto hr1 = frmul(*hr, *dr->fud);
+
+		auto l = vvi[digit];
+		SizeList vvk2;
+		for (std::size_t i = 0; i < hr1->dimension; i++)
+			if (hr1->vectorVar[i] != l)
+				vvk2.push_back(hr1->vectorVar[i]);
+		SizeList vvl2 {l};
+		
+		size_t fmax = 1023;
+		auto dr2 = applicationer(fmax, vvk2, vvl2, *hr1, 1, *ur1);
+		auto dr3 = drjoin(*dr, *dr2);
+		std::ofstream out("model106_4.bin", std::ios::binary);
+		systemRepasPersistent(*ur1, out); cout << endl;
+		applicationRepasPersistent(*dr3, out); cout << endl;
+		out.close();
+	}
+
+	if (argc >= 3 && string(argv[1]) == "condition" && string(argv[2]) == "model106_5")
+	{
+		auto uvars = systemsSetVar;
+		auto hrsel = eventsHistoryRepasHistoryRepaSelection_u;
+		auto frmul = historyRepasFudRepasMultiply_u;
+		auto drcopy = applicationRepasApplicationRepa_u;
+		auto drjoin = applicationRepaPairsJoin_u;
+		auto applicationer = parametersSystemsHistoryRepasApplicationerCondMultinomialMultiLabelFmaxIORepa_u;
+
+		auto xx = trainBucketedIO(2);
+		auto& uu = std::get<0>(xx);
+		auto& ur = std::get<1>(xx);
+		auto& hrtr = std::get<2>(xx);
+
+		Variable digit("digit");
+		auto vv = *uvars(*uu);
+		auto vvl = VarUSet();
+		vvl.insert(digit);
+		auto vvk = VarUSet(vv);
+		vvk.erase(digit);
+
+		auto& vvi = ur->mapVarSize();
+		SizeList vvk1;
+		for (auto& v : sorted(vvk))
+			vvk1.push_back(vvi[v]);
+
+		cout << "hrtr->dimension" << endl
+			<< hrtr->dimension << endl << endl;
+		cout << "hrtr->size" << endl
+			<< hrtr->size << endl << endl;
+
+		std::unique_ptr<HistoryRepa> hr;
+		{
+			SizeList ll;
+			for (size_t i = 0; i < hrtr->size; i += 2)
+				ll.push_back(i);
+			hr = hrsel(ll.size(), ll.data(), *hrtr);
+			cout << "hr->size" << endl
+				<< hr->size << endl << endl;
+			hrtr.reset();
+		}
+
+		StrVarPtrMap m;
+		std::ifstream in("model106.bin", std::ios::binary);
+		auto ur1 = persistentsSystemRepa(in, m);
+		auto dr = persistentsApplicationRepa(in);
+		in.close();
+
+		auto hr1 = frmul(*hr, *dr->fud);
+
+		auto l = vvi[digit];
+		SizeList vvk2;
+		for (std::size_t i = 0; i < hr1->dimension; i++)
+			if (hr1->vectorVar[i] != l)
+				vvk2.push_back(hr1->vectorVar[i]);
+		SizeList vvl2 {l,l};
+		
+		size_t fmax = 1023;
+		auto dr2 = applicationer(fmax, vvk2, vvl2, *hr1, 1, *ur1);
+		auto dr3 = drjoin(*dr, *dr2);
+		std::ofstream out("model106_5.bin", std::ios::binary);
+		systemRepasPersistent(*ur1, out); cout << endl;
+		applicationRepasPersistent(*dr3, out); cout << endl;
+		out.close();
+	}
 
 	if (argc >= 3 && string(argv[1]) == "condition" && string(argv[2]) == "model109")
 	{
