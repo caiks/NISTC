@@ -7,6 +7,11 @@ using namespace std;
 typedef std::chrono::duration<double> sec; 
 typedef std::chrono::high_resolution_clock clk;
 
+#define ECHO(x) cout << #x << endl; x
+#define EVAL(x) cout << #x << ": " << (x) << endl
+#define EVALL(x) cout << #x << ": " << endl << (x) << endl
+#define TRUTH(x) cout << #x << ": " << ((x) ? "true" : "false") << endl
+
 int main(int argc, char **argv)
 {
 	if (false)
@@ -7776,6 +7781,64 @@ int main(int argc, char **argv)
 		sum: 348265622
 		*/
 
+	}
+
+	if (argc >= 3 && string(argv[1]) == "entropy")
+	{
+		auto uvars = systemsSetVar;
+		auto uruu = systemsRepasSystem;
+		auto aall = histogramsList;
+		auto ent = histogramsEntropy;
+		auto araa = systemsHistogramRepasHistogram_u;
+		auto hrred = [](const HistoryRepa& hr, const SystemRepa& ur, const VarList& kk)
+		{
+			auto& vvi = ur.mapVarSize();
+			std::size_t m = kk.size();
+			SizeList kk1;
+			for (std::size_t i = 0; i < m; i++)
+				kk1.push_back(vvi[kk[i]]);
+			return setVarsHistoryRepasReduce_u(1.0, m, kk1.data(), hr);
+		};
+		auto hrpart = systemsHistoryRepasApplicationsHistoryHistoryPartitionedRepa_u;
+		auto frvars = fudRepasSetVar;
+		auto frder = fudRepasDerived;
+		auto frund = fudRepasUnderlying;
+		
+		string model = string(argv[2]);
+
+		EVAL(model);
+
+		std::unique_ptr<System> uu;
+		std::unique_ptr<SystemRepa> ur;
+		std::unique_ptr<HistoryRepa> hr;
+		{
+			auto xx = trainBucketedIO(2);
+			uu = std::move(std::get<0>(xx));
+			ur = std::move(std::get<1>(xx));
+			hr = std::move(std::get<2>(xx));
+		}
+
+		EVAL(hr->size);
+
+		StrVarPtrMap m;
+		std::ifstream in(model + ".bin", std::ios::binary);
+		auto ur1 = persistentsSystemRepa(in, m);
+		auto dr = persistentsApplicationRepa(in);
+		in.close();
+
+		EVAL(fudRepasSize(*dr->fud));
+		EVAL(frder(*dr->fud)->size());
+		EVAL(frund(*dr->fud)->size());
+		EVAL(treesSize(*dr->slices));
+		EVAL(treesLeafElements(*dr->slices)->size());
+
+		auto hrp = hrpart(*hr, *dr, *ur);
+		// EVAL(*hrp);
+		uruu(*ur, *uu);
+		// EVAL(*uu);
+		auto aa = araa(*uu, *ur, *hrred(*hrp, *ur, VarList{ Variable("partition0"), Variable("partition1") }));
+		EVAL(*aa);
+		EVAL(ent(*aa));
 	}
 
 
