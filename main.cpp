@@ -7788,6 +7788,7 @@ int main(int argc, char **argv)
 		auto uvars = systemsSetVar;
 		auto uruu = systemsRepasSystem;
 		auto aall = histogramsList;
+		auto add = pairHistogramsAdd_u;
 		auto ent = histogramsEntropy;
 		auto araa = systemsHistogramRepasHistogram_u;
 		auto hrred = [](const HistoryRepa& hr, const SystemRepa& ur, const VarList& kk)
@@ -7799,14 +7800,18 @@ int main(int argc, char **argv)
 				kk1.push_back(vvi[kk[i]]);
 			return setVarsHistoryRepasReduce_u(1.0, m, kk1.data(), hr);
 		};
+		auto hrconcat = vectorHistoryRepasConcat_u;
+		auto hrshuffle = historyRepasShuffle_u;
 		auto hrpart = systemsHistoryRepasApplicationsHistoryHistoryPartitionedRepa_u;
 		auto frvars = fudRepasSetVar;
 		auto frder = fudRepasDerived;
 		auto frund = fudRepasUnderlying;
 		
 		string model = string(argv[2]);
-
+		size_t mult = argc >= 4 ? atoi(argv[3]) : 1;
+		
 		EVAL(model);
+		EVAL(mult);
 
 		std::unique_ptr<System> uu;
 		std::unique_ptr<SystemRepa> ur;
@@ -7818,7 +7823,8 @@ int main(int argc, char **argv)
 			hr = std::move(std::get<2>(xx));
 		}
 
-		EVAL(hr->size);
+		ECHO(auto z = hr->size);
+		EVAL(z);
 
 		StrVarPtrMap m;
 		std::ifstream in(model + ".bin", std::ios::binary);
@@ -7830,15 +7836,40 @@ int main(int argc, char **argv)
 		EVAL(frder(*dr->fud)->size());
 		EVAL(frund(*dr->fud)->size());
 		EVAL(treesSize(*dr->slices));
-		EVAL(treesLeafElements(*dr->slices)->size());
+		ECHO(auto v = treesLeafElements(*dr->slices)->size());
+		EVAL(v);
 
 		auto hrp = hrpart(*hr, *dr, *ur);
 		// EVAL(*hrp);
 		uruu(*ur, *uu);
 		// EVAL(*uu);
 		auto aa = araa(*uu, *ur, *hrred(*hrp, *ur, VarList{ Variable("partition0"), Variable("partition1") }));
-		EVAL(*aa);
+		// EVAL(*aa);
 		EVAL(ent(*aa));
+		EVAL(ent(*aa) * z);
+		EVAL((1.0-exp(ent(*aa))/v)*100.0);
+		
+		HistoryRepaPtrList qq;
+		qq.reserve(mult);
+		for (std::size_t i = 1; i <= mult; i++)
+			qq.push_back(hrshuffle(*hr, (unsigned int)(12345+i*z)));
+		auto hrs = hrconcat(qq);
+		
+		auto hrsp = hrpart(*hrs, *dr, *ur);
+		auto bb = araa(*uu, *ur, *hrred(*hrsp, *ur, VarList{ Variable("partition0"), Variable("partition1") }));
+		EVAL(ent(*bb));
+		EVAL(ent(*bb) * z * mult);
+		EVAL((1.0-exp(ent(*bb))/v)*100.0);
+		
+		auto cc = add(*aa,*bb);
+		
+		EVAL(ent(*cc));
+		EVAL(ent(*cc) * z * (mult+1));
+		EVAL((1.0-exp(ent(*cc))/v)*100.0);
+		
+		EVAL((ent(*cc) * z * (mult+1) - ent(*aa) * z - ent(*bb) * z * mult)/z);
+		EVAL(ent(*cc) * z * (mult+1) - ent(*aa) * z - ent(*bb) * z * mult);
+		EVAL(exp((ent(*cc) * z * (mult+1) - ent(*aa) * z - ent(*bb) * z * mult)/z)/v*100.0);
 	}
 
 
