@@ -7825,7 +7825,9 @@ int main(int argc, char **argv)
 
 		ECHO(auto z = hr->size);
 		EVAL(z);
-
+		ECHO(auto v = z * mult);
+		EVAL(v);
+		
 		StrVarPtrMap m;
 		std::ifstream in(model + ".bin", std::ios::binary);
 		auto ur1 = persistentsSystemRepa(in, m);
@@ -7836,8 +7838,8 @@ int main(int argc, char **argv)
 		EVAL(frder(*dr->fud)->size());
 		EVAL(frund(*dr->fud)->size());
 		EVAL(treesSize(*dr->slices));
-		ECHO(auto v = treesLeafElements(*dr->slices)->size());
-		EVAL(v);
+		ECHO(auto d = treesLeafElements(*dr->slices)->size());
+		EVAL(d);
 
 		auto hrp = hrpart(*hr, *dr, *ur);
 		// EVAL(*hrp);
@@ -7847,7 +7849,7 @@ int main(int argc, char **argv)
 		// EVAL(*aa);
 		EVAL(ent(*aa));
 		EVAL(ent(*aa) * z);
-		EVAL((1.0-exp(ent(*aa))/v)*100.0);
+		EVAL((1.0-exp(ent(*aa))/d)*100.0);
 		
 		HistoryRepaPtrList qq;
 		qq.reserve(mult);
@@ -7858,18 +7860,18 @@ int main(int argc, char **argv)
 		auto hrsp = hrpart(*hrs, *dr, *ur);
 		auto bb = araa(*uu, *ur, *hrred(*hrsp, *ur, VarList{ Variable("partition0"), Variable("partition1") }));
 		EVAL(ent(*bb));
-		EVAL(ent(*bb) * z * mult);
-		EVAL((1.0-exp(ent(*bb))/v)*100.0);
+		EVAL(ent(*bb) * v);
+		EVAL((1.0-exp(ent(*bb))/d)*100.0);
 		
 		auto cc = add(*aa,*bb);
 		
 		EVAL(ent(*cc));
-		EVAL(ent(*cc) * z * (mult+1));
-		EVAL((1.0-exp(ent(*cc))/v)*100.0);
+		EVAL(ent(*cc) * (z+v));
+		EVAL((1.0-exp(ent(*cc))/d)*100.0);
 		
-		EVAL((ent(*cc) * z * (mult+1) - ent(*aa) * z - ent(*bb) * z * mult)/z);
-		EVAL(ent(*cc) * z * (mult+1) - ent(*aa) * z - ent(*bb) * z * mult);
-		EVAL(exp((ent(*cc) * z * (mult+1) - ent(*aa) * z - ent(*bb) * z * mult)/z)/v*100.0);
+		EVAL((ent(*cc) * (z+v) - ent(*aa) * z - ent(*bb) * v)/z);
+		EVAL(ent(*cc) * (z+v) - ent(*aa) * z - ent(*bb) * v);
+		EVAL(exp((ent(*cc) * (z+v) - ent(*aa) * z - ent(*bb) * v)/z)/d*100.0);
 	}
 
 
