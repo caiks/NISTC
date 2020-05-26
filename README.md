@@ -139,6 +139,14 @@ matches: 5919
 NISTC induce model100_1 >model100_1.log
 
 NISTC test model100_1
+model: model100_1
+train size: 60000
+model cardinality: 2500
+derived  cardinality: 532
+underlying cardinality: 364
+test size: 10000
+effective size: 10000
+matches: 6288
 
 NISTC condition model100_2 >model100_2.log
 
@@ -376,9 +384,27 @@ matches: 8386
 
 NISTC induce model116 >model116.log
 
+NISTC test model116
+model: model116
+train size: 60000
+model cardinality: 3258
+derived  cardinality: 882
+underlying cardinality: 368
+test size: 10000
+effective size: 10000
+matches: 5029
+
 NISTC induce model117 >model117.log
 
-NISTC bitmap_10x10 model101 10
+NISTC test model117
+model: model117
+train size: 60000
+model cardinality: 6465
+derived  cardinality: 896
+underlying cardinality: 404
+test size: 10000
+effective size: 9995
+matches: 4739
 
 NISTC induce model118 >model118.log
 
