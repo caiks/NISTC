@@ -2,11 +2,18 @@
 
 This repository contains tests of the [AlignmentRepaC repository](https://github.com/caiks/AlignmentRepaC) using data from the [MNIST dataset](http://yann.lecun.com/exdb/mnist/). The AlignmentRepaC repository is a fast C++ implementation of some of the *practicable inducers* described in the paper *The Theory and Practice of Induction by Alignment* at https://greenlake.co.uk/. 
 
-<!--
-## Documentation
+## Sections
 
-There is an analysis of this dataset [here](https://greenlake.co.uk/pages/dataset_C_NIST). 
--->
+[Download](#Download)
+
+[Build](#Build)
+
+[Usage](#Usage)
+
+[Discussion](#Discussion)
+
+<a name="Download"></a>
+
 ## Download
 
 The `NIST` executables require the `AlignmentRepa` module which is in the [AlignmentRepaC repository](https://github.com/caiks/AlignmentRepaC). See the AlignmentRepaC repository for installation instructions of the C++ compiler.
@@ -32,6 +39,8 @@ gunzip *.gz
 cd ..
 
 ```
+
+<a name="Build"></a>
 
 ## Build
 
@@ -68,6 +77,8 @@ cd /d NISTC_build
 
 ```
 
+<a name="Usage"></a>
+
 ## Usage
 
 Ubuntu -
@@ -91,10 +102,13 @@ cd /d ..\NISTC_ws
 
 ```
 
-## Examples
+<a name="Discussion"></a>
 
-Some of these examples may be viewed in [NISTC_ws repository](https://github.com/caiks/NISTC_ws),
+## Discussion
 
+For a detailed discussion of the problem domain see the [Haskell implementation](https://github.com/caiks/NIST) or the [Python implementation](https://github.com/caiks/NISTPy). 
+
+The tests and *models* in the NISTC repository are different from those of the previous implementations. The C++ implementation is the best solution for implementing very large *models*. The discussion below compares the *models* by *label accuracy* and by a proxy for the *size-volume scaled component size cardinality sum relative entropy* which substitutes a *scaled shuffle* for the *cartesian*. As the *shuffle* is *scaled* the *relative entropy* gradually converges, so it is a reasonable proxy for the *model likelihood*.
 ```
 NISTC induce model100 >model100.log
 
@@ -110,6 +124,9 @@ test size: 10000
 effective size: 9999
 matches: 5475
 
+NISTC entropy model100 
+ent(*cc) * (z+v) - ent(*aa) * z - ent(*bb) * v: 52891.2
+
 NISTC induce model100_p 4 >model100_p.log
 
 NISTC test model100_p
@@ -121,6 +138,9 @@ underlying cardinality: 259
 test size: 10000
 effective size: 9999
 matches: 5451
+
+NISTC entropy model100_p 
+ent(*cc) * (z+v) - ent(*aa) * z - ent(*bb) * v: 52801.4
 
 NISTC induce model35 >NIST_model35.log
 
@@ -136,6 +156,11 @@ test size: 10000
 effective size: 10000
 matches: 5919
 
+NISTC entropy model35 
+ent(*cc) * (z+v) - ent(*aa) * z - ent(*bb) * v: 56646.6
+```
+*Model* 35 is common to the other implementations and runs in around 2065s in C++. *Model* 100 has more restricted *induction* parameters and takes only 15s to run but obtains quite good *accuracy* and *relative entropy*. 
+```
 NISTC induce model100_1 >model100_1.log
 
 NISTC test model100_1
@@ -148,6 +173,11 @@ test size: 10000
 effective size: 10000
 matches: 6288
 
+NISTC entropy model100_1 
+ent(*cc) * (z+v) - ent(*aa) * z - ent(*bb) * v: 62678.7
+```
+*Model* 100_1 is similar to *model* 100 but uses the `znnmax` parameter to sub-select the *substrate* by *perimeter entropy*.
+```
 NISTC condition model100_2 >model100_2.log
 
 NISTC test model100_2
@@ -160,6 +190,11 @@ test size: 10000
 effective size: 10000
 matches: 7288
 
+NISTC entropy model100_2 
+ent(*cc) * (z+v) - ent(*aa) * z - ent(*bb) * v: 21624.1
+```
+*Model* 100_2 is *conditioned* on the *substrate* rather then *induced*. It has better *accuracy* but worse *likelihood*.
+```
 NISTC induce model101 >model101.log
 
 NISTC induce model102 >model102.log
@@ -174,6 +209,11 @@ test size: 10000
 effective size: 9998
 matches: 6016
 
+NISTC entropy model102
+ent(*cc) * (z+v) - ent(*aa) * z - ent(*bb) * v: 69573.8
+```
+*Model* 102 is a *2-level induced model* on 7x7 *model* 101 which is a 13x13 region. It has the highest *likelihood* so far.
+```
 NISTC induce model103 >model103.log
 
 NISTC induce model104 >model104.log
@@ -188,6 +228,11 @@ test size: 10000
 effective size: 9999
 matches: 5927
 
+NISTC entropy model104
+ent(*cc) * (z+v) - ent(*aa) * z - ent(*bb) * v: 70699.8
+```
+*Model* 104 is also *2-level model* this time on *model* 103. *Model* 103 has a smaller `wmax` than 101 but this makes little difference.
+```
 NISTC induce model105 >model105.log
 
 NISTC test model105
@@ -200,6 +245,11 @@ test size: 10000
 effective size: 9981
 matches: 6546
 
+NISTC entropy model105
+ent(*cc) * (z+v) - ent(*aa) * z - ent(*bb) * v: 64619.4
+```
+*Model* 105 is the same as *model* 101_1 with bigger `znnmax` and smaller `wmax`.
+```
 NISTC induce model106 >model106.log
 
 NISTC test model106
@@ -211,6 +261,9 @@ underlying cardinality: 505
 test size: 10000
 effective size: 9456
 matches: 7204
+
+NISTC entropy model106
+ent(*cc) * (z+v) - ent(*aa) * z - ent(*bb) * v: 73566.9
 
 NISTC induce model106_p 4 >model106_p.log
 
@@ -224,6 +277,11 @@ test size: 10000
 effective size: 9420
 matches: 7231
 
+NISTC entropy model106_p
+ent(*cc) * (z+v) - ent(*aa) * z - ent(*bb) * v: 72500.1
+```
+*Model* 106 is the same as 105 but with `fmax` of 1023 instead of 127. It has the highest *likelihood* of all of the *models* discussed here.
+```
 NISTC condition model106_1 >model106_1.log
 
 NISTC test model106_1
@@ -236,6 +294,11 @@ test size: 10000
 effective size: 9999
 matches: 8531
 
+NISTC entropy model106_1
+ent(*cc) * (z+v) - ent(*aa) * z - ent(*bb) * v: 42135.7
+```
+*Model* 106_1 is *conditional* on *model* 106.
+```
 NISTC condition model106_2 >model106_2.log
 
 NISTC test model106_2
@@ -247,6 +310,9 @@ underlying cardinality: 378
 test size: 10000
 effective size: 10000
 matches: 8409
+
+NISTC entropy model106_2
+ent(*cc) * (z+v) - ent(*aa) * z - ent(*bb) * v: 37900.7
 
 NISTC condition model106_2_p 4 >model106_2_p.log
 
@@ -260,6 +326,11 @@ test size: 10000
 effective size: 9999
 matches: 8421
 
+NISTC entropy model106_2_p
+ent(*cc) * (z+v) - ent(*aa) * z - ent(*bb) * v: 40779.5
+```
+*Model* 106_2 is the same as *model* 106_1 except that it is *conditional multinomial* rather than *conditional entropy*.
+```
 NISTC condition model106_3 >model106_3.log
 
 NISTC test model106_3
@@ -272,6 +343,11 @@ test size: 10000
 effective size: 10000
 matches: 6736
 
+NISTC entropy model106_3
+ent(*cc) * (z+v) - ent(*aa) * z - ent(*bb) * v: 24076
+```
+*Model* 106_3 uses 1/64 of the *history* instead of 1/2.
+```
 NISTC induce model107 >model107.log
 
 NISTC test model107
@@ -284,6 +360,11 @@ test size: 10000
 effective size: 10000
 matches: 3921
 
+NISTC entropy model107
+ent(*cc) * (z+v) - ent(*aa) * z - ent(*bb) * v: 35679.4
+```
+*Model* 107 is the same as *model* 100 except it has a *valency* of 10 instead of 2. Both the *liklihood* and the *accuracy* are worse.
+```
 NISTC condition model108 >model108.log
 
 NISTC test model108
@@ -296,6 +377,12 @@ test size: 10000
 effective size: 10000
 matches: 7737
 
+NISTC entropy model108
+ent(*cc) * (z+v) - ent(*aa) * z - ent(*bb) * v: 14655
+```
+*Model* 108 is *conditioned* directly on the *substrate*. It has good *accuracy*, but poor *likelihood*.
+
+```
 NISTC condition model109 >model109.log
 
 NISTC test model109
@@ -308,6 +395,11 @@ test size: 10000
 effective size: 10000
 matches: 7906
 
+NISTC entropy model109
+ent(*cc) * (z+v) - ent(*aa) * z - ent(*bb) * v: 24729.2
+```
+*Model* 109 is *conditional 2-level* on *model* 103, so it is similar to *model* 104 except that it is *conditioned* rather than *induced*. It has better *accuracy*, but worse *likelihood*.
+```
 NISTC condition model110 >model110.log
 
 NISTC test model110
@@ -332,6 +424,11 @@ test size: 10000
 effective size: 10000
 matches: 8840
 
+NISTC entropy model111
+ent(*cc) * (z+v) - ent(*aa) * z - ent(*bb) * v: 55527.5
+```
+*Model* 111 is similar to 109 but with more *frames* (49 instead of 25).
+```
 NISTC induce model112 >model112.log
 
 NISTC condition model113 >model113.log
@@ -346,6 +443,11 @@ test size: 10000
 effective size: 10000
 matches: 8979
 
+NISTC entropy model113
+ent(*cc) * (z+v) - ent(*aa) * z - ent(*bb) * v: 56196.4
+```
+*Model* 113 is the same as 111 except that the *underlying model* is 112 and there are 81 *frames*.
+```
 NISTC condition model114 >model114.log
 
 NISTC test model114
@@ -358,6 +460,28 @@ test size: 10000
 effective size: 10000
 matches: 8908
 
+NISTC entropy model114
+ent(*cc) * (z+v) - ent(*aa) * z - ent(*bb) * v: 56459.6
+```
+*Model* 114 is the same as 113 except that it is *conditional multinomial* rather than *conditional entropy*. This makes little difference.
+```
+NISTC condition model120 16 >model120_16.log
+
+NISTC test model120
+model: model120
+train size: 60000
+model cardinality: 23018
+derived  cardinality: 2048
+underlying cardinality: 669
+test size: 10000
+effective size: 10000
+matches: 8923
+
+NISTC entropy model120
+ent(*cc) * (z+v) - ent(*aa) * z - ent(*bb) * v: 56489.6
+```
+*Model* 120 is the same as 114 except with parallel threads.
+```
 NISTC condition model115 >model115.log
 
 NISTC test model115
@@ -422,18 +546,7 @@ underlying cardinality: 676
 test size: 10000
 effective size: 10000
 matches: 9286
-
-NISTC condition model120 16 >model120_16.log
-
-NISTC test model120
-model: model120
-train size: 60000
-model cardinality: 23018
-derived  cardinality: 2048
-underlying cardinality: 669
-test size: 10000
-effective size: 10000
-matches: 8923
-
 ```
+The comparison of the *models* for *likelihood* and *accuracy* suggest that, in general, *induced models* are more *likely* than *conditioned*. *Multi-level models* are also more *likely* because they add problem domain knowledge. *Models induced* with larger searches are also more *likely*.
+
 
